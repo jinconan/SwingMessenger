@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -32,6 +33,8 @@ public class FriendsList implements ActionListener {
 	JMenu		jm_add		= new JMenu("메뉴");
 	JMenuItem	jmi_addfri	= new JMenuItem("새로운 친구");
 	JMenuItem	jmi_addchat	= new JMenuItem("새로운 채팅");
+	JMenuItem	jmi_logout	= new JMenuItem("로그아웃");
+	JMenuItem	jmi_exit	= new JMenuItem("종료");
 	//상태창
 	JPanel 		jp_card 	= new JPanel();
 	JPanel		jp_List 	= new JPanel();
@@ -43,13 +46,16 @@ public class FriendsList implements ActionListener {
 	JPanel 		jp_fri		= new JPanel();
 	JLabel 		jl_my 		= new JLabel("내정보");
 	JTextField 	jtf_my 		= new JTextField();
-	//이미지를 패널로 넣을까? 이미지를 넣을 다른 기능이 있나?
 	JLabel 		jl_fri 		= new JLabel("친구정보");
 	JLabel 		jl_talk		= new JLabel("대화방");	
 	JLabel 		jl_news		= new JLabel("뉴스");
 	JLabel		jl_calender = new JLabel("캘린더");
 	JScrollPane jsp_list	= new JScrollPane(jp_card);
 	
+	//임시 소스
+	String		noname		= "E:\\dev_kosmo201804\\dev_java\\src\\com\\image\\";
+	JLabel		jl_no		= new JLabel(); 		
+		
 	public void initDisplay() {
 		jmi_fri.addActionListener(this);
 		jmi_chat.addActionListener(this);
@@ -57,6 +63,8 @@ public class FriendsList implements ActionListener {
 		jmi_calender.addActionListener(this);		
 		jmi_addfri.addActionListener(this);
 		jmi_addchat.addActionListener(this);	
+		jmi_logout.addActionListener(this);	
+		jmi_exit.addActionListener(this);	
 		//메인화면
 		jf_m.setSize(500, 600);
 		jf_m.setVisible(true);
@@ -70,6 +78,8 @@ public class FriendsList implements ActionListener {
 		jmb_menu.add(jm_add);
 		jm_add.add(jmi_addfri);
 		jm_add.add(jmi_addchat);
+		jm_add.add(jmi_logout);
+		jm_add.add(jmi_exit);
 		//카드
 		jf_m.add(jp_card, BorderLayout.CENTER);
 		jp_card.setLayout(card);
@@ -79,7 +89,10 @@ public class FriendsList implements ActionListener {
 		jp_card.add(jp_calender,"캘린더");
 		//목록창
 		jp_List.setLayout(new GridLayout(5,1,0,0));
-		jp_List.add(jp_my,"내정보");
+		//jp_List.add(jp_my,"내정보");
+		jp_List.add(jl_no,"내정보");
+		jl_no.setIcon(new ImageIcon(noname+"알수없음2.png"));
+		jl_no.setText("내이름");
 		jp_List.add(jp_fri,"친구정보");
 		jp_my.add(jl_my);
 		jp_fri.add(jl_fri);
@@ -100,7 +113,9 @@ public class FriendsList implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		FriendsList fril = new FriendsList();
+		addMenu ad = new addMenu();
+		FriendsList frl = new FriendsList();
+		//메인화면 이벤트
 		if(e.getActionCommand().equals("친구목록")) {
 			card.show(jp_card,"친구목록"); 
 		}
@@ -116,13 +131,24 @@ public class FriendsList implements ActionListener {
 			System.out.println("캘린더");
 			card.show(jp_card,"캘린더");
 		}
-		else if(e.getActionCommand().equals("새로운 친구")) {
-			addMenu ad = new addMenu();
+		//메뉴바 이벤트
+		if(e.getActionCommand().equals("새로운 친구")) {
 			ad.addFriends();
 		}
 		else if(e.getActionCommand().equals("새로운 채팅")) {
-			addMenu ad = new addMenu();
 			ad.addChatting();
+		}
+		else if(e.getActionCommand().equals("로그아웃")) {
+			//frl.dispose();
+			finalUI ui = new finalUI();
+			ui.initDisplay();
+		}
+		else if(e.getActionCommand().equals("종료")) {
+			System.exit(0);
+		}
+		if(e.getActionCommand().equals(jp_my)) {
+			Identify idf = new Identify();
+			idf.initDisplay();
 		}
 	}
 }

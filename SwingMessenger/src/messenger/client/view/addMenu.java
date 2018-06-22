@@ -4,9 +4,12 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -16,31 +19,31 @@ import javax.swing.JToolBar;
 import javax.swing.table.DefaultTableModel;
 
 public class addMenu implements ActionListener{
-	JDialog 			jd_fri 	 = new JDialog();
-	JDialog 			jd_chat	 = new JDialog();
-	JDialog				jd_emti  = new JDialog();
-	JDialog				jd_inv	 = new JDialog();
-	JPanel				jp_chatF = new JPanel();
-	JTextField 			jtf_fri  = new JTextField();
-	JTextField			jtf_inv  = new JTextField();
-	JTextField 			jtf_chat = new JTextField();
-	JTextArea 			jta_chat = new JTextArea();
-	JTable 				jt_fri 	 = new JTable();
-	JTable				jt_inv	 = new JTable();
-	JTable				jt_emti	 = new JTable();
-	JButton 			jbtn_gum = new JButton("검색");
-	JButton				jbtn_jun = new JButton("전송");
-	JButton				jbtn_ok  = new JButton("확인");
-	JButton				jbtn_cancel=new JButton("취소");
-	DefaultTableModel   dftm_fri = new DefaultTableModel();
-	JScrollPane 		jsp_fri	 = new JScrollPane(jt_fri);
-	JScrollPane 		jsp_chatA= new JScrollPane(jta_chat);
-	JScrollPane 		jsp_chatF= new JScrollPane(jtf_chat);
-	JScrollPane 		jsp_inv  = new JScrollPane(jt_inv);
-	JToolBar			jtb_chat = new JToolBar();
-	JButton				jbtn_emti= new JButton("이모티콘");
-	JButton				jbtn_inv = new JButton("친구초대");
-	
+	JDialog 			jd_fri 	   = new JDialog();
+	JDialog 			jd_chat	   = new JDialog();
+	JDialog				jd_emti    = new JDialog();
+	JDialog				jd_inv	   = new JDialog();
+	JPanel				jp_chatF   = new JPanel();
+	JLabel				jl_emti    = new JLabel();
+	JTextField 			jtf_fri    = new JTextField();
+	JTextField			jtf_inv    = new JTextField();
+	JTextField 			jtf_chat   = new JTextField();
+	JTextArea 			jta_chat   = new JTextArea();
+	JTable 				jt_fri 	   = new JTable();
+	JTable				jt_inv	   = new JTable();
+	JButton 			jbtn_gum   = new JButton("검색");
+	JButton				jbtn_jun   = new JButton("전송");
+	JButton				jbtn_ok    = new JButton("확인");
+	JButton				jbtn_cancel= new JButton("취소");
+	DefaultTableModel   dftm_fri   = new DefaultTableModel();
+	JScrollPane 		jsp_fri	   = new JScrollPane(jt_fri);
+	JScrollPane 		jsp_chatA  = new JScrollPane(jta_chat);
+	JScrollPane 		jsp_chatF  = new JScrollPane(jtf_chat);
+	JScrollPane 		jsp_inv    = new JScrollPane(jt_inv);
+	JToolBar			jtb_chat   = new JToolBar();
+	JButton				jbtn_emti  = new JButton("이모티콘");
+	JButton				jbtn_inv   = new JButton("친구초대");
+	String				img_path   = "C:\\Users\\516\\Desktop\\tales_emoticon\\";
 	
 	//친구검색창
 	public void addFriends() {
@@ -65,8 +68,11 @@ public class addMenu implements ActionListener{
 	
 	//새로운 채팅창
 	public void addChatting() {
+		int i = 0;
 		jbtn_inv.addActionListener(this);
 		jbtn_emti.addActionListener(this);
+		/*jd_chat.setTitle(chatList);
+		String chatList = "";*/
 		jd_chat.setSize(360,550);
 		jd_chat.setVisible(true);
 		jsp_chatA.setVisible(true);
@@ -83,6 +89,7 @@ public class addMenu implements ActionListener{
 		/*jp_chatF.setLayout(null);
 		jsp_chatF.setBounds(0, 360, 360, 40);
 		jbtn_jun.setBounds(360, 360, 40, 40);*/
+		
 	}
 	
 	//친구초대창
@@ -108,7 +115,15 @@ public class addMenu implements ActionListener{
 		jd_emti.setTitle("이모티콘");
 		jd_emti.setVisible(true);
 		jd_emti.setSize(400,300);
-		jd_emti.add(jt_emti);
+		jd_emti.add(jl_emti);
+		//jl_emti.setIcon(new ImageIcon(img_path+"나야_놀람.gif"));
+		//jl_emti.setText(img_path);
+		jl_emti.setVisible(true);
+		ArrayList<JLabel> list = new ArrayList<JLabel>();
+		for(int i=0;i<list.size();i++) {
+			jl_emti.setIcon(new ImageIcon(img_path+list.get(i)));
+			
+		}
 	}
 	
 	@Override
@@ -131,9 +146,17 @@ public class addMenu implements ActionListener{
 		}
 		if(e.getActionCommand().equals("확인")) {
 			System.out.println("확인실행");
+			
+			
 		}
 		else if(e.getActionCommand().equals("취소")) {
 			System.out.println("취소실행");
+			System.exit(0);
 		}
+	}
+	public static void main(String[] args) {
+		addMenu ad = new addMenu();
+		ad.Emoticon();
+		ad.addChatting();
 	}
 }

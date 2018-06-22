@@ -26,6 +26,7 @@ public class Message<T> implements Serializable{
 	public static final int CHATROOM_LOAD	= 8; //채팅방 리스트 조회
 	public static final int EMOTICON_LOAD	= 9; //서버에서 이모티콘 리스트 요청 (T에는 ImageIcon계열이 들어감)
 	public static final int CHATROOM_EXIT	= 10;//채팅방 나가기
+	//또 뭐가있을까?
 	///////////////////////////////////////////////////////////
 	
 	public Message() {

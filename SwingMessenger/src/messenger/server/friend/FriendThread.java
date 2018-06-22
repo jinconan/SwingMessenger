@@ -1,8 +1,20 @@
 package messenger.server.friend;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JTextArea;
+
+import messenger._db.vo.MemberVO;
+import messenger.protocol.Message;
+import messenger.server.chat.ChatServerThreadList;
 /*******************************
  * 2018.06.20 쓰레드 클래스 코딩 스탑.
  * 	 - 아직 제대로 이해하지 못했기 때문에 이대로 코딩 할 경우 위험부담이 큼.
@@ -12,34 +24,24 @@ import java.util.ArrayList;
  *    - 멀티쓰레드에 대해 이해하고 응용할 수 있다. 
  * 
  *******************************/
-public class FriendThread extends Thread{
-	ObjectInputStream ois = null;//듣기
-	ObjectOutputStream oos = null;//말하기
-//	클라이언트친구기능 cfm = null;//쓰레드에서 메뉴 기능을 불러와서 실행함.
-	//임시로 스트링으로 칭함.
-	ArrayList<String> menu = null;
-	FriendMenu fm = new FriendMenu();
-	String menu_index = "";
-	FriendThread(){
-		start();
+public class FriendThread implements Runnable{
+	Socket					socket;
+	JTextArea 				jta_log;
+	FriendMenu 				fm 			= new FriendMenu();
+	
+	public FriendThread(JTextArea jta_log, Socket socket) {
+		this.jta_log = jta_log;
+		this.socket = socket;
 	}
-//	public FriendThread(클라이언트친구기능 cfm) {
-//		this.cfm = cfm;
-//		try {
-//			ois = new ObjectInputStream
-//					(cfm.친구클라이언트소켓.getInputStream());
-//			oos = new ObjectOutputStream
-//					(cfm.친구클라이언트소켓.getOutputStream());
-//		}
-//		catch (Exception e) {
-//			// TODO: handle exception
-//			System.out.println(e.toString());
-//		}
-//	}
+	
 	@Override
 	public synchronized void run() {
-		try {	
-			while(true) {
+		try (	
+			InputStream			in 	= socket.getInputStream();
+			BufferedInputStream bin = new BufferedInputStream(in);
+			ObjectInputStream	oin = new ObjectInputStream(bin);
+
+				){
 				/************************************************************
 				 * 메세지타입 번호.
 				 * public static final int MEMBER_LOGIN   = 0; //회원 로그인
@@ -52,44 +54,46 @@ public class FriendThread extends Thread{
 				 * public static final int CHAT_SEND      = 7; //채팅 전송
 				 * public static final int CHAT_LOAD      = 8; //채팅 내역 조회
 				 ************************************************************/
-				Message<MemberVO> msg = (Message<MemberVO>)ois.readObject();
+				Message<MemberVO> msg = (Message<MemberVO>)oin.readObject();
 				msg.getType();//메세지오브젝트 안에 들어있는 메세지 타입을 불러옴
-				
-				
-				//클라이언트가 담은 데이터들을 어레이리스트 타입으로 변환해서 받아오기
-				ArrayList<MemberVO> list = (ArrayList<MemberVO>)msg.getRequest();
-				MemberVO mem = list.get(0);//
-				mem.getMem_id();//클라이언트가 요청한 ID를 가져옴.
-				
-				//받아오는 타입이 달라서 컴파일에러 이부분 좀더 공부해야할듯....
-//				ArrayList<MemberVO> result = (ArrayList<MemberVO>)fm.FriendSelectALL(mem.getMem_id());
-//				msg.setResponse(result);
-//				oos.writeObject(msg);
-							//각각 쓰레드에서 받은 정보(인풋스트림을 읽어와 menu객체변수에 담음(어레이리스트))
-				switch(msg.getType()) {
-				case 3:
-					fm.FriendSelectALL(list);
-					
-					break;
-				case 4:
-					fm.FriendInsert(list);
-					
-					break;
-				case 5:
-					fm.FriendDelete(list);
-					
+				if(jta_log != null)
+				jta_log.append("요청 : " + socket.getInetAddress().toString() + ", " + socket.getPort() + "\n");
+				/*private List<T> request;	//클라이언트가 데이터를 담는 부분
+				private List<T> response;	//서버가 데이터를 담는 부분
+*/				try(
+						OutputStream			out		= socket.getOutputStream();
+						BufferedOutputStream	bout	= new BufferedOutputStream(out);
+						ObjectOutputStream		oout	= new ObjectOutputStream(bout);
+						){
+					ArrayList<MemberVO> request = (ArrayList<MemberVO>) msg.getRequest();
+					ArrayList<MemberVO> response = new ArrayList<MemberVO>();
+					MemberVO mvo = request.get(0);
+					switch(msg.getType()) {
+					case 3:
+//						response.add(mvo);
+//						response = (ArrayList<MemberVO>)fm.FriendSelectALL(mvo);
+//						fm.FriendSelectALL(response);
+
+						break;
+					case 4:
+//						response.add(mvo);
+//						fm.FriendInsert(response);
+
+						break;
+					case 5:
+//						response.add(mvo);
+//						fm.FriendDelete(response);
+						break;
+
 				}
-				//ObjectOutputStream
-				
-			}
-		} 
+				}
+				} 
 		catch (Exception e) {
 			// TODO: handle exception
+			System.out.println(e.toString());
 		}
 
 	}
-	public static void main(String args[]) {
-		new FriendThread();
-	}
+
 }
 

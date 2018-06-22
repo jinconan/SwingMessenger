@@ -7,6 +7,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
+import messenger._db.vo.MemberVO;
+
 public class FriendMenu {
 	final String _URL = "jdbc:oracle:thin:@192.168.0.235:1521:orcl11";
 	final String _USER = "scott";
@@ -44,7 +46,7 @@ public class FriendMenu {
 		return fo;
 		
 	}
-	public void FriendInsert(ArrayList<MemberVO> fo) {
+	public ArrayList<MemberVO> FriendInsert(ArrayList<MemberVO> fo) {
 		try {
 			con = this.getConnetion();
 			//들어오는 오브젝트를 받아서 String으로 변환해서 데이터베이스에 입력 요청.
@@ -62,8 +64,9 @@ public class FriendMenu {
 			e.printStackTrace();
 			System.out.println(e.toString());
 		}
+		return fo;
 	}
-	public void FriendDelete(ArrayList<MemberVO> fo) {
+	public ArrayList<MemberVO> FriendDelete(ArrayList<MemberVO> fo) {
 		try {
 			con = this.getConnetion();
 			//들어오는 오브젝트를 받아서 String으로 변환해서 데이터베이스에 입력 요청.
@@ -82,6 +85,7 @@ public class FriendMenu {
 			e.printStackTrace();
 			System.out.println(e.toString());
 		}
+		return fo;
 	}
 
 	

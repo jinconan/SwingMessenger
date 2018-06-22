@@ -67,22 +67,27 @@ public class FriendThread implements Runnable{
 						){
 					ArrayList<MemberVO> request = (ArrayList<MemberVO>) msg.getRequest();
 					ArrayList<MemberVO> response = new ArrayList<MemberVO>();
-					MemberVO mvo = request.get(0);
+					MemberVO mvo = request.get(0);//클라이언트에서 받은 정보를 mvo에 담음.
 					switch(msg.getType()) {
 					case 3:
-//						response.add(mvo);
-//						response = (ArrayList<MemberVO>)fm.FriendSelectALL(mvo);
-//						fm.FriendSelectALL(response);
-
+						
+						ArrayList<MemberVO> result = fm.FriendSelectALL(request);//서버에서 보낼 정보를 selectAll의 파라미터로 전달.
+						
+						for(MemberVO member : result) {
+							response.add(member);//서버가 데이터를 받는 부분.
+							
+						}
+						
+						msg.setResponse(response);
 						break;
 					case 4:
-//						response.add(mvo);
-//						fm.FriendInsert(response);
+						response.add(mvo);
+						fm.FriendInsert(response, 4);
 
 						break;
 					case 5:
-//						response.add(mvo);
-//						fm.FriendDelete(response);
+						response.add(mvo);
+						fm.FriendDelete(response, 5);
 						break;
 
 				}

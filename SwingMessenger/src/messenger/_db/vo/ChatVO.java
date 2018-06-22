@@ -3,6 +3,8 @@ package messenger._db.vo;
 import java.io.Serializable;
 
 public class ChatVO implements Serializable {
+	private static final long serialVersionUID = 484396718324553957L;
+	
 	private int chat_no; // 대화번호
 	private int room_no; // 방번호
 	private String chat_content; // 대화내용

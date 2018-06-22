@@ -5,11 +5,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Message<T> implements Serializable{
- 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8997353509224999302L;
+	
 	private int 	type;		//메시지 타입
 	private List<T> request;	//클라이언트가 데이터를 담는 부분
 	private List<T> response;	//서버가 데이터를 담는 부분

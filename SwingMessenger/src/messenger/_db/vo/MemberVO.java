@@ -3,7 +3,8 @@ package messenger._db.vo;
 import java.io.Serializable;
 
 public class MemberVO implements Serializable{
-
+	private static final long serialVersionUID = -7846590031060667312L;
+	
 	private int mem_no;
 	private String mem_id;
 	private String mem_name;

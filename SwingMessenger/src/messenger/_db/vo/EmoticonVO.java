@@ -3,6 +3,8 @@ package messenger._db.vo;
 import java.io.Serializable;
 
 public class EmoticonVO implements Serializable{
+	private static final long serialVersionUID = 8364571906757335702L;
+	
 	private int emo_no; //이모티콘 번호
 	private String emo_url; //이모티콘 경로
 	private String emo_name; //이모티콘 이름

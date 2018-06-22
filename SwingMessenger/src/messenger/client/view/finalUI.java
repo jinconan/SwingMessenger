@@ -3,8 +3,10 @@ package messenger.client.view;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -17,9 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import com.kosmo.game.ErrorKey;
-
-public class finalUI extends JFrame implements ActionListener,KeyListener {
+public class finalUI extends JFrame implements ActionListener {
 	CardLayout 	card		= new CardLayout();
 	//JFrame 		jf_login 	= new JFrame();
 	JPanel 		jp_card		= new JPanel();
@@ -33,7 +33,9 @@ public class finalUI extends JFrame implements ActionListener,KeyListener {
 	JTextField 	jtf_pw 		= new JTextField();
 	JButton 	jbtn_log 	= new JButton("로그인");
 	JButton 	jbtn_gaip 	= new JButton("회원가입");
-	JTextArea	jta_error	= new JTextArea();
+	JLabel		jta_error	= new JLabel();
+	
+	
 	
 	//가입창 패널
 	JLabel 		jl_gid  	= new JLabel("아이디 :");
@@ -50,11 +52,9 @@ public class finalUI extends JFrame implements ActionListener,KeyListener {
 	JButton		jbtn_get	= new JButton("가입");
 	JButton		jbtn_back	= new JButton("뒤로가기");	
 	String		imgPath		= "E:\\dev_kosmo201804\\dev_java\\src\\com\\image\\";
+	boolean isView = false;
 	
 	public void initDisplay() {
-		//금지 문자열 액션
-		ErrorKey key = new ErrorKey();
-		jtf_id.addActionListener(this);
 		//메인 액션
 		jbtn_gaip.addActionListener(this);
 		jbtn_log.addActionListener(this);
@@ -77,11 +77,11 @@ public class finalUI extends JFrame implements ActionListener,KeyListener {
 		jp_login.add(jl_pw);
 		jp_login.add(jtf_id);
 		jp_login.add(jtf_pw);
+		jp_login.add(jta_error);
 		jp_login.add(jbtn_log);
 		jp_login.add(jbtn_gaip);
 		jp_login.setLayout(null);
 		jp_login.setBackground(Color.YELLOW);
-		//jp_img.setText("이미지");
 		jp_img.setBounds(10, 10, 336, 255);
 		jp_img.setIcon(new ImageIcon(imgPath+"kakao.jpg"));
 		jl_id.setBounds(50, 300, 80, 20);
@@ -89,9 +89,15 @@ public class finalUI extends JFrame implements ActionListener,KeyListener {
 		jl_id.setVisible(true);
 		jtf_id.setBounds(130, 300, 160, 20);
 		jtf_id.setVisible(true);
-		jl_pw.setBounds(50, 330, 80, 20);
+		jta_error.setBounds(150, 320, 200, 20);
+		jta_error.setText("금지된 문자열입니다.");
+		Font e = new Font("돋움체",Font.CENTER_BASELINE,9);
+		jta_error.setFont(e);
+		jta_error.setForeground(Color.RED);
+		jta_error.setVisible(isView);
+		jl_pw.setBounds(50, 340, 80, 20);
 		jl_pw.setVisible(true);
-		jtf_pw.setBounds(130, 330, 160, 20);
+		jtf_pw.setBounds(130, 340, 160, 20);
 		jtf_pw.setVisible(true);
 		jbtn_log.setBounds(80, 380, 180, 20);
 		jbtn_log.setVisible(true);
@@ -144,8 +150,72 @@ public class finalUI extends JFrame implements ActionListener,KeyListener {
 		//로그인창
 		jp_list.setVisible(true);
 		jp_list.setBackground(Color.YELLOW);
+		
+		jtf_id.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if(jta_error.getText() != " " && jta_error.getText() != "/" && jta_error.getText() != "-"
+						&& jta_error.getText() != "=" && jta_error.getText() != "|" 
+						&& jta_error.getText() != "," && jta_error.getText() != "."
+						&& jta_error.getText() != "[" && jta_error.getText() != "]"
+						&& jta_error.getText() != "`" ) {
+					jta_error.setVisible(false);
+				}
+				super.keyPressed(e);
+				System.out.println("Key Released: "+ e.getKeyCode());
+				switch(e.getKeyCode()) {
+				case 32:
+					try {
+						System.out.println("NUMPAD0: "+ e.getKeyCode());
+						System.out.println("금지된 문자열입니다.");
+					} catch (Exception e2) {
+						// TODO: handle exception
+						e2.printStackTrace();
+					}
+					jta_error.setVisible(true);
+					break;
+				case 44:
+					jta_error.setVisible(true);
+					break;
+				case 45:
+					jta_error.setVisible(true);
+					break;
+				case 46:
+					jta_error.setVisible(true);
+					break;
+				case 47:
+					jta_error.setVisible(true);
+					break;
+				case 61:
+					jta_error.setVisible(true);
+					break;
+				case 91:
+					jta_error.setVisible(true);
+					break;
+				case 92:
+					jta_error.setVisible(true);
+					break;
+				case 93:
+					jta_error.setVisible(true);
+					break;
+				case 192:
+					jta_error.setVisible(true);
+					break;
+				default:
+				break;
+				}
+			}
+			/*@Override
+			public void keyTyped(KeyEvent ae) {
+				if(ae.getKeyCode() == 16) {
+					jta_error.setVisible(true);
+				}
+			}*/ //시프트 키입력시(해결안됨)
+		});
 	}///////////// end initDisplay
 	
+		
 	//성별 박스
 	public String getGender() {
 		if("남자".equals(jtf_ggender.getSelectedItem())) return "1";
@@ -163,23 +233,6 @@ public class finalUI extends JFrame implements ActionListener,KeyListener {
 		ui.initDisplay();
 	}////////////// end main
 	
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		String keyChar = Integer.toString(e.getKeyChar());
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	//이벤트 액션퍼폼
 	@Override
@@ -198,10 +251,6 @@ public class finalUI extends JFrame implements ActionListener,KeyListener {
 			FriendsList fl = new FriendsList();
 			fl.initDisplay();
 		}
-		if(keyChar == " ") {
-			jta_error.setText("금지된 문자열입니다.");
-			System.out.println("error");
-		}		
 		
 		
 	//버튼이벤트성공->액션이벤트->card.show

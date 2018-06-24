@@ -37,8 +37,8 @@ public class ChatDAO {
 	 * @return : 성공시 param과 같은 값, 실패시 null
 	 */
 	public synchronized ChatVO insertChat(ChatVO chat) {
-		StringBuilder sql = new StringBuilder("INSERT INTO chat(chat_no, room_no, chat_content, chat_time)");
-		sql.append(" VALUES(seq_chat.nextval, ?, ?, ?)");
+		StringBuilder sql = new StringBuilder("INSERT INTO chat(chat_no, room_no, chat_content, chat_time, mem_no)");
+		sql.append(" VALUES(seq_chat.nextval, ?, ?, ?, ?)");
 
 		int out = 0;
 		ChatVO chatVO = null;
@@ -52,6 +52,7 @@ public class ChatDAO {
 			pstmt.setInt(i++, chat.getRoom_no());
 			pstmt.setString(i++, chat.getChat_content());
 			pstmt.setString(i++, chat_time);
+			pstmt.setInt(i++, chat.getMem_no());
 			
 			out = pstmt.executeUpdate();
 			if(out != 0) {

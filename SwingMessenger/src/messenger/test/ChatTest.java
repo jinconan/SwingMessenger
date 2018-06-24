@@ -88,7 +88,7 @@ public class ChatTest extends JFrame {
 				oos = new ObjectOutputStream(socket.getOutputStream());
 				
 				ArrayList<ChatVO> request = new ArrayList<ChatVO>();
-				request.add(new ChatVO(0, 0, null, null, mem.getMem_no()));
+				request.add(new ChatVO(0, 0, null, null, mem.getMem_no(),mem.getMem_name()));
 				
 				Message<ChatVO> msg = new Message<ChatVO>(Message.CHATROOM_LOAD,request,null);
 				oos.writeObject(msg);
@@ -127,6 +127,7 @@ public class ChatTest extends JFrame {
 				String mem_nick = rs.getString("mem_nick");
 				String mem_gender = rs.getString("mem_gender");
 				String mem_pw = rs.getString("mem_pw");
+
 				mem = new MemberVO(mem_no, mem_id, mem_name, mem_nick, mem_gender, mem_pw,null,null,null);
 			}
 			
@@ -188,7 +189,8 @@ public class ChatTest extends JFrame {
 				public void keyTyped(KeyEvent e) {
 					if(e.getKeyChar()=='\n') {
 						ArrayList<ChatVO> request = new ArrayList<ChatVO>();
-						request.add(new ChatVO(0, roomVO.getRoom_no(), jtf.getText(), format.format(new Date()), memberVO.getMem_no()));
+						ChatVO chat = new ChatVO(0, roomVO.getRoom_no(), jtf.getText(), format.format(new Date()), memberVO.getMem_no(), memberVO.getMem_name());
+						request.add(chat);
 						Message<ChatVO> msg = new Message<ChatVO>(Message.CHAT_SEND,request,null);
 						
 						try {

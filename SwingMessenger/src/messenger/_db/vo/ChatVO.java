@@ -10,16 +10,18 @@ public class ChatVO implements Serializable {
 	private String chat_content; // 대화내용
 	private String chat_time; // 대화전달시간
 	private int mem_no; // 회원번호
-
+	private String mem_name; //회원이름.
+	
 	public ChatVO() {
 	}
 
-	public ChatVO(int chat_no, int room_no, String chat_content, String chat_time, int mem_no) {
+	public ChatVO(int chat_no, int room_no, String chat_content, String chat_time, int mem_no, String mem_name) {
 		this.chat_no = chat_no;
 		this.room_no = room_no;
 		this.chat_content = chat_content;
 		this.chat_time = chat_time;
 		this.mem_no = mem_no;
+		this.mem_name = mem_name;
 	}
 
 	public int getChat_no() {
@@ -61,5 +63,15 @@ public class ChatVO implements Serializable {
 	public void setMem_no(int mem_no) {
 		this.mem_no = mem_no;
 	}
+
+	public String getMem_name() {
+		return mem_name;
+	}
+
+	public void setMem_name(String mem_name) {
+		this.mem_name = mem_name;
+	}
+	
+	
 
 }

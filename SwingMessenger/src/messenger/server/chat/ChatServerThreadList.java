@@ -14,7 +14,6 @@ import messenger._db.vo.RoomVO;
 
 /**
  * 채팅서버에 참여한 모든 쓰레드의 리스트와 각 방 리스트를 갖는 클래스
- * @author 518
  *
  */
 public class ChatServerThreadList {
@@ -32,14 +31,14 @@ public class ChatServerThreadList {
 	
 	/**
 	 * 인스턴스 가져오는 메소드
-	 * @return 싱글톤 객체
+	 * @return 인스턴스
 	 */
 	static public ChatServerThreadList getInstance() {
 		return LazyHolder.INSTANCE;
 	}
 
 	/**
-	 * 특정 방이 리스트에 존재하는지 파악
+	 * 특정 방이 해쉬맵에 존재하는지 파악
 	 * @param room_no : 방 번호
 	 * @return : true : 해당 방 번호와 일치하는 방이 있음
 	 * 			 false: 없음.
@@ -50,7 +49,7 @@ public class ChatServerThreadList {
 	
 	
 	/**
-	 * 접속 중인 쓰레드 리스트 리턴.
+	 * 접속 중인 전체 쓰레드 리스트 리턴.
 	 * @return 전체 쓰레드
 	 */
 	public synchronized ArrayList<ChatServerThread> getTotalList() {
@@ -58,9 +57,9 @@ public class ChatServerThreadList {
 	}
 	
 	/**
-	 * 특정 방 안에 존재하는 클라이언트와 연결된 소켓을 갖는 쓰레드들의 리스트를 얻음.
+	 * 특정 방 안에 참여 중인 쓰레드 리스트를 리턴
 	 * @param room_no : 방 번호
-	 * @return : 해당 방에 존재하는 멤버의 리스트
+	 * @return : 해당 방에 존재하는 쓰레드 리스트
 	 */
 	public synchronized ArrayList<ChatServerThread> getMembers(int room_no) {
 		return roomList.get(room_no);
@@ -77,8 +76,8 @@ public class ChatServerThreadList {
 	}
 	
 	/**
-	 * 특정 쓰레드를 기존에 참여한 방을 찾아서 참여시킨다.
-	 * @param thread : 리스트로 넣을 쓰레드
+	 * 특정 쓰레드를 기존에 참여한 방을 db에서 찾아서 참여시킨다.
+	 * @param thread : 리스트에 넣을 쓰레드
 	 */
 	public synchronized void addMember(ChatServerThread thread) {
 		ChatDAO dao = ChatDAO.getInstance();
@@ -112,15 +111,15 @@ public class ChatServerThreadList {
 	}
 	
 	/**
-	 * 해당 멤버가 참여한 방 리스트를 얻음.
-	 * @param mem_no
+	 * 해당 쓰레드가 참여한 방 리스트를 얻음.
+	 * @param thread
 	 */
-	public synchronized ArrayList<RoomVO> getRoomsOfMember(int mem_no) {
+	public synchronized ArrayList<RoomVO> getRoomsOfMember(ChatServerThread thread) {
 		ArrayList<RoomVO> list = null;
 		
 		for(int i : roomList.keySet()) {
 			ArrayList<ChatServerThread> tmp_list = roomList.get(Integer.valueOf(i));
-			if(tmp_list.contains(this))
+			if(tmp_list.contains(thread))
 				list.add(new RoomVO(i,null));
 		}
 		
@@ -129,13 +128,24 @@ public class ChatServerThreadList {
 
 	/**
 	 * 리스트에서 쓰레드를 제거.
-	 * @param thread
+	 * @param thread 제거할 쓰레드
+	 * @return :  true : 리스트에서 제거 성공, false : totalList에 존재하지 않았음.
 	 */
-	public synchronized void removeThread(ChatServerThread thread) {
+	public synchronized boolean removeThread(ChatServerThread thread) {
 		for(Integer i : roomList.keySet()) {
-			ArrayList<ChatServerThread> list = roomList.get(i);
-			list.remove(thread);
+			removeThreadInRoom(thread, i);
 		}
-		totalList.remove(thread);
+		return totalList.remove(thread);
+	}
+	
+	/**
+	 * 방에 존재하는 어느 한 쓰레드를 리스트에서 제거한다.
+	 * @param thread : 방 참여자 리스트에서 제거할 쓰레드
+	 * @param room_no : 방 번호
+	 * @return : true : 리스트에서 제거 성공, false : 리스트에 쓰레드가 존재하지 않았음.
+	 */
+	public synchronized boolean removeThreadInRoom(ChatServerThread thread, int room_no) {
+		ArrayList<ChatServerThread> list = roomList.get(room_no);
+		return list.remove(thread);
 	}
 }

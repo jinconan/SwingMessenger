@@ -2,6 +2,8 @@ package messenger._db.vo;
 
 import java.io.Serializable;
 
+import javax.swing.JLabel;
+
 public class MemberVO implements Serializable{
 	private static final long serialVersionUID = -7846590031060667312L;
 	
@@ -12,13 +14,13 @@ public class MemberVO implements Serializable{
 	private String mem_gender;
 	private String mem_pw;
 	private String mem_hp;
-	private String mem_profile;
-	private String mem_background;
+	private JLabel mem_profile;
+	private JLabel mem_background;
 
 	public MemberVO() {}
 
 	public MemberVO(int mem_no, String mem_id, String mem_name, String mem_nick, String mem_gender, String mem_pw,
-			String mem_hp, String mem_profile, String mem_background) {
+			String mem_hp, JLabel mem_profile, JLabel mem_background) {
 		this.mem_no = mem_no;
 		this.mem_id = mem_id;
 		this.mem_name = mem_name;
@@ -86,19 +88,19 @@ public class MemberVO implements Serializable{
 		this.mem_hp = mem_hp;
 	}
 
-	public String getMem_profile() {
+	public JLabel getMem_profile() {
 		return mem_profile;
 	}
 
-	public void setMem_profile(String mem_profile) {
+	public void setMem_profile(JLabel mem_profile) {
 		this.mem_profile = mem_profile;
 	}
 
-	public String getMem_background() {
+	public JLabel getMem_background() {
 		return mem_background;
 	}
 
-	public void setMem_background(String mem_background) {
+	public void setMem_background(JLabel mem_background) {
 		this.mem_background = mem_background;
 	}
 	

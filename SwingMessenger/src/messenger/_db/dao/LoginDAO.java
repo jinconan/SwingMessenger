@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 import messenger._db.DBConnection;
 import messenger._db.vo.ChatVO;
 import messenger._db.vo.MemberVO;
@@ -64,8 +67,11 @@ public class LoginDAO {
 					String	mem_gender = rs.getString("mem_gender");
 					String	mem_pw = rs.getString("mem_pw");
 					String	mem_hp = rs.getString("mem_hp");
-					String	mem_profile = rs.getString("mem_profile");
-					String	mem_background = rs.getString("mem_background");
+					String	mem_profile_url = rs.getString("mem_profile");
+					String	mem_background_url = rs.getString("mem_background");
+					JLabel mem_profile = new JLabel(new ImageIcon(mem_profile_url));
+					JLabel mem_background = new JLabel(new ImageIcon(mem_background_url));
+					
 					memberVO = new MemberVO(mem_no, mem_id, mem_name, mem_nick, mem_gender, mem_pw, mem_hp, mem_profile, mem_background);
 				}
 			}catch (Exception e) {

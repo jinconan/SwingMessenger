@@ -26,7 +26,7 @@ public class FriendServer {
 			this.jta_log = jta_log;
 			s_socket = new ServerSocket(Port.FRIEND);//서버 접속하기 위한 소켓[포트번호]
 			if(this.jta_log != null)
-			jta_log.append("서버 시작. port : "+s_socket.getLocalPort()+"\n");
+				jta_log.append("서버 시작. port : "+s_socket.getLocalPort()+"\n");
 			System.out.println("서버 생성대기");
 			System.out.println("서버 생성");
 			System.out.println("클라이언트 대기중");

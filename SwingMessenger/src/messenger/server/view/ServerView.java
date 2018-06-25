@@ -4,14 +4,18 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import messenger.protocol.Message;
 import messenger.server.chat.ChatServer;
+import messenger.server.chat.ChatServerThread;
+import messenger.server.chat.ChatServerThreadList;
 import messenger.server.emoticon.EmoticonServer;
 import messenger.server.friend.FriendServer;
 import messenger.server.login.LoginServer;
@@ -27,6 +31,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
+import javax.swing.JTable;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ServerView extends JFrame {
 	//서버 소켓
@@ -47,6 +54,15 @@ public class ServerView extends JFrame {
 	private JLabel jlb_friendlog;
 	
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	private JTable jtb_member;
+	private JTable jtb_room;
+	
+	private DefaultTableModel dtm_room;
+	private DefaultTableModel dtm_member;
+	
+	private String[] cols_room = {"방", "인원"};
+	private String[] cols_member= {"회원번호"};
+	
 	/**
 	 * Launch the application.
 	 */
@@ -89,6 +105,12 @@ public class ServerView extends JFrame {
 		jlb_loginlog.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		jlb_chatlog = new JLabel("\uCC44\uD305 \uB85C\uADF8");
+		jlb_chatlog.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				refreshRoomList();
+			}
+		});
 		jp_north.add(jlb_chatlog);
 		jlb_chatlog.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -115,14 +137,42 @@ public class ServerView extends JFrame {
 		jta_loginlog.setLineWrap(true);
 		jsp_loginlog.setViewportView(jta_loginlog);
 		
+		JPanel jp_chat = new JPanel();
+		jp_center.add(jp_chat);
+		jp_chat.setLayout(new GridLayout(3, 1, 0, 0));
+		
 		jsp_chatlog = new JScrollPane();
-		jp_center.add(jsp_chatlog);
+		jp_chat.add(jsp_chatlog);
 		jsp_chatlog.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		jta_chatlog = new JTextArea();
 		jta_chatlog.setEditable(false);
 		jta_chatlog.setLineWrap(true);
 		jsp_chatlog.setViewportView(jta_chatlog);
+		
+		JScrollPane jsp_room = new JScrollPane();
+		jp_chat.add(jsp_room);
+		
+		jtb_room = new JTable();
+		jsp_room.setViewportView(jtb_room);
+		
+//		refreshRoomList();
+//		dtm_room = new DefaultTableModel();
+//		dtm_room.setColumnIdentifiers(cols_room);
+//		dtm_room.addRow(new String[] {"0","0명"});
+//		jtb_room.setModel(dtm_room);
+		
+		
+		
+		JScrollPane jsp_member = new JScrollPane();
+		jp_chat.add(jsp_member);
+		
+		jtb_member = new JTable();
+		jsp_member.setViewportView(jtb_member);
+		
+		dtm_member = new DefaultTableModel();
+		dtm_member.setColumnIdentifiers(cols_member);
+		jtb_member.setModel(dtm_member);
 		
 		jsp_friendlog = new JScrollPane();
 		jp_center.add(jsp_friendlog);
@@ -188,6 +238,7 @@ public class ServerView extends JFrame {
 					protected Object doInBackground() throws Exception {
 						chatServer = new ChatServer(jta_chatlog);
 						chatServer.run();
+						refreshRoomList();
 						return null;
 					}
 				}.execute();
@@ -219,5 +270,18 @@ public class ServerView extends JFrame {
 
 	public JTextArea getJta_friendlog() {
 		return jta_friendlog;
+	}
+	
+	private void refreshRoomList() {
+		dtm_room = new DefaultTableModel();
+		dtm_room.setColumnIdentifiers(cols_room);
+		
+		StringBuilder[] sb = new StringBuilder[2];
+		sb[0] = new StringBuilder("0");
+		sb[1] = new StringBuilder(Integer.toString(ChatServerThreadList.getInstance().getTotalList().size()));
+		sb[1].append("명");
+		dtm_room.addRow(new String[] {sb[0].toString(), sb[1].toString()});
+		
+		jtb_room.setModel(dtm_room);
 	}
 }

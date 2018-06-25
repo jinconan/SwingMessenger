@@ -15,23 +15,24 @@ public class DAO {
 	
 	private Connection        con  = null;
 	private PreparedStatement ppst = null;
-
-
+	
 	DBconnection dbcon = new DBconnection();
 	
-	public int insert(MemberDTO dto) {
-		
-		final String Sql = "insert into member(MEM_ID,MEM_PW,MEM_NO,MEM_NAME,MEM_HP,MEM_HIREDATE) values(?,?,seq_member_no.nextval,?,?,?)";
+	public int insert(MemberVO dto) {
+	
+		final String Sql = "insert into member(MEM_ID,MEM_PW,MEM_NO,MEM_NAME,MEM_HP,MEM_GENDER,MEM_NICK)"
+				+ " values(?,?,SEQ_MEMBER.NextVal,?,?,?,?)";
 		int result = 0;
 		try {
 
 			con  = dbcon.Connect();
 			ppst = con.prepareStatement(Sql);
-			ppst.setString(1, dto.getMEM_ID());
-			ppst.setString(2, dto.getMEM_PW());
-			ppst.setString(3, dto.getMEM_NAME());
-			ppst.setString(4, dto.getMEM_HP());
-			ppst.setString(5, dto.getMEM_HIREDATE());
+			ppst.setString(1, dto.getMem_id());
+			ppst.setString(2, dto.getMem_pw());
+			ppst.setString(3, dto.getMem_name());
+			ppst.setString(4, dto.getMem_hp());
+			ppst.setString(5, dto.getMem_gender());
+			ppst.setString(6, dto.getMem_nick());
 			result = ppst.executeUpdate();
 			
 		} catch (Exception e) {
@@ -43,7 +44,7 @@ public class DAO {
 	
 		
 	}
-	public String[] login(MemberDTO dto) {
+	public String[] login(MemberVO dto) {
 		
 		String sql = "select mem_Pw,mem_name from member where mem_id = ?";
 		ResultSet rs = null;
@@ -53,7 +54,7 @@ public class DAO {
 			con = dbcon.Connect();
             ppst = con.prepareStatement(sql);
 
-            ppst.setString(1, dto.getMEM_ID());
+            ppst.setString(1, dto.getMem_id());
           
             
             rs = ppst.executeQuery();
@@ -71,7 +72,7 @@ public class DAO {
 		return result1;
 		
 	}
-	public Vector friend(MemberDTO dto) {//친구리스트를 가져오는 메소드 !! 
+	/*public Vector friend(MemberVO dto) {//친구리스트를 가져오는 메소드 !! 
 		
 		Vector list = new Vector();
 		
@@ -101,7 +102,8 @@ public class DAO {
 		
 		return list;
 		
-	}
+	}*/
+	/*
 	public Vector friend_add_index() {
 		
 		String sql = "Select friend from FRIEND ";
@@ -130,7 +132,7 @@ public class DAO {
 		return list;
 		
 	}
-       public Vector friend_add_select2(MemberDTO dto) {
+       public Vector friend_add_select2(MemberVO dto) {
 		
 		String sql = "select mem_name,mem_no,mem_hiredate from member where mem_hp =?";
 		Vector list = new Vector();
@@ -159,7 +161,7 @@ public class DAO {
 
 		return list;
 	}
-	public Vector friend_add_select(MemberDTO dto) {
+	public Vector friend_add_select(MemberVO dto) {
 		
 		String sql = "select mem_name,mem_no,mem_hiredate from member where mem_id =?";
 		Vector list = new Vector();
@@ -246,7 +248,7 @@ public class DAO {
 		
 		return result;
 		
-	}
+	}*/
 	
 
 	

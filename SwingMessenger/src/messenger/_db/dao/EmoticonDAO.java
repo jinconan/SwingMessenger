@@ -54,13 +54,13 @@ public class EmoticonDAO {
 			for(String s :file.list()) {
 				StringBuilder emoticonPath = new StringBuilder(uri.getPath());
 				emoticonPath.append(s);
-//				StringBuilder emoticonName = new StringBuilder("(");
-//				String[] token = s.split(".");
-//				emoticonName.append(token[0]);
-//				emoticonName.append(")");
+				StringBuilder emoticonName = new StringBuilder("(");
+				String[] token = s.split("\\.");
+				emoticonName.append(token[0]);
+				emoticonName.append(")");
 				
 				ImageIcon icon = new ImageIcon(emoticonPath.toString());
-				JLabel iconLabel = new JLabel("¿Ã∏ß", icon, SwingConstants.CENTER);
+				JLabel iconLabel = new JLabel(emoticonName.toString(), icon, SwingConstants.CENTER);
 				iconLabel.setFont(new Font("±º∏≤", Font.BOLD,0));
 				list.add(iconLabel);
 			}
@@ -72,4 +72,14 @@ public class EmoticonDAO {
 		return list;
  		
  	}
+ 	
+ 	public static void main(String[] args) {
+ 		EmoticonDAO dao = EmoticonDAO.getInstance();
+ 		
+ 		ArrayList<JLabel> list = dao.getEmoticonList();
+ 		
+ 		for(JLabel label : list) {
+ 			System.out.println(label.getText());
+ 		}
+	}
 }

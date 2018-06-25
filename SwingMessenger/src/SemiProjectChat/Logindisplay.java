@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -30,8 +31,8 @@ public class Logindisplay extends JFrame implements ActionListener{
 	JLabel      lblNewLabel  = new JLabel("New label");
 	joindisplay joindisplay  = new joindisplay();
 	DAO         dao          = new DAO();
-	MemberDTO   memberDTO    = new MemberDTO();
-
+	MemberVO   memberVO    = new MemberVO();
+	String sex              = null;
     final String Sql = "Select Mem_ID from Member  order by Mem_ID asc";
 	DBconnection dbcon = new DBconnection();
 
@@ -44,7 +45,8 @@ public class Logindisplay extends JFrame implements ActionListener{
 	}
 	
 	public void initdisplay() {
-		
+		joindisplay.jComBox.addActionListener(this);
+		joindisplay.jbt_Exit.addActionListener(this);
 		jbt_login.addActionListener(this);
 		jbt_join.addActionListener(this);
 		joindisplay.jbt_join.addActionListener(this);
@@ -55,6 +57,7 @@ public class Logindisplay extends JFrame implements ActionListener{
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
 		
 		JT_ID = new JTextField();
 		JT_ID.setBounds(73, 219, 304, 49);
@@ -71,12 +74,12 @@ public class Logindisplay extends JFrame implements ActionListener{
 		jbt_join.setBounds(104, 590, 119, 27);
 		contentPane.add(jbt_join);
 		
-		jbt_login.setIcon(new ImageIcon("D:\\ojdbc6\\Semiproject\\src\\images\\Login2.png"));
+		jbt_login.setIcon(new ImageIcon("C:/Users/512/git/SwingMessenger/SwingMessenger/src/SemiProjectChat/images/Login2.png"));
 		jbt_login.setBounds(73, 329, 304, 49);
 		contentPane.add(jbt_login);
 		
 		
-		lblNewLabel.setIcon(new ImageIcon("D:\\ojdbc6\\Semiproject\\src\\images\\Login.png"));
+		lblNewLabel.setIcon(new ImageIcon("C:/Users/512/git/SwingMessenger/SwingMessenger/src/SemiProjectChat/images/Login.png"));
 		lblNewLabel.setBounds(0, 0, 443, 617);
 		contentPane.add(lblNewLabel);
 		this.setVisible(true);
@@ -98,15 +101,17 @@ public class Logindisplay extends JFrame implements ActionListener{
 	
 		    String result = joindisplay.jt_Id.getText();
 			try {
+				
 				con  = dbcon.Connect();
 				st = con.createStatement();
 				rs = st.executeQuery(Sql);
-			memberDTO.setMEM_ID(joindisplay.jt_Id.getText());
-			memberDTO.setMEM_PW(joindisplay.jt_Pw.getText());
-			memberDTO.setMEM_NAME(joindisplay.jt_Name.getText());
-			memberDTO.setMEM_HP(joindisplay.jt_Hp.getText());
-			memberDTO.setMEM_HIREDATE(joindisplay.jt_birth.getText());
-			
+				memberVO.setMem_id(joindisplay.jt_Id.getText());
+				memberVO.setMem_pw(joindisplay.jt_Pw.getText());
+				memberVO.setMem_name(joindisplay.jt_Name.getText());
+				memberVO.setMem_hp(joindisplay.jt_Hp.getText());
+			    memberVO.setMem_gender(sex);
+			    memberVO.setMem_nick("Test");
+			    
 			while(rs.next()) {
 				
                 
@@ -121,8 +126,8 @@ public class Logindisplay extends JFrame implements ActionListener{
 			if(joindisplay.jt_Id.getText().equals("")||joindisplay.jt_Id.getText().equals(null)||
 		       joindisplay.jt_Pw.getText().equals("")||joindisplay.jt_Pw.getText().equals(null)||
 		       joindisplay.jt_Name.getText().equals("")||joindisplay.jt_Name.getText().equals(null)||
-		       joindisplay.jt_Hp.getText().equals("")||joindisplay.jt_Hp.getText().equals(null)||
-		       joindisplay.jt_birth.getText().equals("")||joindisplay.jt_birth.getText().equals(null))
+		       joindisplay.jt_Hp.getText().equals("")||joindisplay.jt_Hp.getText().equals(null)
+		       /*joindisplay.jt_sex.getText().equals("")||joindisplay.jt_sex.getText().equals(null)*/)
 			{
 				
 				JOptionPane.showMessageDialog(this, "모든값을 입력하세요", "경고창",JOptionPane.ERROR_MESSAGE);
@@ -132,14 +137,21 @@ public class Logindisplay extends JFrame implements ActionListener{
 			}
 			else {
 				JOptionPane.showMessageDialog(this, "회원가입완료", "완료창",JOptionPane.CLOSED_OPTION);
-			    dao.insert(memberDTO);
+			    dao.insert(memberVO);
+			    
 			    joindisplay.dispose();
 			}
 			
 	
 	
 
-			} catch (Exception e) {
+			} catch( SQLSyntaxErrorException e) {
+				e.printStackTrace();
+			}
+			  catch( NullPointerException e) {
+				e.printStackTrace();
+			}
+			  catch (Exception e) {
 				// TODO: handle exception
 				System.out.println(e.toString());
 			}
@@ -148,7 +160,10 @@ public class Logindisplay extends JFrame implements ActionListener{
 		}
 		else if (arg0.getSource()==joindisplay.jbt_jungbock) {
 	
+			System.out.println("1");
 			    String result = joindisplay.jt_Id.getText();
+			    System.out.println(joindisplay.jt_Id.getText());
+			    
 				final String Sql = "Select Mem_ID from Member  order by Mem_ID asc";
 				DBconnection dbcon = new DBconnection();
   
@@ -169,7 +184,7 @@ public class Logindisplay extends JFrame implements ActionListener{
 			             String result1 = rs.getString("Mem_ID");
 					
 			             if(result.equals(result1)) {
-			            	 JOptionPane.showMessageDialog(this,"아이디값이 중복입니다", "경고", JOptionPane.ERROR_MESSAGE);
+			            	 JOptionPane.showMessageDialog(joindisplay,"아이디값이 중복입니다", "경고", JOptionPane.ERROR_MESSAGE);
 			            	 result2=1;
 			             }
 						}
@@ -184,11 +199,12 @@ public class Logindisplay extends JFrame implements ActionListener{
 				}
 			
 		}
+		
 		else if(arg0.getSource()==jbt_login) {
 			
 			System.out.println("login 버튼 호출");
-			memberDTO.setMEM_ID(JT_ID.getText());
-			String[] IdPw = dao.login(memberDTO);
+			memberVO.setMem_id(JT_ID.getText());
+			String[] IdPw = dao.login(memberVO);
 	
 	        if(JT_PW.getText().equals(IdPw[0])) {
 	        	 JOptionPane.showMessageDialog(this,"로그인 성공.", "알림", JOptionPane.CLOSED_OPTION);
@@ -201,6 +217,15 @@ public class Logindisplay extends JFrame implements ActionListener{
 	        }
 	      
 			
+		}
+		else if(arg0.getSource()==joindisplay.jbt_Exit) {
+			joindisplay.dispose();
+		}
+		else if(arg0.getSource()==joindisplay.jComBox) {
+			
+			sex= (String)joindisplay.jComBox.getSelectedItem();
+		    System.out.println(sex);
+		    
 		}
 	}
 	

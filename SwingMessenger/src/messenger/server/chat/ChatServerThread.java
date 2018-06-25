@@ -70,11 +70,15 @@ public class ChatServerThread implements Runnable{
 							jta_log.append("CHATROOM_LOAD | " + socket.getInetAddress().toString() + ", " + socket.getPort()+"\n");
 						sendRoomList(msg);
 						break;
-						
 					case Message.CHAT_SEND: //채팅 전송
 						if(this.jta_log != null)
-							jta_log.append("CHAT_SEND | " + socket.getInetAddress().toString() + ", " + socket.getPort()+"\n");
+							jta_log.append("CHAT_SEND     | " + socket.getInetAddress().toString() + ", " + socket.getPort()+"\n");
 						sendChatToMembers(msg);
+						break;
+					case Message.CHATROOM_EXIT: //채팅방 퇴장
+						if(this.jta_log != null)
+							jta_log.append("CHATROOM_EXIT | " + socket.getInetAddress().toString() + ", " + socket.getPort()+"\n");
+						sendExitResponse(msg);
 						break;
 					}
 				}
@@ -90,16 +94,15 @@ public class ChatServerThread implements Runnable{
 		}
 		finally {
 			in = null;
-			//해당 클라이언트가 나갔다는 것에 대한 처리를 해주어야 함.
-			ChatServerThreadList.getInstance().removeThread(this);
+			ChatServerThreadList.getInstance().removeThread(this); //리스트에서 쓰레드를 제거함.
 			if(jta_log != null)
 				jta_log.append(mem_no + " 나감\n");
 		}
 	}
 	
 	/**
-	 * 연결된 클라이언트의 회원번호를 얻음.
-	 * @return
+	 * 해당 쓰레드와 연결된 클라이언트의 회원번호를 얻음.
+	 * @return 클라이언트의 회원번호.(0 - 쓰레드에 회원번호가 저장되지 않음)
 	 */
 	public int getMem_no() {
 		return mem_no;
@@ -107,7 +110,7 @@ public class ChatServerThread implements Runnable{
 
 	/**
 	 * 방 멤버들에게 채팅 전달.
-	 * @param msg
+	 * @param msg 클라이언트로부터 받은 메시지
 	 */
 	private void sendChatToMembers(Message<ChatVO> msg) {
 		ChatDAO dao = ChatDAO.getInstance();
@@ -118,23 +121,25 @@ public class ChatServerThread implements Runnable{
 		ChatVO chatVO = request.get(0);
 
 		//2. 해당 채팅 메시지를 db에 추가하여 로그를 저장.
-		chatVO = dao.insertChat(chatVO);
+		int insertResult = dao.insertChat(chatVO);
 		
 		
 		try {
 			//2-1. db에 등록 실패시 클라이언트에게 사이즈가 0인 response를 추가하여 전달.
-			if(chatVO == null) {
+			if(insertResult == 0) {
+				if(jta_log != null)
+					jta_log.append("실패: "+ chatVO.getMem_no()+ " -> " + chatVO.getRoom_no()+"\n");
 				msg.setResponse(response);
 				sendMessage(msg);
 			}
 			//2-2. db에 등록 성공시 방 리스트를 참고로 하여 해당 방안에 있는 모든 쓰레드에게 메시지 전달.
 			else {
 				//3. 해당 채팅 메시지에서 방 번호를 얻음.
-				int roomno = chatVO.getRoom_no();
+				int room_no = chatVO.getRoom_no();
 				ChatServerThreadList roomList = ChatServerThreadList.getInstance();
 				
 				//4. 번호가 같은 방 안에 접속 중인 쓰레드 검색
-				List<ChatServerThread> member_list = roomList.getMembers(roomno);
+				List<ChatServerThread> member_list = roomList.getMembers(room_no);
 
 				//5. 메시지 객체에 response 채우기(request와 다를 바 없다.)
 				response.add(chatVO);
@@ -143,6 +148,8 @@ public class ChatServerThread implements Runnable{
 				//6. 해당 쓰레드 멤버들에게 메시지 전달.
 				if(member_list != null) {
 					for(ChatServerThread thread : member_list) {
+						if(jta_log != null)
+							jta_log.append("(방:" + chatVO.getRoom_no() + ", 회원:" + thread.getMem_no()+") : "+chatVO.getChat_time()+"\n");
 						thread.sendMessage(msg);
 					}
 				}
@@ -179,6 +186,28 @@ public class ChatServerThread implements Runnable{
 		msg.setResponse(response);
 		sendMessage(msg);
 		
+	}
+	
+	/**
+	 * 클라이언트로부터 받은 퇴장 요청을 처리함.
+	 * delete성공시 response에는 나간 방 번호가 포함되어있고, 실패시 response에는 아무것도 포함되어있지 않다.
+	 * @param msg 클라이언트로부터 받은 방 퇴장 메시지.
+	 */
+	private void sendExitResponse(Message<ChatVO> msg) {
+		ArrayList<ChatVO> request = (ArrayList<ChatVO>)msg.getRequest();
+		ChatVO chatVO = request.get(0);
+		
+		ChatDAO dao = ChatDAO.getInstance();
+		ArrayList<ChatVO> response = new ArrayList<ChatVO>();
+		
+		int deleteResult = dao.deleteRoomMember(chatVO.getMem_no(), chatVO.getRoom_no());
+		
+		if(deleteResult != 0) {
+			response.add(chatVO);
+			ChatServerThreadList.getInstance().removeThreadInRoom(this, chatVO.getRoom_no());
+		}
+		msg.setResponse(response);
+		sendMessage(msg);
 	}
 	
 	/**

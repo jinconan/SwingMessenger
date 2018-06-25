@@ -1,4 +1,4 @@
-package messenger._db.vo;
+package SemiProjectChat;
 
 import java.io.Serializable;
 

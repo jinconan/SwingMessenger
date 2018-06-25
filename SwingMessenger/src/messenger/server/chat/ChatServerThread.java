@@ -15,6 +15,7 @@ import javax.swing.JTextArea;
 
 import messenger._db.dao.ChatDAO;
 import messenger._db.vo.ChatVO;
+import messenger._db.vo.MemberVO;
 import messenger.protocol.Message;
 
 /**
@@ -29,8 +30,7 @@ public class ChatServerThread implements Runnable{
 	private 			ObjectInputStream 	in 		= null;
 	private 			ObjectOutputStream 	out 	= null;
 
-	private				int					mem_no;
-	private				String				mem_name;
+	private				MemberVO			memVO;
 	
 	public ChatServerThread(JTextArea jta_chatlog, Socket socket) {
 		try {
@@ -74,17 +74,22 @@ public class ChatServerThread implements Runnable{
 					switch(msg_type) {
 					case Message.CHATROOM_LOAD: //채팅방 리스트 요청 (클라이언트 실행시 채팅서버에 먼저 요청함)
 						if(this.jta_log != null)
-							jta_log.append("CHATROOM_LOAD | " + socket.getInetAddress().toString() + ", " + socket.getPort()+"\n");
+							jta_log.append("CHATROOM_LOAD  | " + socket.getInetAddress().toString() + ", " + socket.getPort()+"\n");
 						sendRoomList(msg);
 						break;
 					case Message.CHAT_SEND: //채팅 전송
 						if(this.jta_log != null)
-							jta_log.append("CHAT_SEND     | " + socket.getInetAddress().toString() + ", " + socket.getPort()+"\n");
+							jta_log.append("CHAT_SEND      | " + socket.getInetAddress().toString() + ", " + socket.getPort()+"\n");
 						sendChatToMembers(msg);
+						break;
+					case Message.CHATROOM_INVITE: //초대
+						if(this.jta_log != null)
+							jta_log.append("CHATROOM_INVITE| " + socket.getInetAddress().toString() + ", " + socket.getPort()+"\n");
+						sendInviteResponse(msg);
 						break;
 					case Message.CHATROOM_EXIT: //채팅방 퇴장
 						if(this.jta_log != null)
-							jta_log.append("CHATROOM_EXIT | " + socket.getInetAddress().toString() + ", " + socket.getPort()+"\n");
+							jta_log.append("CHATROOM_EXIT  | " + socket.getInetAddress().toString() + ", " + socket.getPort()+"\n");
 						sendExitResponse(msg);
 						break;
 					}
@@ -103,24 +108,16 @@ public class ChatServerThread implements Runnable{
 			in = null;
 			ChatServerThreadList.getInstance().removeThread(this); //리스트에서 쓰레드를 제거함.
 			if(jta_log != null)
-				jta_log.append(mem_no + " 나감\n");
+				jta_log.append(memVO + " 나감\n");
 		}
 	}
 	
 	/**
-	 * 해당 쓰레드와 연결된 클라이언트의 회원번호를 얻음.
-	 * @return 클라이언트의 회원번호.(0 - 쓰레드에 회원번호가 저장되지 않음)
+	 * 해당 쓰레드와 연결된 클라이언트의 회원정보
+	 * @return 클라이언트의 회원정보.(null - 쓰레드에 회원정보가 저장되지 않음)
 	 */
-	public int getMem_no() {
-		return mem_no;
-	}
-
-	/**
-	 * 해당 쓰레드와 연결된 클라이언트의 이름을 얻음.
-	 * @return 클라이언트의 이름.(null - 쓰레드에 회원번호가 저장되지 않음)
-	 */
-	public String getMem_name() {
-		return mem_name;
+	public MemberVO getMemVO() {
+		return memVO;
 	}
 	
 	/**
@@ -143,14 +140,14 @@ public class ChatServerThread implements Runnable{
 			//2-1. db에 등록 실패시 클라이언트에게 사이즈가 0인 response를 추가하여 전달.
 			if(insertResult == 0) {
 				if(jta_log != null)
-					jta_log.append("실패: "+ chatVO.getMem_no()+ " -> " + chatVO.getRoom_no()+"\n");
+					jta_log.append("실패: "+ chatVO.getMemVO()+ " -> " + chatVO.getRoomVO()+"\n");
 				msg.setResponse(response);
 				sendMessage(msg);
 			}
 			//2-2. db에 등록 성공시 방 리스트를 참고로 하여 해당 방안에 있는 모든 쓰레드에게 메시지 전달.
 			else {
 				//3. 해당 채팅 메시지에서 방 번호를 얻음.
-				int room_no = chatVO.getRoom_no();
+				int room_no = (chatVO.getRoomVO() != null) ? chatVO.getRoomVO().getRoom_no() : 0;
 				ChatServerThreadList roomList = ChatServerThreadList.getInstance();
 				
 				//4. 번호가 같은 방 안에 접속 중인 쓰레드 검색
@@ -163,8 +160,6 @@ public class ChatServerThread implements Runnable{
 				//6. 해당 쓰레드 멤버들에게 메시지 전달.
 				if(member_list != null) {
 					for(ChatServerThread thread : member_list) {
-						if(jta_log != null)
-							jta_log.append("(방:" + chatVO.getRoom_no() + ", 회원:" + thread.getMem_no()+") : "+chatVO.getChat_time()+"\n");
 						thread.sendMessage(msg);
 					}
 				}
@@ -185,10 +180,9 @@ public class ChatServerThread implements Runnable{
 		ArrayList<ChatVO> request = (ArrayList<ChatVO>)msg.getRequest();
 		ChatVO chatVO = request.get(0);
 		
-		//2. 메세지 안에 있는 회원번호로 그 계정과 연결된 쓰레드의 회원번호, 이름 설정.
-		mem_no = (mem_no == 0) ? chatVO.getMem_no() : mem_no;
-		mem_name = chatVO.getMem_name();
-		
+		//2. 메세지 안에 있는 memberVO로 그 계정과 연결된 쓰레드의 회원정보 설정.
+		memVO = chatVO.getMemVO();
+		int mem_no = (memVO != null) ? memVO.getMem_no() : 0;
 		//3. DB에서 유저가 참여한 방 리스트를 얻음.
 		ChatDAO dao = ChatDAO.getInstance();
 		ArrayList<ChatVO> response = dao.selectRoomList(mem_no);
@@ -210,20 +204,29 @@ public class ChatServerThread implements Runnable{
 	 * @param msg 클라이언트로부터 받은 방 퇴장 메시지.
 	 */
 	private void sendExitResponse(Message<ChatVO> msg) {
-		ArrayList<ChatVO> request = (ArrayList<ChatVO>)msg.getRequest();
-		ChatVO chatVO = request.get(0);
-		
 		ChatDAO dao = ChatDAO.getInstance();
 		ArrayList<ChatVO> response = new ArrayList<ChatVO>();
+		ArrayList<ChatVO> request = (ArrayList<ChatVO>)msg.getRequest();
+		ChatVO chatVO = request.get(0);
+		int mem_no = (chatVO.getMemVO() != null) ? chatVO.getMemVO().getMem_no(): 0;
+		int room_no = (chatVO.getRoomVO() != null) ? chatVO.getRoomVO().getRoom_no() : 0;
 		
-		int deleteResult = dao.deleteRoomMember(chatVO.getMem_no(), chatVO.getRoom_no());
+		int deleteResult = dao.deleteRoomMember(mem_no, room_no);
 		
 		if(deleteResult != 0) {
 			response.add(chatVO);
-			ChatServerThreadList.getInstance().removeThreadInRoom(this, chatVO.getRoom_no());
+			ChatServerThreadList.getInstance().removeThreadInRoom(this, room_no);
 		}
 		msg.setResponse(response);
 		sendMessage(msg);
+	}
+	
+	/**
+	 * 클라이언트의 방 개설 또는 기존 방에 친구 추가 요청을 처리함.
+	 * @param msg
+	 */
+	private void sendInviteResponse(Message<ChatVO> msg) {
+		
 	}
 	
 	/**

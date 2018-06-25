@@ -1,4 +1,4 @@
-package messenger._db.vo;
+package messenger.test;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ public class ChatVO implements Serializable {
 	private static final long serialVersionUID = 484396718324553957L;
 	
 	private int chat_no; // 대화번호
-	private RoomVO roomVO; //방 정보
+	private int room_no; // 방번호
 	private String chat_content; // 대화내용
 	private String chat_time; // 대화전달시간
 	private MemberVO memVO;
@@ -16,9 +16,9 @@ public class ChatVO implements Serializable {
 	public ChatVO() {
 	}
 
-	public ChatVO(int chat_no, RoomVO roomVO, String chat_content, String chat_time, MemberVO memVO) {
+	public ChatVO(int chat_no, int room_no, String chat_content, String chat_time, MemberVO memVO) {
 		this.chat_no = chat_no;
-		this.roomVO = roomVO;
+		this.room_no = room_no;
 		this.chat_content = chat_content;
 		this.chat_time = chat_time;
 		this.memVO = memVO;
@@ -31,13 +31,13 @@ public class ChatVO implements Serializable {
 	public void setChat_no(int chat_no) {
 		this.chat_no = chat_no;
 	}
-	
-	public RoomVO getRoomVO() {
-		return roomVO;
+
+	public int getRoom_no() {
+		return room_no;
 	}
 
-	public void setRoomVO(RoomVO roomVO) {
-		this.roomVO = roomVO;
+	public void setRoom_no(int room_no) {
+		this.room_no = room_no;
 	}
 
 	public String getChat_content() {

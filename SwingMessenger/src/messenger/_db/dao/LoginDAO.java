@@ -156,4 +156,15 @@ public class LoginDAO {
 		}
 		return result;
 	}
+
+	/**
+	 * member테이블에 대한 update 수행 메소드
+	 * @param mem : 수정한 회원 정보
+	 * @return
+	 */
+	public synchronized int modify(MemberVO mem) {
+		int result= 0;
+		
+		return result;
+	}
 }

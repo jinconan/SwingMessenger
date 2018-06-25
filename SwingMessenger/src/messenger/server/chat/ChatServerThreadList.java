@@ -100,11 +100,11 @@ public class ChatServerThreadList {
 		ChatDAO dao = ChatDAO.getInstance();
 		
 		//db에서 회원번호를 통해 해당 회원이 참여한 방 리스트 ChatVO 타입으로 얻는다.
-		ArrayList<ChatVO> listOfThread = dao.selectRoomList(thread.getMem_no());
+		ArrayList<ChatVO> listOfThread = dao.selectRoomList(thread.getMemVO().getMem_no());
 		
 		//방 리스트에 대해 반복을 실행
 		for(ChatVO chatVO : listOfThread) {
-			int room_no = chatVO.getRoom_no();
+			int room_no = (chatVO.getRoomVO() != null) ? chatVO.getRoomVO().getRoom_no() : 0;
 			
 			//해당 번호의 방 안에 포함된 쓰레드(접속자)의 리스트를 얻는다.
 			ArrayList<ChatServerThread> memList = roomList.get(room_no);

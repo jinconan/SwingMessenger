@@ -28,9 +28,9 @@ public class Message<T> implements Serializable{
 	public static final int FRIEND_INSERT	= 5; //친구 추가
 	public static final int FRIEND_DELETE	= 6; //친구 삭제
 	public static final int FRIEND_SEARCH	= 7; //친구 검색
-	public static final int FRIEND_INVITE	= 8; //친구 초대(또는 방 만들기)
-	public static final int CHAT_SEND		= 9; //채팅 전송
-	public static final int CHATROOM_LOAD	= 10; //채팅방 리스트 조회
+	public static final int CHAT_SEND		= 8; //채팅 전송
+	public static final int CHATROOM_LOAD	= 9; //채팅방 리스트 조회
+	public static final int CHATROOM_INVITE	= 10; //친구 초대(또는 방 만들기)
 	public static final int CHATROOM_EXIT	= 11;//채팅방 나가기
 	public static final int EMOTICON_LOAD	= 12; //서버에서 이모티콘 리스트 요청 (T에는 ImageIcon계열이 들어감)
 	//또 뭐가있을까?

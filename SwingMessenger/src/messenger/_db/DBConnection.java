@@ -9,7 +9,6 @@ import java.sql.Statement;
 /*
  * 이 클래스는 공통적으로 필요한 코드를 추가하는 클래스임.
  * 단독으로 실행되는 클래스가 아님.
- * main메소드는 버림.
  */
 public class DBConnection {
 	final String LOCAL_URL = "jdbc:oracle:thin:@localhost:1521:orcl11";  

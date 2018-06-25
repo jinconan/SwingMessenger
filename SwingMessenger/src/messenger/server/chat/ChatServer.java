@@ -9,10 +9,19 @@ import javax.swing.JTextArea;
 import messenger.protocol.Port;
 import messenger.server.view.ServerView;
 
+/**
+ * 채팅서버. 클라이언트의 접속을 accept하며 쓰레드를 인스턴스화하는 클래스
+ * @author Jin Lee
+ *
+ */
 public class ChatServer {
 	private ServerSocket serverSocket;
-	private JTextArea jta_log;
+	private JTextArea jta_log; //채팅서버에서 기록을 출력할 텍스트영역
 	
+	/**
+	 * 생성자
+	 * @param jta_log - 기록을 출력할 JTextArea
+	 */
 	public ChatServer(JTextArea jta_log) {
 		try {
 			this.jta_log = jta_log;
@@ -26,6 +35,9 @@ public class ChatServer {
 		}
 	}
 
+	/**
+	 * 채팅서버 동작 메소드. 특별한 에러가 없으면 무한히 클라이언트의 요청을 accept한다. 
+	 */
 	public void run() {
 		while(true) {
 			try {

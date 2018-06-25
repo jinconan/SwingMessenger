@@ -5,22 +5,18 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import messenger._db.DBConnection;
-import messenger._db.vo.ChatVO;
-import messenger._db.vo.MemberVO;
-import messenger.server.chat.ChatServerThreadList;
-
+/**
+ * 이름은 DAO이지만 DB를 사용하지는 않고, 서버 내부에서 이모티콘 파일을 불러와서 전부 JLabel로 인스턴스화 해주는 역할만 있음.
+ * <담당하는 메시지 타입>
+ * 	EMOTICON_LOAD
+ * @author Jin Lee
+ *
+ */
 public class EmoticonDAO {
 //	private DBConnection dbCon = new DBConnection();
 	
@@ -38,6 +34,10 @@ public class EmoticonDAO {
 		return LazyHolder.INSTANCE;
 	}
 	
+ 	/**
+ 	 * 내부 저장소에서 이모티콘 파일을 전부 불러와서 리스트로 변환하는 메소드
+ 	 * @return JLabel로 만든 이모티콘 리스트
+ 	 */
  	public ArrayList<JLabel> getEmoticonList() {
  		ArrayList<JLabel> list = new ArrayList<JLabel>(); //이미지 아이콘 리스트
  		

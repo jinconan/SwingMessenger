@@ -2,6 +2,11 @@ package messenger._db.vo;
 
 import java.io.Serializable;
 
+/**
+ * »ç¿ëX
+ * @author 518
+ *
+ */
 public class EmoticonVO implements Serializable{
 	private static final long serialVersionUID = 8364571906757335702L;
 	

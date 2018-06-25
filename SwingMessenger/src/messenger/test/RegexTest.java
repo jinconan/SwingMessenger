@@ -12,13 +12,12 @@ public class RegexTest {
 //		if(m.find())
 //			System.out.println("Ã£À½");
 		
-		String s = "([4195]-[4209]) + ([4196]+[4210])";
+		String s = "¤±¤·¤«¤¤·ÁÀç¤Á (¾È³ç_ÁøÂ¥)         ¤¤¤©¤¤¤·¤©¤¤¤© (¾È³ç_±¸¶ó)";
 		
-		Pattern p  = Pattern.compile("\\[(.*?)\\]");
+		Pattern p  = Pattern.compile("^.*\\([°¡-ÆR]*\\_[°¡-ÆR]*\\).*$");
 		Matcher m = p.matcher(s);
-		while(m.find()) {
-			System.out.println(m.group(1));
-		}
+		System.out.println(m.matches() );
+
 	}
 
 }

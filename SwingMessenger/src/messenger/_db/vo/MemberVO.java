@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import javax.swing.JLabel;
 
+/**
+ * member테이블의 VO객체
+ * @author 518
+ *
+ */
 public class MemberVO implements Serializable{
 	private static final long serialVersionUID = -7846590031060667312L;
 	

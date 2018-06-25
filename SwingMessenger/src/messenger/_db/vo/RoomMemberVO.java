@@ -2,6 +2,11 @@ package messenger._db.vo;
 
 import java.io.Serializable;
 
+/**
+ * »ç¿ëX
+ * @author 518
+ *
+ */
 public class RoomMemberVO implements Serializable{
 	private static final long serialVersionUID = 998874286030264633L;
 	

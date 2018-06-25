@@ -1,7 +1,5 @@
 package messenger.server.chat;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -18,8 +16,12 @@ import javax.swing.JTextArea;
 import messenger._db.dao.ChatDAO;
 import messenger._db.vo.ChatVO;
 import messenger.protocol.Message;
-import messenger.server.view.ServerView;
 
+/**
+ * 채팅서버에서 생성되는 쓰레드.
+ * @author Jin Lee
+ *
+ */
 public class ChatServerThread implements Runnable{
 	private 			Socket 				socket;
 	private 			JTextArea 			jta_log;
@@ -28,12 +30,13 @@ public class ChatServerThread implements Runnable{
 	private 			ObjectOutputStream 	out 	= null;
 
 	private				int					mem_no;
+	private				String				mem_name;
 	
 	public ChatServerThread(JTextArea jta_chatlog, Socket socket) {
 		try {
 			this.jta_log = jta_chatlog;
 			this.socket = socket;
-			//리스트에다가 추가해야함.
+
 			ChatServerThreadList list = ChatServerThreadList.getInstance();
 			list.addTotalList(this);
 	
@@ -44,6 +47,10 @@ public class ChatServerThread implements Runnable{
 		}
 	}
 
+	/**
+	 * 채팅서버 쓰레드 동작 메소드
+	 * 클라이언트로부터 메시지 read -> 처리-> 클라이언트에게 메시지 write
+	 */
 	@Override
 	public void run() {
 		try (
@@ -109,6 +116,14 @@ public class ChatServerThread implements Runnable{
 	}
 
 	/**
+	 * 해당 쓰레드와 연결된 클라이언트의 이름을 얻음.
+	 * @return 클라이언트의 이름.(null - 쓰레드에 회원번호가 저장되지 않음)
+	 */
+	public String getMem_name() {
+		return mem_name;
+	}
+	
+	/**
 	 * 방 멤버들에게 채팅 전달.
 	 * @param msg 클라이언트로부터 받은 메시지
 	 */
@@ -170,8 +185,9 @@ public class ChatServerThread implements Runnable{
 		ArrayList<ChatVO> request = (ArrayList<ChatVO>)msg.getRequest();
 		ChatVO chatVO = request.get(0);
 		
-		//2. 메세지 안에 있는 회원번호로 그 계정과 연결된 쓰레드의 회원번호 설정.
+		//2. 메세지 안에 있는 회원번호로 그 계정과 연결된 쓰레드의 회원번호, 이름 설정.
 		mem_no = (mem_no == 0) ? chatVO.getMem_no() : mem_no;
+		mem_name = chatVO.getMem_name();
 		
 		//3. DB에서 유저가 참여한 방 리스트를 얻음.
 		ChatDAO dao = ChatDAO.getInstance();

@@ -6,6 +6,7 @@ public class RoomVO implements Serializable{
 	private static final long serialVersionUID = -397300300196026160L;
 	
 	private int room_no;
+	private String room_title;
 	private String room_starttime;
 	
 	public RoomVO() {}
@@ -30,6 +31,14 @@ public class RoomVO implements Serializable{
 
 	public void setRoom_starttime(String room_starttime) {
 		this.room_starttime = room_starttime;
+	}
+
+	public String getRoom_title() {
+		return room_title;
+	}
+
+	public void setRoom_title(String room_title) {
+		this.room_title = room_title;
 	}
 	
 	

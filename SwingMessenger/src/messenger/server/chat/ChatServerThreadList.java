@@ -57,12 +57,29 @@ public class ChatServerThreadList {
 	}
 	
 	/**
+	 * 현재 접속자 수 리턴
+	 * @return 접속자 수
+	 */
+	public synchronized int getNumberOfThreads() {
+		return totalList.size();
+	}	
+	/**
 	 * 특정 방 안에 참여 중인 쓰레드 리스트를 리턴
 	 * @param room_no : 방 번호
 	 * @return : 해당 방에 존재하는 쓰레드 리스트
 	 */
 	public synchronized ArrayList<ChatServerThread> getMembers(int room_no) {
 		return roomList.get(room_no);
+	}
+	
+	/**
+	 * 특정 방 안에 참여 중인 참여자 수를 리턴
+	 * @param room_no : 방 번호
+	 * @return : 해당 방에 존재하는 참석자 수
+	 */
+	public synchronized int getNumberOfRoomMembers(int room_no) {
+		ArrayList<ChatServerThread> list =roomList.get(room_no); 
+		return (list != null) ? list.size() : 0; 
 	}
 	
 	/**

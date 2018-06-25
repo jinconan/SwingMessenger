@@ -2,10 +2,13 @@ package messenger.server.friend;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.security.spec.RSAKeyGenParameterSpec;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import messenger._db.vo.MemberVO;
@@ -15,9 +18,12 @@ public class FriendMenu {
 	final String _USER = "scott";
 	final String _PW = "tiger";
 	Connection 			con 		 = null;
-	PreparedStatement 	pstmt  		 = null;
+	CallableStatement 	cstmt  		 = null;
+	PreparedStatement	pstmt		 = null;
+	Statement 			stmt		 = null;
 	ResultSet 		  	rs			 = null;
 	ObjectOutputStream 	moos		 = null;//메뉴가 담는 인풋스트림(서버로 보냄)
+	String 				out_msg		 = null;//프로시저로 처리된 결과를 담음.
 	public Connection getConnetion() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");//클래스를 메모리에 로딩 클래스 이름을 못찾으면 어떡하지?
@@ -29,30 +35,43 @@ public class FriendMenu {
 		return con;
 	}
 	FriendMenu(){
-		
 		System.out.println("con : "+con);
 	}
+		public ArrayList<MemberVO> FriendSelectALL(ArrayList<MemberVO> fo) {
+			ArrayList<MemberVO> list = new ArrayList<MemberVO>();
+			//		proc_friend_selectall
 
-	public ArrayList<MemberVO> FriendSelectALL(ArrayList<MemberVO> fo) {
-		
-//		proc_friend_selectall
-		try {
-			pstmt = con.prepareCall("{proc_friend_selectall(?)}");	
-			pstmt.setObject(1, fo.get(0).getMem_no());//ID
-			rs = pstmt.executeQuery();
-			System.out.println("rs : "+rs);
-			rs=pstmt.executeQuery();
-									
+
+			//select * from member where mem_no = (select fri_no from friend where mem_no = 21) 
+			//디버그시 개선코드 적용.
+			String sql = "";
+			sql +="select mem_id, mem_name, mem_nick from member";
+			sql +=" where mem_no = (select fri_no from friend";
+			sql +=" where = "+fo.get(0).getMem_id();
+			try {
+				con = this.getConnetion();
+				stmt = con.createStatement();
+				rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					int mem_no = rs.getInt("mem_no");
+					String mem_id = rs.getString("mem_id");
+					String mem_name = rs.getString("mem_name");
+					String mem_nick = rs.getString("mem_nick");
+					MemberVO memVO = new MemberVO(mem_no,mem_id,mem_name,mem_nick,null,null,null,null,null);
+					list.add(memVO);//친구 번호, 친구아이디, 친구이름, 친구닉네임만 담음.
+				}
 			} catch (Exception e) {
-			// TODO: handle exception
-				
+				// TODO: handle exception
+			}
+			System.out.println("rs : "+rs);//디버그용
+			// 리턴부분은 아웃풋 스트림으로 보내서 서버가 받은 뒤, 서버가 인스턴스 인풋으로 받고
+			// 서버에서 아웃풋으로 클라이언트에게 오브젝트된 결과를 보냄.
+			// 그 오브젝트 타입은 MemberVO타입으로 주는게 맞겠지..?
+			return list;
+
 		}
-		// 리턴부분은 아웃풋 스트림으로 보내서 서버가 받은 뒤, 서버가 인스턴스 인풋으로 받고
-		// 서버에서 아웃풋으로 클라이언트에게 오브젝트된 결과를 보냄.
-		// 그 오브젝트 타입은 MemberVO타입으로 주는게 맞겠지..?
-		return fo;//
-		
-	}
+	
+
 	public String FriendInsert(ArrayList<MemberVO> fo, int option) {
 		try {
 			con = this.getConnetion();
@@ -62,42 +81,50 @@ public class FriendMenu {
 			//  1 : 친구ID
 			//  2 : 기능(insert)
 			//////////////////////////////////////////////////////////
-			pstmt = con.prepareCall("{call proc_friend_option(?,?,?)}");	
-			pstmt.setObject(1, fo.get(0).getMem_name());//ID
-			pstmt.setObject(2, fo.get(0).getMem_id());//친구ID
-			pstmt.setInt(3, option);
-			rs=pstmt.executeQuery();
+			cstmt = con.prepareCall("{call proc_friend_option(?,?,?,?)}");	
+			cstmt.setObject(1, fo.get(0).getMem_name());//ID
+			cstmt.setObject(2, fo.get(0).getMem_id());//친구ID
+			cstmt.setInt(3, option);
+			cstmt.registerOutParameter(4, java.sql.Types.VARCHAR);
+//			rs=cstmt.executeQuery();
+			out_msg = cstmt.getString(4);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			System.out.println(e.toString());
 		}
-		return rs.toString();
+		return out_msg;
 	}
 	public String FriendDelete(ArrayList<MemberVO> fo, int option) {
+		
 		try {
 			con = this.getConnetion();
+			
 			//들어오는 오브젝트를 받아서 String으로 변환해서 데이터베이스에 입력 요청.
 			//////////////////////////////////////////////////////////
 			//  0 : 사용자ID
 			//  1 : 친구ID
 			//  2 : 기능(delect)
 			//////////////////////////////////////////////////////////
-	
-			pstmt = con.prepareCall("{call proc_addr_update(?,?,?)}");	
-			pstmt.setObject(1, fo.get(0).getMem_name());//ID
-			pstmt.setObject(2, fo.get(0).getMem_id());//친구ID
-			pstmt.setInt(3, option);
-			rs=pstmt.executeQuery();
-		} catch (Exception e) {
+
+			cstmt = con.prepareCall("{call proc_addr_update(?,?,?,?)}");	
+			cstmt.setObject(1, fo.get(0).getMem_name());//ID
+			cstmt.setObject(2, fo.get(0).getMem_id());//친구ID
+			cstmt.setInt(3, option);
+			cstmt.registerOutParameter(4, java.sql.Types.VARCHAR);
+//			rs=cstmt.executeQuery();
+			out_msg = cstmt.getString(4);
+			
+				} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			System.out.println(e.toString());
 		}
-		return rs.toString();
+		return out_msg;
 	}
 
-	
+
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 

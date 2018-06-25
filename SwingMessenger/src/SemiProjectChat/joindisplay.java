@@ -5,6 +5,7 @@ import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,19 +21,21 @@ public class joindisplay extends JFrame{
 	        JPasswordField   jt_Pw;
 	        JTextField       jt_Name;
             JTextField       jt_Hp;
-	        JTextField       jt_birth;
+	   
 	
-	private JLabel           jl_label     = new JLabel("\uC0DD\uC77C");
-	private JLabel           jl_Id        = new JLabel("\uD68C\uC6D0\uAC00\uC785\uCC3D");
-	private JLabel           jl_Pw        = new JLabel("\uC544\uC774\uB514");
-	private JLabel           jl_No        = new JLabel("\uBE44\uBC00\uBC88\uD638");
-                             
-	private JLabel           jl_Hp        = new JLabel("\uC774\uB984");
-	private JLabel           jl_birth     = new JLabel("\uD578\uB4DC\uD3F0\uBC88\uD638");
+	
+	
+	private JLabel           jl_Id        = new JLabel("¾ÆÀÌµð");
+	private JLabel           jl_Pw        = new JLabel("ºñ¹Ð¹øÈ£");
+	private JLabel           jl_Sex     = new JLabel("¼ºº°");                      
+	private JLabel           jl_Name        = new JLabel("ÀÌ¸§");
+	private JLabel           jl_Hp     = new JLabel("ÇÚµåÆù");
+	
             JButton          jbt_jungbock = new JButton("\uC911\uBCF5\uAC80\uC0AC");
 	        JButton          jbt_join     = new JButton("\uD68C\uC6D0\uAC00\uC785");
+	        JButton          jbt_Exit     = new JButton("Á¾·á");
 	private JLabel           lblNewLabel  = new JLabel("New label");
-	
+	        JComboBox        jComBox      = new JComboBox();
 
 	
 	public void initdisplay() {
@@ -45,37 +48,39 @@ public class joindisplay extends JFrame{
 		contentPane.setLayout(null);
 		
 		
+		jComBox.removeAll();
+		jComBox.addItem("³²");
+		jComBox.addItem("¿©");
+		jComBox.setBounds(155,497,150,30);
+		contentPane.add(jComBox);
+		
 		jl_Id.setFont(new Font("±¼¸²", Font.BOLD | Font.ITALIC, 22));
 		jl_Id.setBounds(39, 12, 181, 45);
 		contentPane.add(jl_Id);
 		
 		
+		jl_Id.setForeground(Color.BLACK);
+		jl_Id.setFont(new Font("±¼¸²", Font.BOLD, 17));
+		jl_Id.setBounds(39, 95, 62, 18);
+		contentPane.add(jl_Id);
+		
+		
 		jl_Pw.setForeground(Color.BLACK);
 		jl_Pw.setFont(new Font("±¼¸²", Font.BOLD, 17));
-		jl_Pw.setBounds(39, 95, 62, 18);
+		jl_Pw.setBounds(39, 167, 95, 18);
 		contentPane.add(jl_Pw);
-		
-		
-		jl_No.setForeground(Color.BLACK);
-		jl_No.setFont(new Font("±¼¸²", Font.BOLD, 17));
-		jl_No.setBounds(39, 167, 95, 18);
-		contentPane.add(jl_No);
 		
 
 		
+		jl_Name.setFont(new Font("±¼¸²", Font.BOLD, 17));
+		jl_Name.setBounds(39, 330, 62, 18);
+		contentPane.add(jl_Name);
+		
+		
 		jl_Hp.setFont(new Font("±¼¸²", Font.BOLD, 17));
-		jl_Hp.setBounds(39, 330, 62, 18);
+		jl_Hp.setBounds(39, 414, 94, 18);
 		contentPane.add(jl_Hp);
 		
-		
-		jl_birth.setFont(new Font("±¼¸²", Font.BOLD, 17));
-		jl_birth.setBounds(39, 414, 94, 18);
-		contentPane.add(jl_birth);
-		
-		
-		jl_label.setFont(new Font("±¼¸²", Font.BOLD, 17));
-		jl_label.setBounds(39, 500, 62, 18);
-		contentPane.add(jl_label);
 		
 		jt_Id = new JTextField();
 		jt_Id.setBounds(155, 93, 318, 24);
@@ -96,16 +101,17 @@ public class joindisplay extends JFrame{
 		jt_Hp.setColumns(10);
 		jt_Hp.setBounds(155, 412, 318, 24);
 		contentPane.add(jt_Hp);
-		
-		jt_birth = new JTextField();
-		jt_birth.setColumns(10);
-		jt_birth.setBounds(155, 498, 318, 24);
-		contentPane.add(jt_birth);
+		jl_Sex.setFont(new Font("±¼¸²", Font.BOLD, 17));
+		jl_Sex.setBounds(39,497,94,18);
+		contentPane.add(jl_Sex);
 		jbt_jungbock.setBackground(Color.YELLOW);
 		jbt_jungbock.setBounds(498, 92, 105, 27);
 		contentPane.add(jbt_jungbock);
-		jbt_join.setBounds(255, 537, 105, 39);
+		jbt_Exit.setBounds(310, 537, 105, 39);
+		jbt_join.setBounds(200, 537, 105, 39);
+		contentPane.add(jbt_Exit);
 		contentPane.add(jbt_join);
+		
 		lblNewLabel.setIcon(new ImageIcon("D:\\ojdbc6\\Semiproject\\src\\images\\join2.png"));
 		lblNewLabel.setBounds(0, 0, 624, 586);
 		contentPane.add(lblNewLabel);

@@ -45,10 +45,10 @@ public class display extends JFrame implements ActionListener,MouseListener{
     String         ID                         = null;
     String         NickName                   = null;
     DAO            dao                        = new DAO();
-	MemberDTO      dto                        = new MemberDTO();
-	FriendDTO      f_dto                      = new FriendDTO();
+	MemberVO     dto                          = new MemberVO();
+	/*FriendDTO      f_dto                      = new FriendDTO();
 	FriendDTO      f_dto1                     = new FriendDTO();
-	TalkDTO        t_dto                      = new TalkDTO();
+	TalkDTO        t_dto                      = new TalkDTO();*/
 	Vector         list                       = null;
 
 	
@@ -84,8 +84,8 @@ public class display extends JFrame implements ActionListener,MouseListener{
 	
 		      //    여백을 설정한 CardLayout을 만든다.
 		list = new Vector();
-		dto.setMEM_ID(ID);
-		list=dao.friend(dto);
+/*		dto.setMEM_ID(ID);*/
+/*		list=dao.friend(dto);*/
 			
 		friend_list = new JList(list);
 		
@@ -171,27 +171,27 @@ public class display extends JFrame implements ActionListener,MouseListener{
 		contentPane.add(jbt_Exit);
 		
 		
-		lblNewLabel_1.setIcon(new ImageIcon("D:\\\\ojdbc6\\\\Semiproject\\\\src\\\\images\\\\a.png"));
+		lblNewLabel_1.setIcon(new ImageIcon("C:/Users/512/git/SwingMessenger/SwingMessenger/src/SemiProjectChat/images/a.png"));
 		lblNewLabel_1.setBounds(32, 77, 278, 34);
 		contentPane.add(lblNewLabel_1);
 		
 		
-		jbt_friend.setIcon(new ImageIcon("D:\\\\ojdbc6\\\\Semiproject\\\\src\\\\images\\\\south.png"));
+		jbt_friend.setIcon(new ImageIcon("C:/Users/512/git/SwingMessenger/SwingMessenger/src/SemiProjectChat/images/south.png"));
 		jbt_friend.setBounds(32, 114, 50, 44);
 		contentPane.add(jbt_friend);
 		
 	
-		jbt_Message.setIcon(new ImageIcon("D:\\\\ojdbc6\\\\Semiproject\\\\src\\\\images\\\\b.png"));
+		jbt_Message.setIcon(new ImageIcon("C:/Users/512/git/SwingMessenger/SwingMessenger/src/SemiProjectChat/images/b.png"));
 		jbt_Message.setBounds(94, 114, 50, 44);
 		contentPane.add(jbt_Message);
 		
 		
-		jbt_others.setIcon(new ImageIcon("D:\\ojdbc6\\Semiproject\\src\\images\\c.png"));
+		jbt_others.setIcon(new ImageIcon("C:/Users/512/git/SwingMessenger/SwingMessenger/src/SemiProjectChat/images/c.png"));
 		jbt_others.setBounds(156, 114, 50, 44);
 		contentPane.add(jbt_others);
 		
 		
-		lblNewLabel.setIcon(new ImageIcon("D:\\ojdbc6\\Semiproject\\src\\images\\d.jpg"));
+		lblNewLabel.setIcon(new ImageIcon("C:/Users/512/git/SwingMessenger/SwingMessenger/src/SemiProjectChat/images/d.jpg"));
 		lblNewLabel.setBounds(-32, 0, 374, 664);
 		contentPane.add(lblNewLabel);
 		this.setVisible(true);
@@ -218,7 +218,7 @@ public class display extends JFrame implements ActionListener,MouseListener{
         	card.show(jPanel, "three");
         	
         }
-        else if(arg0.getSource()==User_jbtadd) {
+       /* else if(arg0.getSource()==User_jbtadd) {
         	System.out.println("ggg");
         	
         	dto.setMEM_ID(ID);
@@ -253,7 +253,7 @@ public class display extends JFrame implements ActionListener,MouseListener{
 				JOptionPane.showMessageDialog(null, "번호를 제대로 입력하세요", "알림", JOptionPane.ERROR_MESSAGE);
 			}
      
-        }
+        }*/
         else if(arg0.getSource()==Room_Jadd) {
         	System.out.println("firend_add");
         }

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DBconnection {
 
 	private Connection con = null;
-	final   String     URL = "jdbc:oracle:thin:@192.168.0.4:1521:ORCL11";
+	final   String     URL = "jdbc:oracle:thin:@192.168.0.235:1521:ORCL11";
 	final   String     ID = "scott";
 	final   String     PW = "tiger";
 	

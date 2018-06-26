@@ -11,12 +11,14 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import messenger._db.DBConnection;
 import messenger._db.vo.MemberVO;
 
 public class FriendMenu {
 	final String _URL = "jdbc:oracle:thin:@192.168.0.235:1521:orcl11";
 	final String _USER = "scott";
 	final String _PW = "tiger";
+	DBConnection		dbcon		 = null;
 	Connection 			con 		 = null;
 	CallableStatement 	cstmt  		 = null;
 	PreparedStatement	pstmt		 = null;
@@ -24,17 +26,7 @@ public class FriendMenu {
 	ResultSet 		  	rs			 = null;
 	ObjectOutputStream 	moos		 = null;//메뉴가 담는 인풋스트림(서버로 보냄)
 	String 				out_msg		 = null;//프로시저로 처리된 결과를 담음.
-	public Connection getConnetion() {
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");//클래스를 메모리에 로딩 클래스 이름을 못찾으면 어떡하지?
-			con = DriverManager.getConnection(_URL, _USER, _PW);
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e.toString());
-		}
-		return con;
-	}
-	FriendMenu(){
+		FriendMenu(){
 		System.out.println("con : "+con);
 	}
 		public ArrayList<MemberVO> FriendSelectALL(ArrayList<MemberVO> fo) {
@@ -49,7 +41,7 @@ public class FriendMenu {
 			sql +=" where mem_no = (select fri_no from friend";
 			sql +=" where = "+fo.get(0).getMem_id();
 			try {
-				con = this.getConnetion();
+				dbcon.getConnection();
 				stmt = con.createStatement();
 				rs = stmt.executeQuery(sql);
 				while(rs.next()) {
@@ -74,7 +66,7 @@ public class FriendMenu {
 
 	public String FriendInsert(ArrayList<MemberVO> fo, int option) {
 		try {
-			con = this.getConnetion();
+			dbcon.getConnection();
 			//들어오는 오브젝트를 받아서 String으로 변환해서 데이터베이스에 입력 요청.
 			//////////////////////////////////////////////////////////
 			//  0 : 사용자ID
@@ -88,6 +80,7 @@ public class FriendMenu {
 			cstmt.registerOutParameter(4, java.sql.Types.VARCHAR);
 //			rs=cstmt.executeQuery();
 			out_msg = cstmt.getString(4);
+			cstmt.executeUpdate();
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -98,22 +91,15 @@ public class FriendMenu {
 	public String FriendDelete(ArrayList<MemberVO> fo, int option) {
 		
 		try {
-			con = this.getConnetion();
-			
-			//들어오는 오브젝트를 받아서 String으로 변환해서 데이터베이스에 입력 요청.
-			//////////////////////////////////////////////////////////
-			//  0 : 사용자ID
-			//  1 : 친구ID
-			//  2 : 기능(delect)
-			//////////////////////////////////////////////////////////
+			dbcon.getConnection();
 
 			cstmt = con.prepareCall("{call proc_addr_update(?,?,?,?)}");	
 			cstmt.setObject(1, fo.get(0).getMem_name());//ID
 			cstmt.setObject(2, fo.get(0).getMem_id());//친구ID
 			cstmt.setInt(3, option);
 			cstmt.registerOutParameter(4, java.sql.Types.VARCHAR);
-//			rs=cstmt.executeQuery();
 			out_msg = cstmt.getString(4);
+			cstmt.executeUpdate();
 			
 				} catch (Exception e) {
 			// TODO: handle exception

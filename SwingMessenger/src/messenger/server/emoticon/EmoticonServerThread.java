@@ -89,7 +89,7 @@ public class EmoticonServerThread implements Runnable{
  		ClassLoader loader = this.getClass().getClassLoader();
  		
  		//위에서 얻은 경로를 시작지점으로 하여 이모티콘이 담긴 폴더의 상대경로 얻기.
-		URL buildpath = loader.getResource("messenger\\server\\emoticon\\images\\");
+		URL buildpath = loader.getResource("messenger\\server\\images\\emoticon\\");
 		try {
 			URI uri = new URI(buildpath.toString());
 			File file = new File(uri); //이모티콘 폴더를 인스턴스화하기

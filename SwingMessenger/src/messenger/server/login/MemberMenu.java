@@ -26,6 +26,7 @@ public class MemberMenu {
 			cstmt.setObject(9, mvo.get(0).getMem_background());//배경사
 			cstmt.setObject(10, Message.MEMBER_JOIN);//옵션번호
 			cstmt.registerOutParameter(11, java.sql.Types.VARCHAR);//처리메세지
+			cstmt.executeUpdate();
 //			rs=cstmt.executeQuery();
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -50,6 +51,7 @@ public class MemberMenu {
 			cstmt.setObject(9, mvo.get(0).getMem_background());//배경사
 			cstmt.setObject(10, Message.MEMBER_MODIFY);//옵션번호
 			cstmt.registerOutParameter(11, java.sql.Types.VARCHAR);//처리메세지
+			cstmt.executeUpdate();
 //			rs=cstmt.executeQuery();
 		} catch (Exception e) {
 			// TODO: handle exception

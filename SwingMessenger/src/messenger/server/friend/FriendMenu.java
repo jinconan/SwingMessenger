@@ -80,6 +80,7 @@ public class FriendMenu {
 			cstmt.registerOutParameter(4, java.sql.Types.VARCHAR);
 //			rs=cstmt.executeQuery();
 			out_msg = cstmt.getString(4);
+			cstmt.executeUpdate();
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -98,6 +99,7 @@ public class FriendMenu {
 			cstmt.setInt(3, option);
 			cstmt.registerOutParameter(4, java.sql.Types.VARCHAR);
 			out_msg = cstmt.getString(4);
+			cstmt.executeUpdate();
 			
 				} catch (Exception e) {
 			// TODO: handle exception

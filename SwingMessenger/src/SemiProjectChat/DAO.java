@@ -72,11 +72,12 @@ public class DAO {
 		return result1;
 		
 	}
-	/*public Vector friend(MemberVO dto) {//친구리스트를 가져오는 메소드 !! 
+	public Vector friend(MemberVO dto) {//친구리스트를 가져오는 메소드 !! 
 		
 		Vector list = new Vector();
 		
-		String sql = "select Friend_name from Friend where mem_no = "
+		String sql = "\r\n" + 
+				"select Friend_name from Friend where mem_no = "
 				+ "(select mem_no from member where mem_id = ?) order by Friend_name asc";
 
 		
@@ -86,7 +87,7 @@ public class DAO {
 			con = dbcon.Connect();
             ppst = con.prepareStatement(sql);
 
-            ppst.setString(1, dto.getMEM_ID());
+            ppst.setString(1, dto.getMem_id());
     
             rs = ppst.executeQuery();
             
@@ -102,7 +103,7 @@ public class DAO {
 		
 		return list;
 		
-	}*/
+	}
 	/*
 	public Vector friend_add_index() {
 		

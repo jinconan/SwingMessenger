@@ -21,7 +21,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-public class MainMenu implements ActionListener {
+public class MainMenu<T> implements ActionListener {
 	// 선언부
 	CardLayout card = new CardLayout();
 	JFrame jf_m = new JFrame();
@@ -56,6 +56,15 @@ public class MainMenu implements ActionListener {
 	// 임시 이미지 소스
 	String noname = "E:\\dev_kosmo201804\\dev_java\\src\\com\\image\\";
 	JLabel jl_no = new JLabel();
+
+	Login<T> login = null;
+	public MainMenu() {
+		
+	}
+	public MainMenu(Login<T> login) {
+		// TODO Auto-generated constructor stub
+		this.login = login;
+	}
 
 	// 화면부
 	public void initDisplay() {
@@ -107,10 +116,7 @@ public class MainMenu implements ActionListener {
 	}////////// end initDisplay
 
 	// 메인메소드
-	public static void main(String[] args) {
-		MainMenu mm = new MainMenu();
-		mm.initDisplay();
-	}
+
 
 	//버튼 액션부
 	@Override
@@ -144,8 +150,8 @@ public class MainMenu implements ActionListener {
 			System.exit(0);
 		}
 		if (e.getActionCommand().equals(jp_my)) {
-			Identify idf = new Identify();
-			idf.initDisplay();
+			/*Identify idf = new Identify();
+			idf.initDisplay();*/
 		}
 	}////////// end actionPerformed
 }/////////// end Login

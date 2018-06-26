@@ -34,7 +34,7 @@ public class Message<T> implements Serializable{
 	public static final int CHATROOM_EXIT	= 11;//채팅방 나가기
 	public static final int EMOTICON_LOAD	= 12; //서버에서 이모티콘 리스트 요청 (T에는 ImageIcon계열이 들어감)
 	//또 뭐가있을까?
-	///////////////////////////////////////////////////////////
+	////////////////////////////E///////////////////////////////
 	
 	public Message() {
 		this(0,null,null);
@@ -44,6 +44,8 @@ public class Message<T> implements Serializable{
 		this.type = type;
 		this.request = request;
 		this.response = response;
+		
+
 	}
 
 	public int getType() {

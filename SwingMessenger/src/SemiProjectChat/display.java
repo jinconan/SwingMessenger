@@ -46,9 +46,10 @@ public class display extends JFrame implements ActionListener,MouseListener{
     String         NickName                   = null;
     DAO            dao                        = new DAO();
 	MemberVO     dto                          = new MemberVO();
-	/*FriendDTO      f_dto                      = new FriendDTO();
-	FriendDTO      f_dto1                     = new FriendDTO();
-	TalkDTO        t_dto                      = new TalkDTO();*/
+	FriendVo      f_dto                      = new FriendVo();
+	/*FriendDTO      f_dto1                     = new FriendDTO();
+	TalkDTO        t_dto                      = new TalkDTO();
+	*/
 	Vector         list                       = null;
 
 	
@@ -84,8 +85,8 @@ public class display extends JFrame implements ActionListener,MouseListener{
 	
 		      //    여백을 설정한 CardLayout을 만든다.
 		list = new Vector();
-/*		dto.setMEM_ID(ID);*/
-/*		list=dao.friend(dto);*/
+		dto.setMem_id(ID);
+	    list=dao.friend(dto);
 			
 		friend_list = new JList(list);
 		

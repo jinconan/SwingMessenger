@@ -28,7 +28,7 @@ import messenger._db.vo.MemberVO;
 import messenger.protocol.Message;
 import messenger.protocol.Port;
 
-public class Login<T> extends JFrame implements ActionListener {
+public class Login extends JFrame implements ActionListener {
 	//선언부
 	CardLayout 	card		= new CardLayout();
 	//JFrame 		jf_login 	= new JFrame();
@@ -60,11 +60,14 @@ public class Login<T> extends JFrame implements ActionListener {
 	JButton		jbtn_get	= new JButton("가입");
 	JButton		jbtn_back	= new JButton("뒤로가기");	
 	String		imgPath		= "E:\\dev_kosmo201804\\dev_java\\src\\com\\image\\";
-	ArrayList<T> request    = null;
+	ArrayList<MemberVO>  request    = null;
 	Socket socket =null;
 	ObjectInputStream ois = null;
      ObjectOutputStream oos = null;
 	   
+     Message<MemberVO> msg  = null;
+     List<MemberVO>   msg1  = null;
+     MemberVO         ss    = null;
 	boolean isView = false;
 	
 	//화면부
@@ -260,9 +263,9 @@ public class Login<T> extends JFrame implements ActionListener {
 			
 		}
 		else if (e.getSource()==jbtn_get) {
-			Message<MemberVO> msg  = new Message<MemberVO>();
-			List<MemberVO>   msg1 = new ArrayList<MemberVO>();
-			MemberVO ss = null;
+			msg  = new Message<MemberVO>();
+			msg1 = new ArrayList<MemberVO>();
+			ss   = null;
 			ss = new MemberVO();
 			ss.setMem_id(jtf_gid.getText());
 			ss.setMem_pw(jtf_gpw.getText());
@@ -311,9 +314,9 @@ public class Login<T> extends JFrame implements ActionListener {
 		}
 		else if(e.getActionCommand().equals("로그인")) {
 			
-			Message<MemberVO> msg  = new Message<MemberVO>();
-			List<MemberVO>   msg1 = new ArrayList<MemberVO>();
-			MemberVO ss = null;
+			msg  = new Message<MemberVO>();
+			msg1 = new ArrayList<MemberVO>();
+			ss = null;
 			ss = new MemberVO();
 			ss.setMem_id(jtf_id.getText());
 			ss.setMem_pw(jtf_pw.getText());

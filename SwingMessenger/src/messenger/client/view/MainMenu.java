@@ -21,7 +21,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-public class MainMenu<T> implements ActionListener {
+public class MainMenu implements ActionListener {
 	// 선언부
 	CardLayout card = new CardLayout();
 	JFrame jf_m = new JFrame();
@@ -57,11 +57,11 @@ public class MainMenu<T> implements ActionListener {
 	String noname = "E:\\dev_kosmo201804\\dev_java\\src\\com\\image\\";
 	JLabel jl_no = new JLabel();
 
-	Login<T> login = null;
+	Login login = null;
 	public MainMenu() {
 		
 	}
-	public MainMenu(Login<T> login) {
+	public MainMenu(Login login) {
 		// TODO Auto-generated constructor stub
 		this.login = login;
 	}
@@ -102,7 +102,8 @@ public class MainMenu<T> implements ActionListener {
 		jp_List.setLayout(new GridLayout(5, 1, 0, 0));
 		// jp_List.add(jp_my,"내정보");
 		jp_List.add(jl_no, "내정보");
-		jl_no.setIcon(new ImageIcon(noname + "알수없음2.png"));
+		jl_no = login.msg.getResponse().get(0).getMem_profile();
+		System.out.println(jl_no.getWidth());
 		jl_no.setText("내이름");
 		jp_List.add(jp_fri, "친구정보");
 		jp_my.add(jl_my);
@@ -125,6 +126,7 @@ public class MainMenu<T> implements ActionListener {
 		SubMenu ad = new SubMenu();
 		MainMenu mm = new MainMenu();
 		// 메인화면 이벤트
+		
 		if (e.getActionCommand().equals("친구목록")) {
 			card.show(jp_card, "친구목록");
 		} else if (e.getActionCommand().equals("대화목록")) {

@@ -51,36 +51,40 @@ public class FriendThread implements Runnable{
 				private List<T> response;	//서버가 데이터를 담는 부분
 			 */				
 			try(
-					 OutputStream			out		= socket.getOutputStream();
-					 BufferedOutputStream	bout	= new BufferedOutputStream(out);
-					 ObjectOutputStream		oout	= new ObjectOutputStream(bout);
-					 ){
-				 ArrayList<MemberVO> request = (ArrayList<MemberVO>) msg.getRequest();
-				 ArrayList<MemberVO> response = new ArrayList<MemberVO>();
-				 MemberVO mvo = request.get(0);//클라이언트에서 받은 정보를 mvo에 담음.
-				 switch(msg.getType()) {
-				 case Message.FRIEND_ALL:	
-					 ArrayList<MemberVO> result = fm.FriendSelectALL(request);//서버에서 보낼 정보를 selectAll의 파라미터로 전달.
+					OutputStream			out		= socket.getOutputStream();
+					BufferedOutputStream	bout	= new BufferedOutputStream(out);
+					ObjectOutputStream		oout	= new ObjectOutputStream(bout);
+					){
+				ArrayList<MemberVO> request = (ArrayList<MemberVO>) msg.getRequest();
+				ArrayList<MemberVO> response = new ArrayList<MemberVO>();
+				MemberVO mvo = request.get(0);//클라이언트에서 받은 정보를 mvo에 담음.
+				switch(msg.getType()) {
+				case Message.FRIEND_ALL://친구 전체 조회 1단계 완료. --일단은요..(에러뜨면 컴터 던지고 ㅌㅌ)
+					ArrayList<MemberVO> result = fm.FriendSelectALL(request);//서버에서 보낼 정보를 selectAll의 파라미터로 전달.
 
-					 for(MemberVO member : result) {
-						 response.add(member);//서버가 데이터를 받는 부분.
+					for(MemberVO member : result) {
+						response.add(member);//서버가 데이터를 받는 부분.
+					}
+					msg.setResponse(response);//데이터 저장.
 
-					 }
+					oout.writeObject(msg);//아웃풋 스트림으로 작성
+					oout.flush();//데이터 강제로 보냄.
+					break;
+				case Message.FRIEND_INSERT:
+					response.add(mvo);
+					fm.FriendInsert(response, 4);
+					oout.writeObject(msg);
+					oout.flush();
+					break;
+				case Message.FRIEND_DELETE:
+					response.add(mvo);
+					fm.FriendDelete(response, 5);
+					oout.writeObject(msg);
+					oout.flush();
+					break;
 
-					 msg.setResponse(response);
-					 break;
-				 case Message.FRIEND_INSERT:
-					 response.add(mvo);
-					 fm.FriendInsert(response, 4);
-
-					 break;
-				 case Message.FRIEND_DELETE:
-					 response.add(mvo);
-					 fm.FriendDelete(response, 5);
-					 break;
-
-				 }
-			 }
+				}
+			}
 		} 
 		catch (Exception e) {
 			// TODO: handle exception

@@ -8,18 +8,28 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class finalUI extends JFrame implements ActionListener {
+import messenger._db.vo.MemberVO;
+import messenger.protocol.Message;
+import messenger.protocol.Port;
+
+public class Login extends JFrame implements ActionListener {
+	//선언부
 	CardLayout 	card		= new CardLayout();
 	//JFrame 		jf_login 	= new JFrame();
 	JPanel 		jp_card		= new JPanel();
@@ -34,8 +44,6 @@ public class finalUI extends JFrame implements ActionListener {
 	JButton 	jbtn_log 	= new JButton("로그인");
 	JButton 	jbtn_gaip 	= new JButton("회원가입");
 	JLabel		jta_error	= new JLabel();
-	
-	
 	
 	//가입창 패널
 	JLabel 		jl_gid  	= new JLabel("아이디 :");
@@ -52,8 +60,17 @@ public class finalUI extends JFrame implements ActionListener {
 	JButton		jbtn_get	= new JButton("가입");
 	JButton		jbtn_back	= new JButton("뒤로가기");	
 	String		imgPath		= "E:\\dev_kosmo201804\\dev_java\\src\\com\\image\\";
+	ArrayList<MemberVO>  request    = null;
+	Socket socket =null;
+	ObjectInputStream ois = null;
+     ObjectOutputStream oos = null;
+	   
+     Message<MemberVO> msg  = null;
+     List<MemberVO>   msg1  = null;
+     MemberVO         ss    = null;
 	boolean isView = false;
 	
+	//화면부
 	public void initDisplay() {
 		//메인 액션
 		jbtn_gaip.addActionListener(this);
@@ -106,7 +123,8 @@ public class finalUI extends JFrame implements ActionListener {
 		jbtn_gaip.setBounds(130, 480, 120, 20);
 		jbtn_gaip.setBackground(Color.YELLOW);
 		jp_login.setVisible(true);
-		//가입창 패널
+		
+	//가입창 패널
 		jp_gaip.setLayout(null);
 		//jp_gaip.setVisible(true);
 		jp_gaip.add(jbtn_get);
@@ -151,6 +169,7 @@ public class finalUI extends JFrame implements ActionListener {
 		jp_list.setVisible(true);
 		jp_list.setBackground(Color.YELLOW);
 		
+		//금지문자열 메소드
 		jtf_id.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -204,15 +223,9 @@ public class finalUI extends JFrame implements ActionListener {
 					break;
 				default:
 				break;
-				}
-			}
-			/*@Override
-			public void keyTyped(KeyEvent ae) {
-				if(ae.getKeyCode() == 16) {
-					jta_error.setVisible(true);
-				}
-			}*/ //시프트 키입력시(해결안됨)
-		});
+				}///////////// end switch
+			}///////////// end keyPressed
+		});/////////// end addKeyListener
 	}///////////// end initDisplay
 	
 		
@@ -226,15 +239,16 @@ public class finalUI extends JFrame implements ActionListener {
 	else jtf_ggender.setSelectedItem("여자");
 	}////////////// end Gender
 
-	
+	//메인메소드
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		finalUI ui = new finalUI();
+		Login ui = new Login();
 		ui.initDisplay();
+		
 	}////////////// end main
 	
 	
-	//이벤트 액션퍼폼
+	//버튼 액션부
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -243,17 +257,110 @@ public class finalUI extends JFrame implements ActionListener {
 			card.show(jp_card,"로그인창"); 
 		}
 		else if(e.getActionCommand().equals("회원가입")) {
-			//System.out.println(jp_card);
-			//card.next(jp_card);
+
 			card.show(jp_card,"가입창");
+			
+			
+		}
+		else if (e.getSource()==jbtn_get) {
+			msg  = new Message<MemberVO>();
+			msg1 = new ArrayList<MemberVO>();
+			ss   = null;
+			ss = new MemberVO();
+			ss.setMem_id(jtf_gid.getText());
+			ss.setMem_pw(jtf_gpw.getText());
+			ss.setMem_name(jtf_gname.getText());
+			ss.setMem_gender((String)jtf_ggender.getSelectedItem());
+			ss.setMem_hp(jtf_gtel.getText());
+		
+			msg1.add(ss);
+			
+			msg.setType(msg.MEMBER_LOGIN);
+			msg.setRequest(msg1);
+			
+			try {
+				socket = new Socket("192.168.0.235",Port.LOGIN);
+				oos = new ObjectOutputStream(socket.getOutputStream());
+			
+				oos.writeObject(msg);
+				ois  = new ObjectInputStream(socket.getInputStream());
+				try {
+					msg = (Message<MemberVO>) ois.readObject();
+				
+				
+					if(msg.getResponse().size()==1) {
+						System.out.println(msg);
+						card.show(jp_card,"로그인창");
+						
+						JOptionPane.showMessageDialog(this, "회원가입 완료", "알림", JOptionPane.CANCEL_OPTION);
+						socket.close();
+						oos.close();
+						ois.close();
+					}
+					else {
+						
+					}
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		else if(e.getActionCommand().equals("로그인")) {
-			FriendsList fl = new FriendsList();
-			fl.initDisplay();
+			
+			msg  = new Message<MemberVO>();
+			msg1 = new ArrayList<MemberVO>();
+			ss = null;
+			ss = new MemberVO();
+			ss.setMem_id(jtf_id.getText());
+			ss.setMem_pw(jtf_pw.getText());
+			msg1.add(ss);
+			
+			msg.setType(msg.MEMBER_LOGIN);
+			msg.setRequest(msg1);
+			
+			try {
+				socket = new Socket("192.168.0.235",Port.LOGIN);
+				oos = new ObjectOutputStream(socket.getOutputStream());
+			
+				oos.writeObject(msg);
+				ois  = new ObjectInputStream(socket.getInputStream());
+				try {
+					msg = (Message<MemberVO>) ois.readObject();
+				
+				
+					if(msg.getResponse().size()==1) {
+						System.out.println(msg);
+						this.dispose();
+						MainMenu main = new MainMenu(this);
+						main.initDisplay();
+						
+					}
+					else {
+						JOptionPane.showMessageDialog(this, "아이디와 비밀번호가 틀렸습니다.", "알림", JOptionPane.CANCEL_OPTION);
+					}
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			
+		
 		}
-		
-		
+			
 	//버튼이벤트성공->액션이벤트->card.show
-	}//////////////end actionPerformed
-
-}
+	}///////////// end actionPerformed
+}//////////// end class

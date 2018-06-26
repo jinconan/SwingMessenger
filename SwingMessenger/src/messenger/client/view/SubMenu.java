@@ -15,10 +15,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.table.DefaultTableModel;
 
-public class addMenu implements ActionListener{
+public class SubMenu implements ActionListener{
+	//선언부
 	JDialog 			jd_fri 	   = new JDialog();
 	JDialog 			jd_chat	   = new JDialog();
 	JDialog				jd_emti    = new JDialog();
@@ -28,24 +30,24 @@ public class addMenu implements ActionListener{
 	JTextField 			jtf_fri    = new JTextField();
 	JTextField			jtf_inv    = new JTextField();
 	JTextField 			jtf_chat   = new JTextField();
-	JTextArea 			jta_chat   = new JTextArea();
+	JTextPane 			jtp_chat   = new JTextPane();
 	JTable 				jt_fri 	   = new JTable();
 	JTable				jt_inv	   = new JTable();
 	JButton 			jbtn_gum   = new JButton("검색");
 	JButton				jbtn_jun   = new JButton("전송");
 	JButton				jbtn_ok    = new JButton("확인");
 	JButton				jbtn_cancel= new JButton("취소");
+	JButton				jbtn_emti  = new JButton("이모티콘");
+	JButton				jbtn_inv   = new JButton("친구초대");
 	DefaultTableModel   dftm_fri   = new DefaultTableModel();
 	JScrollPane 		jsp_fri	   = new JScrollPane(jt_fri);
-	JScrollPane 		jsp_chatA  = new JScrollPane(jta_chat);
+	JScrollPane 		jsp_chatA  = new JScrollPane(jtp_chat);
 	JScrollPane 		jsp_chatF  = new JScrollPane(jtf_chat);
 	JScrollPane 		jsp_inv    = new JScrollPane(jt_inv);
 	JToolBar			jtb_chat   = new JToolBar();
-	JButton				jbtn_emti  = new JButton("이모티콘");
-	JButton				jbtn_inv   = new JButton("친구초대");
 	String				img_path   = "C:\\Users\\516\\Desktop\\tales_emoticon\\";
 	
-	//친구검색창
+	//친구검색 다이얼로그
 	public void addFriends() {
 		jbtn_gum.addActionListener(this);
 		jbtn_jun.addActionListener(this);
@@ -66,7 +68,7 @@ public class addMenu implements ActionListener{
 		jsp_fri.setBounds(20, 50, 330, 200);
 	}
 	
-	//새로운 채팅창
+	//새 채팅 다이얼로그
 	public void addChatting() {
 		int i = 0;
 		jbtn_inv.addActionListener(this);
@@ -111,13 +113,12 @@ public class addMenu implements ActionListener{
 		jsp_inv.setVisible(true);
 	}
 	
+	//이모티콘 다이얼로그창
 	public void Emoticon() {
 		jd_emti.setTitle("이모티콘");
 		jd_emti.setVisible(true);
 		jd_emti.setSize(400,300);
 		jd_emti.add(jl_emti);
-		//jl_emti.setIcon(new ImageIcon(img_path+"나야_놀람.gif"));
-		//jl_emti.setText(img_path);
 		jl_emti.setVisible(true);
 		ArrayList<JLabel> list = new ArrayList<JLabel>();
 		for(int i=0;i<list.size();i++) {
@@ -126,13 +127,27 @@ public class addMenu implements ActionListener{
 		}
 	}
 	
+	//버튼 액션부
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Object obj = e.getSource();
+		String msg = jtf_chat.getText();				
+		//addChatting
+		if(obj == jtf_chat) {
+			try {
+				//oos.writeObject(Protocol.MESSAGE+"|"+nickName+"|"+msg);
+				jtf_chat.setText("");
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();//저장된 메세지 이력관리
+			}
+		}
+		//addFriends
 		if(e.getActionCommand().equals("검색")) {
 			System.out.println("검색실행");
 		}
+		//Emoticon
 		if(e.getActionCommand().equals("전송")) {
 			System.out.println("전송실행");
 		}
@@ -140,14 +155,13 @@ public class addMenu implements ActionListener{
 			System.out.println("이모티콘실행");
 			Emoticon();
 		}
+		//Invited
 		if(e.getActionCommand().equals("친구초대")) {
 			System.out.println("초대실행");
 			Invited();
 		}
 		if(e.getActionCommand().equals("확인")) {
-			System.out.println("확인실행");
-			
-			
+			System.out.println("확인실행");		
 		}
 		else if(e.getActionCommand().equals("취소")) {
 			System.out.println("취소실행");
@@ -155,7 +169,7 @@ public class addMenu implements ActionListener{
 		}
 	}
 	public static void main(String[] args) {
-		addMenu ad = new addMenu();
+		SubMenu ad = new SubMenu();
 		ad.Emoticon();
 		ad.addChatting();
 	}

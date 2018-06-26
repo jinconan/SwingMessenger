@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -272,13 +273,16 @@ public class ServerView extends JFrame {
 		return jta_friendlog;
 	}
 	
+	/**
+	 * 방 목록을 갱신하여 방목록 테이블에 반영한다.
+	 */
 	private void refreshRoomList() {
 		dtm_room = new DefaultTableModel();
 		dtm_room.setColumnIdentifiers(cols_room);
 		
 		StringBuilder[] sb = new StringBuilder[2];
 		sb[0] = new StringBuilder("0");
-		sb[1] = new StringBuilder(Integer.toString(ChatServerThreadList.getInstance().getTotalList().size()));
+		sb[1] = new StringBuilder(Integer.toString(ChatServerThreadList.getInstance().getNumberOfThreads()));
 		sb[1].append("명");
 		dtm_room.addRow(new String[] {sb[0].toString(), sb[1].toString()});
 		

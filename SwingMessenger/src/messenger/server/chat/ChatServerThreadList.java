@@ -57,12 +57,29 @@ public class ChatServerThreadList {
 	}
 	
 	/**
+	 * 현재 접속자 수 리턴
+	 * @return 접속자 수
+	 */
+	public synchronized int getNumberOfThreads() {
+		return totalList.size();
+	}	
+	/**
 	 * 특정 방 안에 참여 중인 쓰레드 리스트를 리턴
 	 * @param room_no : 방 번호
 	 * @return : 해당 방에 존재하는 쓰레드 리스트
 	 */
 	public synchronized ArrayList<ChatServerThread> getMembers(int room_no) {
 		return roomList.get(room_no);
+	}
+	
+	/**
+	 * 특정 방 안에 참여 중인 참여자 수를 리턴
+	 * @param room_no : 방 번호
+	 * @return : 해당 방에 존재하는 참석자 수
+	 */
+	public synchronized int getNumberOfRoomMembers(int room_no) {
+		ArrayList<ChatServerThread> list =roomList.get(room_no); 
+		return (list != null) ? list.size() : 0; 
 	}
 	
 	/**
@@ -83,11 +100,11 @@ public class ChatServerThreadList {
 		ChatDAO dao = ChatDAO.getInstance();
 		
 		//db에서 회원번호를 통해 해당 회원이 참여한 방 리스트 ChatVO 타입으로 얻는다.
-		ArrayList<ChatVO> listOfThread = dao.selectRoomList(thread.getMem_no());
+		ArrayList<ChatVO> listOfThread = dao.selectRoomList(thread.getMemVO().getMem_no());
 		
 		//방 리스트에 대해 반복을 실행
 		for(ChatVO chatVO : listOfThread) {
-			int room_no = chatVO.getRoom_no();
+			int room_no = (chatVO.getRoomVO() != null) ? chatVO.getRoomVO().getRoom_no() : 0;
 			
 			//해당 번호의 방 안에 포함된 쓰레드(접속자)의 리스트를 얻는다.
 			ArrayList<ChatServerThread> memList = roomList.get(room_no);

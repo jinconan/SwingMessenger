@@ -1,19 +1,34 @@
 package messenger._db.dao;
 
+import java.awt.Font;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import messenger._db.DBConnection;
 import messenger._db.vo.ChatVO;
 import messenger._db.vo.MemberVO;
 import messenger.server.chat.ChatServerThreadList;
 
+/**
+ * DB의 member테이블에 대해서 SELECT문을 수행하는 Class
+ * <담당하는 메시지 타입>
+ * 	MEMBER_LOGIN
+ *  MEMBER_JOIN
+ * @author Jin Lee
+ *
+ */
 public class LoginDAO {
 	private DBConnection dbCon = new DBConnection();
 	
@@ -32,7 +47,7 @@ public class LoginDAO {
 	}
 	
  	/**
- 	 * 
+ 	 * 계정 정보로 member테이블에 select하여 해당 계정에 대한 상세 정보를 가져오는 메소드
  	 * @param mem : 클라이언트가 전달한 로그인 정보
  	 * @return : 성공시 db에서 얻은 계정 정보, 실패시 null
  	 */
@@ -69,9 +84,11 @@ public class LoginDAO {
 					String	mem_hp = rs.getString("mem_hp");
 					String	mem_profile_url = rs.getString("mem_profile");
 					String	mem_background_url = rs.getString("mem_background");
-					JLabel mem_profile = new JLabel(new ImageIcon(mem_profile_url));
-					JLabel mem_background = new JLabel(new ImageIcon(mem_background_url));
+					JLabel 	mem_profile = getImageLabel(mem_profile_url, true);
+					JLabel 	mem_background = getImageLabel(mem_background_url, false);
 					
+					System.out.println(mem_profile_url);
+					System.out.println(mem_background_url);
 					memberVO = new MemberVO(mem_no, mem_id, mem_name, mem_nick, mem_gender, mem_pw, mem_hp, mem_profile, mem_background);
 				}
 			}catch (Exception e) {
@@ -84,4 +101,107 @@ public class LoginDAO {
 		return memberVO;
 	}
 
+	/**
+	 * 회원가입을 위해 member테이블에 insert하는 메소드
+	 * @param mem : 양식에 채워놓은 회원정보 객체
+	 * @return : 회원가입 성공시1, 실패시 0
+	 */
+	public synchronized int join(MemberVO mem) {
+		int result =0;
+		StringBuilder sql = new StringBuilder("INSERT INTO member(");
+		sql.append("mem_no");
+		sql.append(",mem_id" );
+		sql.append(",mem_name"); 
+		sql.append(",mem_nick");
+		sql.append(",mem_gender");  
+		sql.append(",mem_pw");  
+		sql.append(",mem_hp");  
+		sql.append(") VALUES(seq_member.nextval, ?, ?, ?, ?, ?, ?) ");  
+
+		try (
+			Connection 			con		= dbCon.getConnection();
+			PreparedStatement	pstmt	= con.prepareStatement(sql.toString());
+		){
+			int i=1;
+			pstmt.setString(i++, mem.getMem_id());
+			pstmt.setString(i++, mem.getMem_name());
+			pstmt.setString(i++, mem.getMem_nick());
+			pstmt.setString(i++, mem.getMem_gender());
+			pstmt.setString(i++, mem.getMem_pw());
+			pstmt.setString(i++, mem.getMem_hp());
+			result = pstmt.executeUpdate();
+ 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * member테이블에 해당하는 id가 있는지 여부를 판별하는 메소드
+	 * @param mem_id : 회원 아이디
+	 * @return : true : 이미 존재함. , false : 없음.
+	 */
+	public synchronized boolean hasID(String mem_id) {
+		boolean result = false;
+		StringBuilder sql = new StringBuilder(); 
+		sql.append("SELECT mem_id FROM member WHERE mem_id=?");
+		
+		try(Connection con = dbCon.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql.toString());
+		) {
+			int i=1;
+			pstmt.setString(i++, mem_id);
+			try(ResultSet rs = pstmt.executeQuery();) {
+				if(rs.next())
+					result = true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * member테이블에 대한 update 수행 메소드
+	 * @param mem : 수정한 회원 정보
+	 * @return
+	 */
+	public synchronized int modify(MemberVO mem) {
+		int result= 0;
+		
+		return result;
+	}
+
+	private  JLabel getImageLabel(String url, boolean isProfile) {
+		JLabel jl = null;
+		//클래스파일의 기본 경로를 가져온다.
+ 		ClassLoader loader = this.getClass().getClassLoader();
+ 		
+ 		//위에서 얻은 경로를 시작지점으로 하여 이모티콘이 담긴 폴더의 상대경로 얻기.
+ 		String location = (isProfile == true) ? "messenger\\server\\images\\profile\\" : "messenger\\server\\images\\background\\";
+ 		
+		URL buildpath = loader.getResource(location);
+		
+		try {
+			URI uri = new URI(buildpath.toString());
+			StringBuilder imgpath = new StringBuilder(uri.getPath());
+			if(url != null)
+				imgpath.append(url);
+			File file = new File(imgpath.toString());
+			if(file.exists() && file.isFile()) {
+				System.out.println(imgpath.toString());
+				ImageIcon icon = new ImageIcon(imgpath.toString());
+				jl = new JLabel(icon);
+			}
+			
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		return jl;
+
+	}
 }

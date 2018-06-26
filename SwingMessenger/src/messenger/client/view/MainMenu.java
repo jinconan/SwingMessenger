@@ -57,6 +57,15 @@ public class MainMenu implements ActionListener {
 	String noname = "E:\\dev_kosmo201804\\dev_java\\src\\com\\image\\";
 	JLabel jl_no = new JLabel();
 
+	Login login = null;
+	public MainMenu() {
+		
+	}
+	public MainMenu(Login login) {
+		// TODO Auto-generated constructor stub
+		this.login = login;
+	}
+
 	// 화면부
 	public void initDisplay() {
 		jmi_fri.addActionListener(this);
@@ -93,7 +102,8 @@ public class MainMenu implements ActionListener {
 		jp_List.setLayout(new GridLayout(5, 1, 0, 0));
 		// jp_List.add(jp_my,"내정보");
 		jp_List.add(jl_no, "내정보");
-		jl_no.setIcon(new ImageIcon(noname + "알수없음2.png"));
+		jl_no = login.msg.getResponse().get(0).getMem_profile();
+		System.out.println(jl_no.getWidth());
 		jl_no.setText("내이름");
 		jp_List.add(jp_fri, "친구정보");
 		jp_my.add(jl_my);
@@ -107,10 +117,7 @@ public class MainMenu implements ActionListener {
 	}////////// end initDisplay
 
 	// 메인메소드
-	public static void main(String[] args) {
-		MainMenu mm = new MainMenu();
-		mm.initDisplay();
-	}
+
 
 	//버튼 액션부
 	@Override
@@ -119,6 +126,7 @@ public class MainMenu implements ActionListener {
 		SubMenu ad = new SubMenu();
 		MainMenu mm = new MainMenu();
 		// 메인화면 이벤트
+		
 		if (e.getActionCommand().equals("친구목록")) {
 			card.show(jp_card, "친구목록");
 		} else if (e.getActionCommand().equals("대화목록")) {
@@ -144,8 +152,8 @@ public class MainMenu implements ActionListener {
 			System.exit(0);
 		}
 		if (e.getActionCommand().equals(jp_my)) {
-			Identify idf = new Identify();
-			idf.initDisplay();
+			/*Identify idf = new Identify();
+			idf.initDisplay();*/
 		}
 	}////////// end actionPerformed
 }/////////// end Login

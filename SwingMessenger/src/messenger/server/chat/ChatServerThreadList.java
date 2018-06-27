@@ -9,6 +9,7 @@ import javax.swing.JTextArea;
 
 import messenger._db.dao.ChatDAO;
 import messenger._db.vo.ChatVO;
+import messenger._db.vo.MemberVO;
 import messenger._db.vo.RoomVO;
 
 
@@ -55,6 +56,22 @@ public class ChatServerThreadList {
 	public synchronized ArrayList<ChatServerThread> getTotalList() {
 		return totalList;
 	}
+	
+	/**
+	 * 접속자 리스트에서 해당 회원번호를 갖는 쓰레드 리턴
+	 * @param mem_no 찾을 회원번호
+	 * @return 해당 회원과 연결된 쓰레드 리턴. 없으면 null
+	 */
+	public synchronized ChatServerThread getThread(int mem_no) {
+		for(ChatServerThread t : totalList) {
+			MemberVO mem = t.getMemVO();
+			if(mem != null && mem.getMem_no() == mem_no) {
+				return t;
+			}
+		}
+		return null;
+	}
+	
 	
 	/**
 	 * 현재 접속자 수 리턴

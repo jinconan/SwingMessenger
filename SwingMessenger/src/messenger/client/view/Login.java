@@ -50,15 +50,16 @@ public class Login extends JFrame implements ActionListener {
 	JLabel 		jl_gpw 		= new JLabel("비밀번호 :");
 	JLabel 		jl_gname 	= new JLabel("이름 :");
 	JLabel 		jl_ggender  = new JLabel("성별 :");
-	JLabel 		jl_gtel		= new JLabel("핸드폰번호 :");
+	JLabel 		jl_ghp		= new JLabel("핸드폰번호 :");
 	JTextField  jtf_gid		= new JTextField(20);
 	JTextField  jtf_gpw		= new JTextField(20);
 	JTextField  jtf_gname 	= new JTextField(20);
-	JTextField  jtf_gtel 	= new JTextField(20);
+	JTextField  jtf_ghp 	= new JTextField(20);
 	String[] 	genderList  = {"남자","여자"};
 	JComboBox   jtf_ggender = new JComboBox(genderList);
 	JButton		jbtn_get	= new JButton("가입");
 	JButton		jbtn_back	= new JButton("뒤로가기");	
+	JButton		jbtn_bok	= new JButton("중복검사");
 	String		imgPath		= "E:\\dev_kosmo201804\\dev_java\\src\\com\\image\\";
 	ArrayList<MemberVO>  request    = null;
 	Socket socket =null;
@@ -77,6 +78,7 @@ public class Login extends JFrame implements ActionListener {
 		jbtn_log.addActionListener(this);
 		jbtn_get.addActionListener(this);
 		jbtn_back.addActionListener(this);
+		jbtn_bok.addActionListener(this);
 		//카드 패널
 		jp_card.setLayout(card);
 		jp_card.add(jp_login,"로그인창");
@@ -125,34 +127,38 @@ public class Login extends JFrame implements ActionListener {
 		jp_login.setVisible(true);
 		
 	//가입창 패널
+		
 		jp_gaip.setLayout(null);
 		//jp_gaip.setVisible(true);
 		jp_gaip.add(jbtn_get);
 		jp_gaip.add(jbtn_back);
+		jp_gaip.add(jbtn_bok);
 		jp_gaip.add(jl_gid);
 		jp_gaip.add(jl_gpw);
 		jp_gaip.add(jl_gname);
-		jp_gaip.add(jl_gtel);
+		jp_gaip.add(jl_ghp);
 		jp_gaip.add(jl_ggender);
 		jp_gaip.add(jtf_gid);
 		jp_gaip.add(jtf_gpw);
 		jp_gaip.add(jtf_gname);
 		jp_gaip.add(jtf_ggender); 
-		jp_gaip.add(jtf_gtel);
+		jp_gaip.add(jtf_ghp);
 		jp_gaip.setBackground(Color.YELLOW);
 		jl_gid.setBounds(30, 30, 80, 20);
 		jl_gid.setVisible(true);
+		jbtn_bok.setBounds(250, 30, 60, 20);
+		jbtn_bok.setVisible(true);
 		jl_gpw.setBounds(30, 70, 80, 20);
 		jl_gpw.setVisible(true);
 		jl_gname.setBounds(30, 110, 80, 20);
 		jl_gname.setVisible(true);
 		jl_ggender.setBounds(30, 150, 80, 20);
 		jl_ggender.setVisible(true);
-		jl_gtel.setBounds(30, 190, 80, 20);
-		jl_gtel.setVisible(true);
-		jl_gtel.setBounds(30, 190, 80, 20);
-		jl_gtel.setVisible(true);
-		jtf_gid.setBounds(120, 30, 180, 20);
+		jl_ghp.setBounds(30, 190, 80, 20);
+		jl_ghp.setVisible(true);
+		jl_ghp.setBounds(30, 190, 80, 20);
+		jl_ghp.setVisible(true);
+		jtf_id.setBounds(120, 30, 120, 20);
 		jtf_gid.setVisible(true);
 		jtf_gpw.setBounds(120, 70, 180, 20);
 		jtf_gpw.setVisible(true);
@@ -160,8 +166,8 @@ public class Login extends JFrame implements ActionListener {
 		jtf_gname.setVisible(true);
 		jtf_ggender.setBounds(120, 150, 180, 20);
 		jtf_ggender.setVisible(true);
-		jtf_gtel.setBounds(120, 190, 180, 20);
-		jtf_gtel.setVisible(true);
+		jtf_ghp.setBounds(120, 190, 180, 20);
+		jtf_ghp.setVisible(true);
 		jbtn_get.setBounds(90, 450, 180, 30);
 		jbtn_back.setBounds(90, 480, 180, 30);
 						
@@ -271,7 +277,7 @@ public class Login extends JFrame implements ActionListener {
 			ss.setMem_pw(jtf_gpw.getText());
 			ss.setMem_name(jtf_gname.getText());
 			ss.setMem_gender((String)jtf_ggender.getSelectedItem());
-			ss.setMem_hp(jtf_gtel.getText());
+			ss.setMem_hp(jtf_ghp.getText());
 		
 			msg1.add(ss);
 			
@@ -359,6 +365,11 @@ public class Login extends JFrame implements ActionListener {
 			
 			
 		
+		}
+		else if(e.getActionCommand().equals("중복검사")) {
+			System.out.println("중복검사 실행");
+			Jungbok jb = new Jungbok();
+			jb.Gumsa();
 		}
 			
 	//버튼이벤트성공->액션이벤트->card.show

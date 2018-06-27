@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import messenger._db.dao.ChatDAO;
 import messenger._db.vo.ChatVO;
 import messenger._db.vo.MemberVO;
+import messenger._db.vo.RoomVO;
 import messenger.protocol.Message;
 
 /**
@@ -226,7 +227,30 @@ public class ChatServerThread implements Runnable{
 	 * @param msg
 	 */
 	private void sendInviteResponse(Message<ChatVO> msg) {
+		ChatDAO dao = ChatDAO.getInstance();
+		ArrayList<ChatVO> response = new ArrayList<ChatVO>();
+		ArrayList<ChatVO> request = (ArrayList<ChatVO>)msg.getRequest();
+
+		//첫 멤버를 조회하여 RoomVO가 있으면 기존 방에 초대, 없으면 새로운 방 생성.
+		ChatVO chatVO = request.get(0);
+		RoomVO roomVO = chatVO.getRoomVO();
 		
+		ArrayList<ChatVO> newMemberList = dao.insertRoomMember(request, roomVO);
+		ArrayList<ChatServerThread> newThreadList = new ArrayList<ChatServerThread>();
+		//해당 멤버 중에서 현재 접속자가 있는 경우, 해당 멤버의 쓰레드를 해쉬맵에 추가하고 그 사람들에게 메시지를 보낸다.
+		for(ChatVO c : newMemberList) {
+			ChatServerThread thread = ChatServerThreadList.getInstance().getThread(c.getMemVO().getMem_no());
+			if(thread != null) {
+				ChatServerThreadList.getInstance().addMember(thread);
+				newThreadList.add(thread);
+				response.add(c);
+			}
+		}
+		msg.setResponse(response);
+		
+		//새로 참가한 쓰레드들에게 방 개설 메시지를 보낸다.
+		for(ChatServerThread thread: newThreadList)
+			thread.sendMessage(msg);
 	}
 	
 	/**

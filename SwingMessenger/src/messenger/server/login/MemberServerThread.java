@@ -60,18 +60,30 @@ public class MemberServerThread implements Runnable{
 				MemberVO mvo = request.get(0);//클라이언트에서 받은 정보를 mvo에 담음.
 				switch(msg.getType()) {
 				case Message.MEMBER_JOIN://회원가입
+					mm.MemberInsert(request, Message.MEMBER_JOIN);
 					response.add(mvo);
-					mm.MemberInsert(response, Message.MEMBER_JOIN);
 					oout.writeObject(msg);
 					oout.flush();
 					break;
 				case Message.MEMBER_MODIFY://회원정보 수정.
+					mm.MemberUpdate(request, Message.MEMBER_MODIFY);
 					response.add(mvo);
-					mm.MemberUpdate(response, Message.MEMBER_MODIFY);
 					oout.writeObject(msg);
 					oout.flush();
 					break;
-				
+				case Message.MEMBER_IDCHECK:
+					response.add(mvo);
+					mm.MemberOverlap(request);
+					if(mm.MemberOverlap(request)==1) {
+						response=null;
+						oout.writeObject(msg);
+						oout.flush();
+					}
+					else {
+						response.add(mvo);
+						oout.writeObject(msg);
+						oout.flush();
+					}
 				}
 			}
 		} 

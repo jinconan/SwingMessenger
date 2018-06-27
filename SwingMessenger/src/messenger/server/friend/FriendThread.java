@@ -45,6 +45,7 @@ public class FriendThread implements Runnable{
 
 			Message<MemberVO> msg = (Message<MemberVO>)oin.readObject();
 			msg.getType();//메세지오브젝트 안에 들어있는 메세지 타입을 불러옴
+			System.out.println(msg.getType());
 			if(jta_log != null)
 				jta_log.append("요청 : " + socket.getInetAddress().toString() + ", " + socket.getPort() + "\n");
 			/*private List<T> request;	//클라이언트가 데이터를 담는 부분
@@ -61,10 +62,7 @@ public class FriendThread implements Runnable{
 				switch(msg.getType()) {
 				case Message.FRIEND_ALL://친구 전체 조회 1단계 완료. --일단은요..(에러뜨면 컴터 던지고 ㅌㅌ)
 					ArrayList<MemberVO> result = fm.FriendSelectALL(request);//서버에서 보낼 정보를 selectAll의 파라미터로 전달.
-
-					for(MemberVO member : result) {
-						response.add(member);//서버가 데이터를 받는 부분.
-					}
+					response = result;
 					msg.setResponse(response);//데이터 저장.
 
 					oout.writeObject(msg);//아웃풋 스트림으로 작성

@@ -55,14 +55,10 @@ public class ServerView extends JFrame {
 	private JLabel jlb_friendlog;
 	
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	
+	//DefaultTableModel 잠시 제거.
 	private JTable jtb_member;
 	private JTable jtb_room;
-	
-	private DefaultTableModel dtm_room;
-	private DefaultTableModel dtm_member;
-	
-	private String[] cols_room = {"방", "인원"};
-	private String[] cols_member= {"회원번호"};
 	
 	/**
 	 * Launch the application.
@@ -106,12 +102,7 @@ public class ServerView extends JFrame {
 		jlb_loginlog.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		jlb_chatlog = new JLabel("\uCC44\uD305 \uB85C\uADF8");
-		jlb_chatlog.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				refreshRoomList();
-			}
-		});
+
 		jp_north.add(jlb_chatlog);
 		jlb_chatlog.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -155,6 +146,9 @@ public class ServerView extends JFrame {
 		jp_chat.add(jsp_room);
 		
 		jtb_room = new JTable();
+
+		jtb_room.getColumnModel().getColumn(0).setResizable(false);
+		jtb_room.getColumnModel().getColumn(1).setResizable(false);
 		jsp_room.setViewportView(jtb_room);
 		
 //		refreshRoomList();
@@ -171,9 +165,6 @@ public class ServerView extends JFrame {
 		jtb_member = new JTable();
 		jsp_member.setViewportView(jtb_member);
 		
-		dtm_member = new DefaultTableModel();
-		dtm_member.setColumnIdentifiers(cols_member);
-		jtb_member.setModel(dtm_member);
 		
 		jsp_friendlog = new JScrollPane();
 		jp_center.add(jsp_friendlog);
@@ -239,7 +230,6 @@ public class ServerView extends JFrame {
 					protected Object doInBackground() throws Exception {
 						chatServer = new ChatServer(jta_chatlog);
 						chatServer.run();
-						refreshRoomList();
 						return null;
 					}
 				}.execute();
@@ -273,19 +263,4 @@ public class ServerView extends JFrame {
 		return jta_friendlog;
 	}
 	
-	/**
-	 * 방 목록을 갱신하여 방목록 테이블에 반영한다.
-	 */
-	private void refreshRoomList() {
-		dtm_room = new DefaultTableModel();
-		dtm_room.setColumnIdentifiers(cols_room);
-		
-		StringBuilder[] sb = new StringBuilder[2];
-		sb[0] = new StringBuilder("0");
-		sb[1] = new StringBuilder(Integer.toString(ChatServerThreadList.getInstance().getNumberOfThreads()));
-		sb[1].append("명");
-		dtm_room.addRow(new String[] {sb[0].toString(), sb[1].toString()});
-		
-		jtb_room.setModel(dtm_room);
-	}
 }

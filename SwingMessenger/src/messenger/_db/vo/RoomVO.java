@@ -11,10 +11,11 @@ public class RoomVO implements Serializable{
 	
 	public RoomVO() {}
 
-	public RoomVO(int room_no, String room_starttime) {
+	public RoomVO(int room_no, String room_starttime, String room_title) {
 		super();
 		this.room_no = room_no;
 		this.room_starttime = room_starttime;
+		this.room_title = room_title;
 	}
 
 	public int getRoom_no() {

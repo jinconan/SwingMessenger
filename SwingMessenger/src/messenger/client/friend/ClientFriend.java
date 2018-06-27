@@ -1,5 +1,6 @@
 package messenger.client.friend;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -37,7 +38,9 @@ public class ClientFriend extends Thread{
 			flsc = new Socket(IP, Port.FRIEND);
 			oos  = new ObjectOutputStream(flsc.getOutputStream());
 
-			do {//말하기 : 서버로 본인회원번호를 보내고 친구목록 요청하기
+			//do {
+				//말하기 : 서버로 본인회원번호를 보내고 친구목록 요청하기
+			
 				oos.writeObject(mms);
 				//듣기 : 서버로부터 친구목록 받고, 받은 내용을 UI에 올리기
 				ois = new ObjectInputStream(flsc.getInputStream());
@@ -61,9 +64,13 @@ public class ClientFriend extends Thread{
 					break;
 				}
 				
-			} while (ois.readObject() == null);// 만약 서버로부터 받지못하면 반복
+/*			} while (ois.readObject() == null);// 만약 서버로부터 받지못하면 반복
 
-		} catch (IOException ioe) {// In&Output Stream Exception
+		} catch (EOFException e) {
+			System.out.println("EOF예외 : "mms);
+			return;*/
+		}
+		  catch (IOException ioe) {// In&Output Stream Exception
 			System.out.println("ClientFreindList.run() in&out오류발생");
 			ioe.printStackTrace();
 		} catch (Exception e) {

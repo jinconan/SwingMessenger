@@ -34,7 +34,7 @@ public class ClientFriendList extends Thread {
 	Message<MemberVO> mms = null;
 	List<MemberVO> mli = null;
 	MemberVO mvo = null;
-	Vector vec = null;
+	Vector<MemberVO> vec = null;
 
 	//int타입 생성자가 있어서 만들어준 디펄트 생성자
 	public ClientFriendList() {}
@@ -54,7 +54,7 @@ public class ClientFriendList extends Thread {
 		mvo.setMem_no(userNo);
 		mli.add(mvo);
 		mms.setRequest(mli);//보낼 데이터를 메시지로 묶음
-		
+		mms.setType(Message.FRIEND_ALL);//타입설정 -18.06.27 이진 디버깅
 		cf = new ClientFriend(mms);//메시지를 넘겨서 start()호출
 	}
 	
@@ -64,16 +64,20 @@ public class ClientFriendList extends Thread {
 		System.out.println(res);
 		
 		//List에 담긴 MemberVO의 데이터를 dtm에 담기
-		vec = new Vector();;
+		vec = new Vector<MemberVO>();;
 		for(int i=0;i<res.size();i++) {
-			vec.add(res.get(i).getMem_id());
-			vec.add(res.get(i).getMem_name());
-			vec.add(res.get(i).getMem_nick());
-			vec.add(res.get(i).getMem_hp());
-			vec.add(res.get(i).getMem_profile());
-			vec.add(res.get(i).getMem_background());
+//			vec.add(res.get(i).getMem_id());
+//			vec.add(res.get(i).getMem_name());
+//			vec.add(res.get(i).getMem_nick());
+//			vec.add(res.get(i).getMem_hp());
+//			vec.add(res.get(i).getMem_profile());
+//			vec.add(res.get(i).getMem_background());
+
+			vec.add(res.get(i));
+			System.out.println(vec.get(i).getMem_id());//테스트용 출력문
+			
 			//친구리스트 패널에 들어가는 dtm을 호출
-			dtm.addRow(vec);
+			//dtm.addRow(vec);
 		}
 	}
 	

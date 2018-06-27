@@ -277,7 +277,7 @@ public class Login extends JFrame implements ActionListener {
 			ss.setMem_pw(jtf_gpw.getText());
 			ss.setMem_name(jtf_gname.getText());
 			ss.setMem_gender((String)jtf_ggender.getSelectedItem());
-			ss.setMem_hp(jtf_gtel.getText());
+			ss.setMem_hp(jtf_ghp.getText());
 		
 			msg1.add(ss);
 			

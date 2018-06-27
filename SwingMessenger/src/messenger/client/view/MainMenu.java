@@ -58,7 +58,6 @@ public class MainMenu implements ActionListener {
 	// 임시 이미지 소스
 	String noname = "E:\\dev_kosmo201804\\dev_java\\src\\com\\image\\";
 	JLabel jl_no = new JLabel();
-<<<<<<< HEAD
 
 	Login login = null;
 	public MainMenu() {
@@ -69,9 +68,7 @@ public class MainMenu implements ActionListener {
 		this.login = login;
 	}
 
-=======
-	
->>>>>>> refs/heads/UI2
+
 	// 화면부
 	public void initDisplay() {
 		jmi_fri.addActionListener(this);
@@ -161,16 +158,16 @@ public class MainMenu implements ActionListener {
 		} else if (e.getActionCommand().equals("종료")) {
 			System.exit(0);
 		}
-<<<<<<< HEAD
+
 		if (e.getActionCommand().equals(jp_my)) {
 			/*Identify idf = new Identify();
 			idf.initDisplay();*/
 		}
-=======
+
 		/*if (e.getActionCommand().equals(jp_my)) {
 			Identify idf = new Identify();
 			idf.initDisplay();
 		}*/
->>>>>>> refs/heads/UI2
+
 	}////////// end actionPerformed
 }/////////// end Login

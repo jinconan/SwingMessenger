@@ -71,18 +71,24 @@ public class FriendThread implements Runnable{
 					oout.flush();//데이터 강제로 보냄.
 					break;
 				case Message.FRIEND_INSERT:
+					
+					fm.FriendInsert(request, 4);
 					response.add(mvo);
-					fm.FriendInsert(response, 4);
 					oout.writeObject(msg);
 					oout.flush();
 					break;
 				case Message.FRIEND_DELETE:
+					
+					fm.FriendDelete(request, 5);
 					response.add(mvo);
-					fm.FriendDelete(response, 5);
 					oout.writeObject(msg);
 					oout.flush();
 					break;
-
+				case Message.FRIEND_SEARCH:
+					response = fm.FriendSearch(request);//친구 검색 결과를 리스폰스에 담음.
+					oout.writeObject(msg);
+					oout.flush();
+					break;
 				}
 			}
 		} 

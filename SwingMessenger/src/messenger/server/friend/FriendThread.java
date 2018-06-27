@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.swing.JTextArea;
 
+import messenger._db.dao.FriendMenu;
 import messenger._db.vo.MemberVO;
 import messenger.protocol.Message;
 import messenger.server.chat.ChatServerThreadList;

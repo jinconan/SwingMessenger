@@ -1,4 +1,4 @@
-package messenger.server.friend;
+package messenger._db.dao;
 
 import java.io.ObjectOutputStream;
 import java.sql.CallableStatement;
@@ -28,7 +28,7 @@ public class FriendMenu {
 		// 21)
 		// 디버그시 개선코드 적용.
 		String sql = "";
-		sql += "select mem_id, mem_name, mem_nick from member";
+		sql += "select mem_no, mem_id, mem_name, mem_nick from member";
 		sql += " where mem_no in (select fri_no from friend";
 		sql += " where mem_no = ?)";
 		try {

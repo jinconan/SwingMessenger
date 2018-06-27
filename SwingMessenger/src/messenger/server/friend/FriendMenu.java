@@ -63,7 +63,30 @@ public class FriendMenu {
 
 		}
 	
-
+		public ArrayList<MemberVO> FriendSearch(ArrayList<MemberVO> fo) {
+			ArrayList<MemberVO> list = new ArrayList<MemberVO>();
+			String sql = "";
+			sql +="select mem_id, mem_name, mem_nick from member";
+			sql +=" where mem_id = ";
+			sql +="'"+fo.get(0).getMem_id(); //模备 何盒 八祸.
+			try {
+				dbcon.getConnection();
+				stmt = con.createStatement();
+				rs = stmt.executeQuery(sql);
+				while(rs.next()) {
+					int mem_no = rs.getInt("mem_no");
+					String mem_id = rs.getString("mem_id");
+					String mem_name = rs.getString("mem_name");
+					String mem_nick = rs.getString("mem_nick");
+					MemberVO memVO = new MemberVO(mem_no,mem_id,mem_name,mem_nick,null,null,null,null,null);
+					list.add(memVO);//模备 锅龋, 模备酒捞叼, 模备捞抚, 模备葱匙烙父 淬澜.
+				}
+			}
+			catch (Exception e) {
+				// TODO: handle exception
+			}
+			return list;
+		}
 	public String FriendInsert(ArrayList<MemberVO> fo, int option) {
 		try {
 			dbcon.getConnection();
@@ -74,13 +97,14 @@ public class FriendMenu {
 			//  2 : 扁瓷(insert)
 			//////////////////////////////////////////////////////////
 			cstmt = con.prepareCall("{call proc_friend_option(?,?,?,?)}");	
-			cstmt.setObject(1, fo.get(0).getMem_name());//ID
-			cstmt.setObject(2, fo.get(0).getMem_id());//模备ID
+			cstmt.setObject(1, fo.get(0).getMem_id());//蜡历 ID
+			cstmt.setObject(2, fo.get(1).getMem_id());//模备 ID
 			cstmt.setInt(3, option);
 			cstmt.registerOutParameter(4, java.sql.Types.VARCHAR);
 //			rs=cstmt.executeQuery();
-			out_msg = cstmt.getString(4);
 			cstmt.executeUpdate();
+			out_msg = cstmt.getString(4);
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -93,13 +117,14 @@ public class FriendMenu {
 		try {
 			dbcon.getConnection();
 
-			cstmt = con.prepareCall("{call proc_addr_update(?,?,?,?)}");	
-			cstmt.setObject(1, fo.get(0).getMem_name());//ID
-			cstmt.setObject(2, fo.get(0).getMem_id());//模备ID
+			cstmt = con.prepareCall("{call proc_friend_option(?,?,?,?)}");	
+			cstmt.setObject(1, fo.get(0).getMem_id());//ID
+			cstmt.setObject(2, fo.get(1).getMem_id());//模备ID
 			cstmt.setInt(3, option);
 			cstmt.registerOutParameter(4, java.sql.Types.VARCHAR);
-			out_msg = cstmt.getString(4);
 			cstmt.executeUpdate();
+			out_msg = cstmt.getString(4);
+			
 			
 				} catch (Exception e) {
 			// TODO: handle exception

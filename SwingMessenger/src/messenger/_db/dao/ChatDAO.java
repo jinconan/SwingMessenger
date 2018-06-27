@@ -1,5 +1,6 @@
 package messenger._db.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -143,11 +144,68 @@ public class ChatDAO {
 	/**
 	 * room_member테이블 insert 수행 메소드. 새 방을 생성할 시 room 테이블에서 먼저 insert를 수행한다.
 	 * @param request : 방 안에 참여할 참가자 리스트(기존 방에 초대시에는 초대할 멤버만)
+	 * @param roomVO : 참여할 방(null인 경우 새로운 방 개설)
 	 * @return insert 수행 결과
 	 */
-	public synchronized int insertRoomMember(ArrayList<ChatVO> request) {
-		int result = 0;
+	public synchronized ArrayList<ChatVO> insertRoomMember(ArrayList<ChatVO> request, RoomVO roomVO) {
+		ArrayList<ChatVO> out = new ArrayList<ChatVO>();
+		StringBuilder sql = null;
+		int room_no = 0;
+		try (
+			Connection con = dbCon.getConnection();
+		){
+			//RoomVO가 없는 경우 새로운 방을 먼저 db에 추가한다.
+			if(roomVO == null) {
+				try (CallableStatement cstmt = con.prepareCall("{call proc_room_create(?,?)}");){
+					cstmt.setString(1, "무제");
+					cstmt.registerOutParameter(2, java.sql.Types.INTEGER);
+					cstmt.executeUpdate();
+					
+					room_no = cstmt.getInt(2);
+				}catch(Exception e) {
+					e.printStackTrace();
+					return out;
+				}
+			}
+			else
+				room_no = roomVO.getRoom_no();
+			//방 안에 멤버를 추가.
+			sql = new StringBuilder("INSERT INTO room_member(room_seq, room_no, mem_no) VALUES(seq_room_member.nextval, ?, ?)");
+			try (PreparedStatement pstmt = con.prepareStatement(sql.toString())) {
+				int result = 0;
+				for(ChatVO chatVO : request) {
+					pstmt.setInt(1, room_no);
+					pstmt.setInt(2,  chatVO.getMemVO().getMem_no());
+					result = pstmt.executeUpdate();
+					if(result != 0) {
+						out.add(chatVO);
+					}
+					pstmt.clearParameters();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return out;
+	}
+	
+	public static void main(String[] args) {
+		ChatDAO dao = new ChatDAO();
+		ArrayList<ChatVO> request = new ArrayList<ChatVO>();
+		RoomVO roomVO = null;
 		
-		return result;
+		MemberVO mem = new MemberVO();
+		mem.setMem_no(25);
+		request.add(new ChatVO(0, null, null, null, mem));
+		mem = new MemberVO();
+		mem.setMem_no(26);
+		request.add(new ChatVO(0, null, null, null, mem));
+		ArrayList<ChatVO> out= dao.insertRoomMember(request, roomVO);
+		
+		for(ChatVO c : out) {
+			System.out.println(c.getMemVO().getMem_no());
+		}
 	}
 }

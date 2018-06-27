@@ -1,5 +1,7 @@
 package messenger.client.view;
 
+import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -8,44 +10,73 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.table.DefaultTableModel;
 
 public class SubMenu implements ActionListener{
-	//선언부
+	///////선언부
+	//친구검색창
 	JDialog 			jd_fri 	   = new JDialog();
-	JDialog 			jd_chat	   = new JDialog();
-	JDialog				jd_emti    = new JDialog();
-	JDialog				jd_inv	   = new JDialog();
-	JPanel				jp_chatF   = new JPanel();
-	JLabel				jl_emti    = new JLabel();
+	JTable 				jt_fri 	   = new JTable();
 	JTextField 			jtf_fri    = new JTextField();
-	JTextField			jtf_inv    = new JTextField();
+	JScrollPane 		jsp_fri	   = new JScrollPane(jt_fri);
+	DefaultTableModel   dftm_fri   = new DefaultTableModel();
+	
+	//채팅창
+	JDialog 			jd_chat	   = new JDialog();
 	JTextField 			jtf_chat   = new JTextField();
 	JTextPane 			jtp_chat   = new JTextPane();
-	JTable 				jt_fri 	   = new JTable();
-	JTable				jt_inv	   = new JTable();
-	JButton 			jbtn_gum   = new JButton("검색");
+	JPanel				jp_chatF   = new JPanel();
 	JButton				jbtn_jun   = new JButton("전송");
-	JButton				jbtn_ok    = new JButton("확인");
-	JButton				jbtn_cancel= new JButton("취소");
-	JButton				jbtn_emti  = new JButton("이모티콘");
 	JButton				jbtn_inv   = new JButton("친구초대");
-	DefaultTableModel   dftm_fri   = new DefaultTableModel();
-	JScrollPane 		jsp_fri	   = new JScrollPane(jt_fri);
+	JButton				jbtn_emti  = new JButton("이모티콘");
+	JToolBar			jtb_chat   = new JToolBar();
 	JScrollPane 		jsp_chatA  = new JScrollPane(jtp_chat);
 	JScrollPane 		jsp_chatF  = new JScrollPane(jtf_chat);
+	
+	//친구초대창
+	JDialog				jd_inv	   = new JDialog();
+	JTable				jt_inv	   = new JTable();
+	JTextField			jtf_inv    = new JTextField();
+	JButton 			jbtn_gum   = new JButton("검색");
+	JButton				jbtn_ok    = new JButton("확인");
+	JButton				jbtn_cancel= new JButton("취소");
 	JScrollPane 		jsp_inv    = new JScrollPane(jt_inv);
-	JToolBar			jtb_chat   = new JToolBar();
+	
+	//이모티콘창
+	JDialog				jd_emti    = new JDialog();
+	JLabel				jl_emti    = new JLabel();
 	String				img_path   = "C:\\Users\\516\\Desktop\\tales_emoticon\\";
+	
+	//회원정보 수정창
+	CardLayout 	card		= new CardLayout();
+	JDialog		jd_upd		= new JDialog();
+	JPanel		jp_card		= new JPanel();
+	JPanel		jp_cert		= new JPanel();
+	JPanel		jp_upd		= new JPanel();
+	JLabel 		jl_unick  	= new JLabel("닉네임 :");
+	JLabel 		jl_upw 		= new JLabel("비밀번호 :");
+	JLabel 		jl_uname 	= new JLabel("이름 :");
+	JLabel 		jl_ugender  = new JLabel("성별 :");
+	JLabel 		jl_uhp		= new JLabel("핸드폰번호 :");
+	JTextField  jtf_cert 	= new JTextField(20);
+	JTextField  jtf_unick	= new JTextField(20);
+	JTextField  jtf_upw		= new JTextField(20);
+	JTextField  jtf_uname 	= new JTextField(20);
+	JTextField  jtf_uhp 	= new JTextField(20);
+	String[] 	genderList  = {"남자","여자"};
+	JComboBox   jtf_ugender = new JComboBox(genderList);
+	JButton		jbtn_cert	= new JButton("인증하기");
+	JButton		jbtn_upd	= new JButton("수정");
+	JButton		jbtn_back	= new JButton("뒤로가기");	
 	
 	//친구검색 다이얼로그
 	public void addFriends() {
@@ -127,6 +158,77 @@ public class SubMenu implements ActionListener{
 		}
 	}
 	
+	//회원정보 수정 다이얼로그창
+	public void UpdateInfo() {
+		jbtn_upd.addActionListener(this);
+		jd_upd.setTitle("회원정보수정");
+		jd_upd.setSize(350,400);
+		jd_upd.setVisible(true);
+		/*//카드패널
+		jp_card.setLayout(card);
+		jp_card.add(jp_cert,"인증창");
+		jp_card.add(jp_upd, "수정창");			
+		//인증창
+		jp_cert.add("Center",jtf_cert);
+		jp_cert.add("South",jbtn_cert);
+		//수정창
+		jp_upd.setVisible(true);
+		jp_upd.setLayout(null);
+		jp_upd.add(jbtn_upd);
+		jp_upd.add(jbtn_back);
+		jp_upd.add(jl_uid);
+		jp_upd.add(jl_upw);
+		jp_upd.add(jl_uname);
+		jp_upd.add(jl_uhp);
+		jp_upd.add(jl_ugender);
+		jp_upd.add(jtf_uid);
+		jp_upd.add(jtf_upw);
+		jp_upd.add(jtf_uname);
+		jp_upd.add(jtf_ugender); 
+		jp_upd.add(jtf_uhp);
+		jp_upd.setBackground(Color.YELLOW);*/
+		jd_upd.setVisible(true);
+		jd_upd.setLayout(null);
+		jd_upd.setBackground(Color.YELLOW);
+		jd_upd.add(jbtn_upd);
+		jd_upd.add(jbtn_back);
+		jd_upd.add(jl_unick);
+		jd_upd.add(jl_upw);
+		jd_upd.add(jl_uname);
+		jd_upd.add(jl_uhp);
+		jd_upd.add(jl_ugender);
+		jd_upd.add(jtf_unick);
+		jd_upd.add(jtf_upw);
+		jd_upd.add(jtf_uname);
+		jd_upd.add(jtf_ugender); 
+		jd_upd.add(jtf_uhp);
+		jd_upd.setBackground(Color.YELLOW);
+		jl_unick.setBounds(30, 30, 80, 20);
+		jl_unick.setVisible(true);
+		jl_upw.setBounds(30, 70, 80, 20);
+		jl_upw.setVisible(true);
+		jl_uname.setBounds(30, 110, 80, 20);
+		jl_uname.setVisible(true);
+		jl_ugender.setBounds(30, 150, 80, 20);
+		jl_ugender.setVisible(true);
+		jl_uhp.setBounds(30, 190, 80, 20);
+		jl_uhp.setVisible(true);
+		jl_uhp.setBounds(30, 190, 80, 20);
+		jl_uhp.setVisible(true);
+		jtf_unick.setBounds(120, 30, 180, 20);
+		jtf_unick.setVisible(true);
+		jtf_upw.setBounds(120, 70, 180, 20);
+		jtf_upw.setVisible(true);
+		jtf_uname.setBounds(120, 110, 180, 20);
+		jtf_uname.setVisible(true);
+		jtf_ugender.setBounds(120, 150, 180, 20);
+		jtf_ugender.setVisible(true);
+		jtf_uhp.setBounds(120, 190, 180, 20);
+		jtf_uhp.setVisible(true);
+		jbtn_upd.setBounds(90, 250, 180, 30);
+		jbtn_back.setBounds(90, 280, 180, 30);
+	}
+	
 	//버튼 액션부
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -167,10 +269,20 @@ public class SubMenu implements ActionListener{
 			System.out.println("취소실행");
 			System.exit(0);
 		}
+		//회원정보 수정
+		if(e.getActionCommand().equals("인증하기")) {
+			card.show(jp_card, "수정창");
+		}
+		else if(e.getActionCommand().equals("수정")) {
+			System.out.println("MemberUpdate 클래스 호출");
+			MemberUpdate mupd = new MemberUpdate();
+			mupd.Update();
+		}
 	}
 	public static void main(String[] args) {
 		SubMenu ad = new SubMenu();
-		ad.Emoticon();
-		ad.addChatting();
+		//ad.Emoticon();
+		//ad.addChatting();
+		ad.UpdateInfo();
 	}
 }

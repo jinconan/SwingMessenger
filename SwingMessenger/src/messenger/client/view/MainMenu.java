@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.plaf.basic.BasicPasswordFieldUI;
 import javax.swing.table.DefaultTableModel;
 
 public class MainMenu implements ActionListener {
@@ -26,14 +27,15 @@ public class MainMenu implements ActionListener {
 	CardLayout card = new CardLayout();
 	JFrame jf_m = new JFrame();
 	// 메뉴바
-	JMenuBar jmb_menu = new JMenuBar();
+	JMenuBar  jmb_menu = new JMenuBar();
 	JMenuItem jmi_fri = new JMenuItem("친구목록");
 	JMenuItem jmi_chat = new JMenuItem("대화목록");
 	JMenuItem jmi_news = new JMenuItem("뉴스");
 	JMenuItem jmi_calender = new JMenuItem("캘린더");
-	JMenu jm_add = new JMenu("메뉴");
+	JMenu 	  jm_add = new JMenu("메뉴");
 	JMenuItem jmi_addfri = new JMenuItem("새로운 친구");
 	JMenuItem jmi_addchat = new JMenuItem("새로운 채팅");
+	JMenuItem jmi_upd = new JMenuItem("회원정보수정");
 	JMenuItem jmi_logout = new JMenuItem("로그아웃");
 	JMenuItem jmi_exit = new JMenuItem("종료");
 	// 상태창
@@ -52,10 +54,11 @@ public class MainMenu implements ActionListener {
 	JLabel jl_news = new JLabel("뉴스");
 	JLabel jl_calender = new JLabel("캘린더");
 	JScrollPane jsp_list = new JScrollPane(jp_card);
-
+	BasicPasswordFieldUI bpf_pw = new BasicPasswordFieldUI(); 
 	// 임시 이미지 소스
 	String noname = "E:\\dev_kosmo201804\\dev_java\\src\\com\\image\\";
 	JLabel jl_no = new JLabel();
+<<<<<<< HEAD
 
 	Login login = null;
 	public MainMenu() {
@@ -66,6 +69,9 @@ public class MainMenu implements ActionListener {
 		this.login = login;
 	}
 
+=======
+	
+>>>>>>> refs/heads/UI2
 	// 화면부
 	public void initDisplay() {
 		jmi_fri.addActionListener(this);
@@ -74,6 +80,7 @@ public class MainMenu implements ActionListener {
 		jmi_calender.addActionListener(this);
 		jmi_addfri.addActionListener(this);
 		jmi_addchat.addActionListener(this);
+		jmi_upd.addActionListener(this);
 		jmi_logout.addActionListener(this);
 		jmi_exit.addActionListener(this);
 		// 메인화면
@@ -89,6 +96,7 @@ public class MainMenu implements ActionListener {
 		jmb_menu.add(jm_add);
 		jm_add.add(jmi_addfri);
 		jm_add.add(jmi_addchat);
+		jm_add.add(jmi_upd);
 		jm_add.add(jmi_logout);
 		jm_add.add(jmi_exit);
 		// 카드
@@ -144,6 +152,8 @@ public class MainMenu implements ActionListener {
 			ad.addFriends();
 		} else if (e.getActionCommand().equals("새로운 채팅")) {
 			ad.addChatting();
+		} else if (e.getActionCommand().equals("회원정보수정")) {
+			ad.UpdateInfo();
 		} else if (e.getActionCommand().equals("로그아웃")) {
 			// frl.dispose();
 			Login ui = new Login();
@@ -151,9 +161,16 @@ public class MainMenu implements ActionListener {
 		} else if (e.getActionCommand().equals("종료")) {
 			System.exit(0);
 		}
+<<<<<<< HEAD
 		if (e.getActionCommand().equals(jp_my)) {
 			/*Identify idf = new Identify();
 			idf.initDisplay();*/
 		}
+=======
+		/*if (e.getActionCommand().equals(jp_my)) {
+			Identify idf = new Identify();
+			idf.initDisplay();
+		}*/
+>>>>>>> refs/heads/UI2
 	}////////// end actionPerformed
 }/////////// end Login

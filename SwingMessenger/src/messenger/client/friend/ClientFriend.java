@@ -37,6 +37,8 @@ public class ClientFriend extends Thread{
 	
 	ClientFriendList	cfl = null;
 	ClientFriendSearch	cfs = null;
+	ClientFriendAdd		cfa = null;
+	ClientFriendDelete	cfd = null;
 
 	//친구관련 메소드는 모두 이것으로 실행
 	public ClientFriend(Message<MemberVO> mms) {
@@ -72,14 +74,26 @@ public class ClientFriend extends Thread{
 			case Message.FRIEND_ALL://친구전체조회
 				//화면에 띄우는 메소드호출
 				cfl = new ClientFriendList();
-				cfl.setFriendList(res);
+				cfl.setFriendList(res);//골라낸 List자료 넘김
 				break;
 			
 			case Message.FRIEND_SEARCH://친구찾기
 				cfs = new ClientFriendSearch();
-				cfs.setFriendSearch(res);
+				cfs.setFriendSearch(res);//골라낸 List자료 넘김
 				break;
+				
+			case Message.FRIEND_INSERT://친구추가
+				cfa = new ClientFriendAdd();
+				cfa.setFriendAdd(res);//골라낸 List자료 넘김
+				break;
+				
+			case Message.FRIEND_DELETE://친구삭제
+				cfd = new ClientFriendDelete();
+				cfd.setFriendDelete(res);//골라낸 List자료 넘김
+				break;
+				
 			default:
+				System.out.println("[알림]4가지 타입 외 다른 타입의 메시지가 서버로부터 넘어왔습니다.");
 				break;
 			}
 /*		} while (ois.readObject() == null);// 만약 서버로부터 받지못하면 반복

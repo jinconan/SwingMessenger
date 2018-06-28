@@ -68,8 +68,8 @@ public class ClientFriendList extends Thread {
 		//List에 담긴 MemberVO의 데이터를 dtm에 담기
 		vec = new Vector<MemberVO>();;
 		for(int i=0;i<res.size();i++) {
-		/*	굳이 이렇게 찢어서 벡터에 나눠담을 필요가 없음..
-			왜냐하면, 이미 서버로부터 하나의 정보씩 나눠담겨져서 왔기때문
+		/*	//굳이 이렇게 찢어서 벡터에 나눠담을 필요가 없음..
+			//왜냐하면, 이미 서버로부터 하나의 정보씩 나눠담겨져서 왔기때문
 			vec.add(res.get(i).getMem_id());
 			vec.add(res.get(i).getMem_name());
 			vec.add(res.get(i).getMem_nick());
@@ -80,7 +80,7 @@ public class ClientFriendList extends Thread {
 			vec.add(res.get(i));
 			//System.out.println(vec.get(i).getMem_id());//테스트용 출력문
 			
-			//친구리스트 패널에 들어가는 dtm을 호출(미완상태)
+			//Insert Here - 친구리스트 패널UI에 자료담기(UI협의 후 완성할 예정)
 			//dtm.addRow(vec);
 		
 		}//////////end of for

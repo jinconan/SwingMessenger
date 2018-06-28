@@ -217,7 +217,7 @@ public class ClientFrame extends JFrame implements ActionListener{
 			jm_add.add(jmi_logout);
 			jm_add.add(jmi_exit);
 			
-			// 목록창
+			// 친구목록창
 			jp_list.setVisible(true);
 			jp_list.setBackground(Color.YELLOW);
 			jp_List.setLayout(new GridLayout(5, 1));
@@ -332,8 +332,8 @@ public class ClientFrame extends JFrame implements ActionListener{
 			}
 			else if(e.getActionCommand().equals("중복검사")) {
 				System.out.println("중복검사 실행");
-				Jungbok jb = new Jungbok();
-				jb.Gumsa();
+				//Jungbok jb = new Jungbok();
+				//jb.Gumsa();
 			}
 			// 메인화면 이벤트
 			if (e.getActionCommand().equals("친구목록")) {
@@ -357,8 +357,7 @@ public class ClientFrame extends JFrame implements ActionListener{
 				ad.UpdateInfo();
 			} else if (e.getActionCommand().equals("로그아웃")) {
 				// frl.dispose();
-				Login ui = new Login();
-				ui.initDisplay();
+				this.initDisplay();
 			} else if (e.getActionCommand().equals("종료")) {
 				System.exit(0);
 			}

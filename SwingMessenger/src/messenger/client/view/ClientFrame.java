@@ -18,11 +18,13 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 public class ClientFrame extends JFrame implements ActionListener{
+		Jungbok jb = new Jungbok(this);
 		//선언부
 		CardLayout 	card		= new CardLayout();
 		//JFrame 		jf_login 	= new JFrame();
@@ -49,7 +51,7 @@ public class ClientFrame extends JFrame implements ActionListener{
 		JTextField  jtf_gname 	= new JTextField(20);
 		JTextField  jtf_ghp 	= new JTextField(20);
 		String[] 	genderList  = {"남자","여자"};
-		JComboBox   jtf_ggender = new JComboBox(genderList);
+		JComboBox<String> jtf_ggender = new JComboBox<String>(genderList);
 		JButton		jbtn_get	= new JButton("가입");
 		JButton		jbtn_back	= new JButton("뒤로가기");	
 		JButton		jbtn_bok	= new JButton("중복검사");
@@ -88,6 +90,10 @@ public class ClientFrame extends JFrame implements ActionListener{
 		JLabel jl_no = new JLabel();
 		boolean isView = false;
 		
+		/*public ClientFrame(Jungbok jungbok) {
+			this.jb = jungbok;
+			this.initDisplay();
+		}*/
 		//화면부
 		public void initDisplay() {
 		//메인 액션
@@ -318,7 +324,6 @@ public class ClientFrame extends JFrame implements ActionListener{
 			// TODO Auto-generated method stub
 			SubMenu ad = new SubMenu();
 			if(e.getActionCommand().equals("뒤로가기")) {
-				//card.first(jp_card);
 				card.show(jp_card,"로그인창"); 
 			}
 			else if(e.getActionCommand().equals("회원가입")) {
@@ -330,10 +335,21 @@ public class ClientFrame extends JFrame implements ActionListener{
 				card.show(jp_card,"친구목록");
 				jmb_menu.setVisible(true);
 			}
-			else if(e.getActionCommand().equals("중복검사")) {
-				System.out.println("중복검사 실행");
-				Jungbok jb = new Jungbok();
+			
+			// 회원가입 이벤트
+			if(e.getSource()==jbtn_bok) {
+				//System.out.println(jtf_id.getText());
 				jb.Gumsa();
+			}
+			if(e.getSource()==jbtn_get) {
+				if(jb.answer == 0) {
+					System.out.println(jb.answer);
+					System.out.println("가입성공");
+				}
+				else {
+					System.out.println(jb.answer);
+					JOptionPane.showMessageDialog(jp_gaip, "아이디를 중복검사를 해주세요.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			// 메인화면 이벤트
 			if (e.getActionCommand().equals("친구목록")) {
@@ -356,9 +372,8 @@ public class ClientFrame extends JFrame implements ActionListener{
 			} else if (e.getActionCommand().equals("회원정보수정")) {
 				ad.UpdateInfo();
 			} else if (e.getActionCommand().equals("로그아웃")) {
-				// frl.dispose();
-				Login ui = new Login();
-				ui.initDisplay();
+				card.show(jp_card,"로그인창"); 
+				jmb_menu.setVisible(false);
 			} else if (e.getActionCommand().equals("종료")) {
 				System.exit(0);
 			}

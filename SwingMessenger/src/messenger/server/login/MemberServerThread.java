@@ -87,6 +87,10 @@ public class MemberServerThread implements Runnable{
 					}
 				}
 			}
+			catch (Exception e) {
+				// TODO: handle exception
+				System.out.println(e.toString());
+			}
 		} 
 		catch (Exception e) {
 			// TODO: handle exception

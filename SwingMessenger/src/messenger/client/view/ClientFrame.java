@@ -330,10 +330,11 @@ public class ClientFrame extends JFrame implements ActionListener{
 				card.show(jp_card,"친구목록");
 				jmb_menu.setVisible(true);
 			}
-			else if(e.getActionCommand().equals("중복검사")) {
-				System.out.println("중복검사 실행");
-				//Jungbok jb = new Jungbok();
-				//jb.Gumsa();
+			
+			// 회원가입 이벤트
+			if(e.getSource()==jbtn_bok) {
+				//System.out.println(jtf_id.getText());
+				jb.Gumsa();
 			}
 			// 메인화면 이벤트
 			if (e.getActionCommand().equals("친구목록")) {

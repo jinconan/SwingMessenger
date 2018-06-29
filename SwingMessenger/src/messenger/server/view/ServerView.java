@@ -147,8 +147,7 @@ public class ServerView extends JFrame {
 		
 		jtb_room = new JTable();
 
-		jtb_room.getColumnModel().getColumn(0).setResizable(false);
-		jtb_room.getColumnModel().getColumn(1).setResizable(false);
+		
 		jsp_room.setViewportView(jtb_room);
 		
 //		refreshRoomList();

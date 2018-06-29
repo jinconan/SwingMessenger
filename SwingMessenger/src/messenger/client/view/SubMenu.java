@@ -73,7 +73,7 @@ public class SubMenu implements ActionListener{
 	JTextField  jtf_uname 	= new JTextField(20);
 	JTextField  jtf_uhp 	= new JTextField(20);
 	String[] 	genderList  = {"남자","여자"};
-	JComboBox   jtf_ugender = new JComboBox(genderList);
+	JComboBox<String>   jtf_ugender = new JComboBox<String>(genderList);
 	JButton		jbtn_cert	= new JButton("인증하기");
 	JButton		jbtn_upd	= new JButton("수정");
 	JButton		jbtn_back	= new JButton("뒤로가기");	

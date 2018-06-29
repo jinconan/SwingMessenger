@@ -20,7 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
-import messenger._db.dao.LoginDAO;
+import messenger._db.dao.MemberDAO;
 import messenger._db.vo.MemberVO;
 import messenger.protocol.Message;
 import messenger.server.view.ServerView;

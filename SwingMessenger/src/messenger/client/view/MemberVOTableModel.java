@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 
 import messenger._db.vo.MemberVO;
 
-public class MemberVOTableModel extends AbstractTableModel{
+public class MemberVOTableModel extends AbstractTableModel {
 	private List<MemberVO> list;
 	private String columnName;
 	
@@ -17,11 +18,21 @@ public class MemberVOTableModel extends AbstractTableModel{
 	
 	public MemberVOTableModel(List<MemberVO> list) {
 		this(list, null);
+		DefaultTableModel dtm;
 	}
 
 	public MemberVOTableModel(List<MemberVO> list, String columnName) {
 		this.list = list;
 		this.columnName = columnName;
+	}
+
+	
+	public void addRow(MemberVO mem) {
+		list.add(mem);
+	}
+	
+	public MemberVO removeRow(int row) {
+		return list.remove(row);
 	}
 	
 	@Override

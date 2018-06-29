@@ -55,6 +55,7 @@ public class ClientFriendList extends Thread {
 		mvo = new MemberVO();
 		
 		mvo.setMem_no(userNo);
+		
 		mli.add(mvo);
 		mms.setRequest(mli);//보낼 데이터를 메시지로 묶음
 		mms.setType(Message.FRIEND_ALL);//타입설정 -18.06.27 이진 디버깅

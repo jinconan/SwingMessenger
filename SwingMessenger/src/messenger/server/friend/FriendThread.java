@@ -60,7 +60,7 @@ public class FriendThread implements Runnable{
 				ArrayList<MemberVO> request = (ArrayList<MemberVO>) msg.getRequest();
 				ArrayList<MemberVO> response = new ArrayList<MemberVO>();
 				MemberVO mvo = request.get(0);//클라이언트에서 받은 정보를 mvo에 담음.
-				MemberVO fmvo = request.get(1);//클라이언트에서 받은 친구정보를 fmvo에 담음.
+				
 				switch(msg.getType()) {
 				case Message.FRIEND_ALL://친구 전체 조회 1단계 완료. --일단은요..(에러뜨면 컴터 던지고 ㅌㅌ)
 					ArrayList<MemberVO> result = fm.FriendSelectALL(request);//서버에서 보낼 정보를 selectAll의 파라미터로 전달.
@@ -71,6 +71,7 @@ public class FriendThread implements Runnable{
 					oout.flush();//데이터 강제로 보냄.
 					break;
 				case Message.FRIEND_INSERT:
+					MemberVO fmvo = request.get(1);//클라이언트에서 받은 친구정보를 fmvo에 담음.
 					fm.FriendInsert(request, 4);
 					String out_msg = fm.FriendInsert(request, 4);//이건 유저 자신의 정보를 가져오는거임... 그럼 친구인설트할 정보는... 어디다 담지?
 					//친구정보까지 담기면 request 인덱스0에는 유저가 담기고 인덱스 1에는 친구정보가 담기겠지..?
@@ -85,10 +86,11 @@ public class FriendThread implements Runnable{
 					oout.flush();
 					break;
 				case Message.FRIEND_DELETE:
+					MemberVO fmvo2 = request.get(1);//클라이언트에서 받은 친구정보를 fmvo에 담음.
 					fm.FriendDelete(request, 5);
 					String out_msg2 = fm.FriendDelete(request, 5);
 					if(out_msg2!=null) {
-						response.add(fmvo);//mvo 대신 친구VO였음 좋겠다
+						response.add(fmvo2);//mvo 대신 친구VO였음 좋겠다
 						//이건 자기 자신에 대한 정보를 담는거임.. 오는것과 가는것이 같음...
 						//사실 이러면 의미가 없음...  그럼 리스폰스에는 뭘 담아야 될까..?
 						//리스폰스는 어레이리스트 멤버VO타입인데, 출력결과가 널값이 아니면 그대로 자기 자신의 정보를 클라이언트에 보내주는것이고.

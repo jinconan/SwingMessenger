@@ -3,7 +3,7 @@
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="messenger._db.dao.ChatDAO" project="SwingMessenger" 
     file="/SwingMessenger/src/messenger/_db/dao/ChatDAO.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="207" width="365" x="41" y="37"/>    
+    <position height="225" width="365" x="41" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="messenger._db.dao.LoginDAO" project="SwingMessenger" 
     file="/SwingMessenger/src/messenger/_db/dao/LoginDAO.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="189" width="206" x="446" y="37"/>    
+    <position height="207" width="206" x="825" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="messenger._db.dao.FriendMenu" project="SwingMessenger" 
     file="/SwingMessenger/src/messenger/_db/dao/FriendMenu.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="261" width="339" x="692" y="37"/>    
+    <position height="279" width="339" x="446" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="messenger._db.DBConnection" project="SwingMessenger" 
     file="/SwingMessenger/src/messenger/_db/DBConnection.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="171" width="160" x="446" y="338"/>    
+    <position height="171" width="160" x="446" y="356"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -38,25 +38,38 @@
     </display>  
   </class>  
   <association id="5">    
+    <bendpoint x="928" y="440"/>    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="6" name="dbCon"/>      
-      <multiplicity id="7" minimum="0" maximum="1"/>    
+      <attribute id="6" name="dbCon">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="7" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="false" multiplicity="true"/>  
   </association>  
   <association id="8">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="9" name="dbCon"/>      
-      <multiplicity id="10" minimum="0" maximum="1"/>    
+      <attribute id="9" name="dbCon">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="10" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="false" multiplicity="true"/>  
   </association>  
   <association id="11">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="12" name="dbCon"/>      
-      <multiplicity id="13" minimum="0" maximum="1"/>    
+      <attribute id="12" name="dbCon">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="13" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="false" multiplicity="true"/>  
@@ -66,5 +79,5 @@
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
     <operations public="true" package="true" protected="true" private="true" static="true"/>  
   </classifier-display>  
-  <association-display labels="true" multiplicity="true"/>
+  <association-display labels="false" multiplicity="false"/>
 </class-diagram>

@@ -11,8 +11,25 @@ public class MemberMenu {
 	CallableStatement 	cstmt  		 = null;
 	DBConnection		dbcon = null;
 	Connection 			con =null;
+	ResultSet			rs = null;
+	public int MemberOverlap(ArrayList<MemberVO> mvo) {
+		int overMsg = 0;
+		//중복검사 기능을 하는 메소드
+		try {
+			dbcon.getConnection();
+			cstmt = con.prepareCall("{call proc_member_overlap(?,?)}");
+			cstmt.setObject(1, mvo.get(0).getMem_id());//회원가입시 아이디
+			cstmt.registerOutParameter(2, java.sql.Types.INTEGER);//처리메세지
+			cstmt.executeUpdate();
+			overMsg = cstmt.getInt(2);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return overMsg;
+	}
 	public String MemberInsert(ArrayList<MemberVO> mvo, int option) {
 		try {
+			//회원가입 메소드
 			dbcon.getConnection();
 			cstmt = con.prepareCall("{call proc_member_option(?,?,?,?,?,?,?,?,?,?,?)}");	
 			cstmt.setObject(1, 8888);//회원번호
@@ -38,6 +55,7 @@ public class MemberMenu {
 	public String MemberUpdate(ArrayList<MemberVO> mvo, int option) {
 		String sysmsg = "";
 		try {
+			//회원정보 수정 메소드
 			dbcon.getConnection();
 			cstmt = con.prepareCall("{call proc_member_option(?,?,?,?,?,?,?,?,?,?,?)}");	
 			cstmt.setObject(1, 8888);//회원번호

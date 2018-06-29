@@ -1,5 +1,6 @@
 package messenger._db.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -51,8 +52,7 @@ public class ChatDAO {
 		StringBuilder sql = new StringBuilder("INSERT INTO chat(chat_no, room_no, chat_content, chat_time, mem_no) ");
 		sql.append(" VALUES(seq_chat.nextval, ?, ?, ?, ?)");
 
-		int		out		= 0;
-		ChatVO	chatVO	= null;
+		int	out	= 0;
 		try (
 			Connection 			con		= dbCon.getConnection();
 			PreparedStatement 	pstmt	= con.prepareStatement(sql.toString());
@@ -63,6 +63,8 @@ public class ChatDAO {
 			String	chat_content	= chat.getChat_content();
 			String	chat_time 		= chat_time_format.format(new Date());
 			int		mem_no 			= (chat.getMemVO() != null) ? chat.getMemVO().getMem_no() : 0;
+			chat.setChat_time(chat_time);
+			
 			pstmt.setInt(i++, room_no);
 			pstmt.setString(i++, chat_content);
 			pstmt.setString(i++, chat_time);
@@ -82,8 +84,8 @@ public class ChatDAO {
 	 * @return : 방 번호의 ArrayList<ChatVO>. 방이 없으면 ArrayList의 size는 0이다.
 	 */
 	public synchronized ArrayList<ChatVO> selectRoomList(int mem_no) {
-		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT room_no, room_starttime FROM room WHERE room_no IN ");
+		StringBuilder sql = new StringBuilder("SELECT room_no, room_starttime, room_title FROM room ");
+		sql.append("WHERE room_no IN ");
 		sql.append("(SELECT room_no FROM room_member WHERE mem_no = ?)");
 		ArrayList<ChatVO> list = new ArrayList<ChatVO>(); 
 		try(
@@ -91,8 +93,8 @@ public class ChatDAO {
 			PreparedStatement pstmt = con.prepareStatement(sql.toString());
 		){
 			int i = 1;
-			
 			pstmt.setInt(i++,mem_no);
+			
 			try (
 				ResultSet rs = pstmt.executeQuery();
 			){
@@ -100,7 +102,8 @@ public class ChatDAO {
 					ChatVO chatVO = new ChatVO();
 					int room_no = rs.getInt("room_no");
 					String room_starttime = rs.getString("room_starttime");
-					RoomVO roomVO = new RoomVO(room_no, room_starttime);
+					String room_title = rs.getString("room_title");
+					RoomVO roomVO = new RoomVO(room_no, room_starttime,room_title);
 					chatVO.setRoomVO(roomVO);
 					list.add(chatVO);
 				}
@@ -122,14 +125,13 @@ public class ChatDAO {
 	 */
 	public synchronized int deleteRoomMember(int mem_no, int room_no) {
 		StringBuilder sql = new StringBuilder();
-		int out = 0;
 		sql.append("DELETE FROM room_member WHERE mem_no=? AND room_no=?");
+		int out = 0;
 		try(
 				Connection con = dbCon.getConnection();
 				PreparedStatement pstmt = con.prepareStatement(sql.toString());
 		){
 				int i = 1;
-				
 				pstmt.setInt(i++,mem_no);
 				pstmt.setInt(i++,room_no);
 				out = pstmt.executeUpdate();
@@ -141,13 +143,77 @@ public class ChatDAO {
 	}
 
 	/**
-	 * room_member테이블 insert 수행 메소드. 새 방을 생성할 시 room 테이블에서 먼저 insert를 수행한다.
+	 * 친구 초대 또는 방 개설 메소드.
+	 * 새 방을 생성할 시 room테이블에 insert를 수행하고 생성된 방 번호를 리턴하는 프로시저를 먼저 실행한다.
+	 * 그 후 공통적으로 선택된 멤버들을 원하는 방에 insert를 수행한다.
 	 * @param request : 방 안에 참여할 참가자 리스트(기존 방에 초대시에는 초대할 멤버만)
-	 * @return insert 수행 결과
+	 * @param roomVO : 참여할 방(null인 경우 새로운 방 개설)
+	 * @return 최종적으로 방에 참가한 인원을 ChatVO에 담아서 리스트로 리턴.
 	 */
-	public synchronized int insertRoomMember(ArrayList<ChatVO> request) {
-		int result = 0;
+	public synchronized ArrayList<ChatVO> insertRoomMember(ArrayList<ChatVO> request, RoomVO roomVO) {
+		ArrayList<ChatVO> out = new ArrayList<ChatVO>();
+		StringBuilder sql = null;
+		int room_no = 0;
+		try (
+			Connection con = dbCon.getConnection();
+		){
+			//RoomVO가 없는 경우 새로운 방을 먼저 db에 추가한다.
+			if(roomVO == null) {
+				try (CallableStatement cstmt = con.prepareCall("{call proc_room_create(?,?)}");){
+					cstmt.setString(1, "제목없음");
+					cstmt.registerOutParameter(2, java.sql.Types.INTEGER);
+					cstmt.executeUpdate();
+					
+					room_no = cstmt.getInt(2);
+				}catch(Exception e) {
+					e.printStackTrace();
+					return out;
+				}
+			}
+			else
+				room_no = roomVO.getRoom_no();
+			//방 안에 멤버를 추가.
+			sql = new StringBuilder("INSERT INTO room_member(room_seq, room_no, mem_no) VALUES(seq_room_member.nextval, ?, ?)");
+			try (
+				PreparedStatement pstmt = con.prepareStatement(sql.toString())
+			) {
+				int result = 0;
+				for(ChatVO chatVO : request) {
+					MemberVO memVO = chatVO.getMemVO();
+					if(memVO == null)
+						continue;
+					pstmt.setInt(1, room_no);
+					pstmt.setInt(2,  memVO.getMem_no());
+					result = pstmt.executeUpdate();
+					if(result != 0) {
+						out.add(chatVO);
+					}
+					pstmt.clearParameters();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return out;
+	}
+	
+	public static void main(String[] args) {
+		ChatDAO dao = new ChatDAO();
+		ArrayList<ChatVO> request = new ArrayList<ChatVO>();
+		RoomVO roomVO = null;
 		
-		return result;
+		MemberVO mem = new MemberVO();
+		mem.setMem_no(25);
+		request.add(new ChatVO(0, null, null, null, mem));
+		mem = new MemberVO();
+		mem.setMem_no(26);
+		request.add(new ChatVO(0, null, null, null, mem));
+		ArrayList<ChatVO> out= dao.insertRoomMember(request, roomVO);
+		
+		for(ChatVO c : out) {
+			System.out.println(c.getMemVO().getMem_no());
+		}
 	}
 }

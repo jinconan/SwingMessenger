@@ -18,6 +18,7 @@ public class ChatServer {
 	private ServerSocket serverSocket;
 	private JTextArea jta_log; //채팅서버에서 기록을 출력할 텍스트영역
 	
+	private ChatServerThreadList threadList = new ChatServerThreadList();
 	/**
 	 * 생성자
 	 * @param jta_log - 기록을 출력할 JTextArea
@@ -42,7 +43,7 @@ public class ChatServer {
 		while(true) {
 			try {
 				Socket socket = serverSocket.accept();
-				Thread thread = new Thread(new ChatServerThread(jta_log, socket));
+				Thread thread = new Thread(new ChatServerThread(jta_log, socket,threadList));
 				thread.start();
 			}catch (Exception e) {
 				e.printStackTrace();

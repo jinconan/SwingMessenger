@@ -177,48 +177,9 @@ public class MainMenu extends Thread implements ActionListener {
 			ad.addFriends();
 		} else if (e.getActionCommand().equals("새로운 채팅")) {
 			ad.addChatting();
-			// 방만들기
-			chat_msg = new Message<ChatVO>();
-			room_msg = new ArrayList<ChatVO>();
-			RoomVO roomVO = new RoomVO();
-			ChatVO chatVO = new ChatVO();
-			boolean roomcheck = true;
-			int a = Integer.parseInt(JOptionPane.showInputDialog("방번호를 입력하시오"));
-			String b = JOptionPane.showInputDialog("스타트 타임을 입력하시오");
-			String c = JOptionPane.showInputDialog("방제목을 입력하시오");
-
-			roomVO.setRoom_no(a);
-			roomVO.setRoom_starttime(b);
-			roomVO.setRoom_title(c);
-
-			chatVO.setRoomVO(roomVO);
-
-			room_msg.add(chatVO);
-			chat_msg.setType(chat_msg.CHATROOM_INVITE);
-			chat_msg.setRequest(room_msg);
-
-			for (int i = 0; i < chat_msg.getResponse().size(); i++) {
-				if (chat_msg.getResponse().get(i).getRoomVO().getRoom_title().equals(a)) {
-
-					JOptionPane.showMessageDialog(null, "방이 이미 존재합니다.", "알림", JOptionPane.ERROR_MESSAGE);
-					roomcheck = false;
-				}
-
-			}
-
-			if (roomcheck == true) {
-				try {
-					login.oos.writeObject(chat_msg);
-					JOptionPane.showMessageDialog(null, "방이 만들어 졌습니다.", "알림", JOptionPane.YES_OPTION);
-					System.out.println(chat_msg.getResponse().get(0).getRoomVO().getRoom_title());
-					roomcheck = false;
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, "오류발생", "알림", JOptionPane.ERROR_MESSAGE);
-					e1.printStackTrace();
-				}
-			}
-
+			
+		} else if (e.getActionCommand().equals("회원정보수정")) {
+			ad.UpdateInfo();
 		} else if (e.getActionCommand().equals("로그아웃")) {
 			// frl.dispose();
 			Login ui = new Login();

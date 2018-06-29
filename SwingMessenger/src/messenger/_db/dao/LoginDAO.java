@@ -1,5 +1,10 @@
 package messenger._db.dao;
 
+import java.awt.Font;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +14,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import messenger._db.DBConnection;
 import messenger._db.vo.ChatVO;
@@ -78,9 +84,11 @@ public class LoginDAO {
 					String	mem_hp = rs.getString("mem_hp");
 					String	mem_profile_url = rs.getString("mem_profile");
 					String	mem_background_url = rs.getString("mem_background");
-					JLabel mem_profile = new JLabel(new ImageIcon(mem_profile_url));
-					JLabel mem_background = new JLabel(new ImageIcon(mem_background_url));
+					JLabel 	mem_profile = getImageLabel(mem_profile_url, true);
+					JLabel 	mem_background = getImageLabel(mem_background_url, false);
 					
+					System.out.println(mem_profile_url);
+					System.out.println(mem_background_url);
 					memberVO = new MemberVO(mem_no, mem_id, mem_name, mem_nick, mem_gender, mem_pw, mem_hp, mem_profile, mem_background);
 				}
 			}catch (Exception e) {
@@ -166,5 +174,34 @@ public class LoginDAO {
 		int result= 0;
 		
 		return result;
+	}
+
+	private  JLabel getImageLabel(String url, boolean isProfile) {
+		JLabel jl = null;
+		//클래스파일의 기본 경로를 가져온다.
+ 		ClassLoader loader = this.getClass().getClassLoader();
+ 		
+ 		//위에서 얻은 경로를 시작지점으로 하여 이모티콘이 담긴 폴더의 상대경로 얻기.
+ 		String location = (isProfile == true) ? "messenger\\server\\images\\profile\\" : "messenger\\server\\images\\background\\";
+ 		
+		URL buildpath = loader.getResource(location);
+		
+		try {
+			URI uri = new URI(buildpath.toString());
+			StringBuilder imgpath = new StringBuilder(uri.getPath());
+			if(url != null)
+				imgpath.append(url);
+			File file = new File(imgpath.toString());
+			if(file.exists() && file.isFile()) {
+				System.out.println(imgpath.toString());
+				ImageIcon icon = new ImageIcon(imgpath.toString());
+				jl = new JLabel(icon);
+			}
+			
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		return jl;
+
 	}
 }

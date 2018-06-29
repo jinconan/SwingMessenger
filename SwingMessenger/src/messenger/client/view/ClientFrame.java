@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,14 +22,16 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 public class ClientFrame extends JFrame implements ActionListener{
-		Jungbok jb = new Jungbok(this);
-		//선언부
+		Joongbok jb = new Joongbok(this);
+		
+	//선언부
+		//로그인 패널
 		CardLayout 	card		= new CardLayout();
-		//JFrame 		jf_login 	= new JFrame();
 		JPanel 		jp_card		= new JPanel();
 		JPanel 		jp_login 	= new JPanel();
 		JLabel		jp_img 		= new JLabel();
@@ -38,6 +42,7 @@ public class ClientFrame extends JFrame implements ActionListener{
 		JButton 	jbtn_log 	= new JButton("로그인");
 		JButton 	jbtn_gaip 	= new JButton("회원가입");
 		JLabel		jta_error	= new JLabel();
+		boolean 	isView 		= false;
 		
 		//가입창 패널
 		JPanel 		jp_gaip		= new JPanel();
@@ -51,50 +56,53 @@ public class ClientFrame extends JFrame implements ActionListener{
 		JTextField  jtf_gname 	= new JTextField(20);
 		JTextField  jtf_ghp 	= new JTextField(20);
 		String[] 	genderList  = {"남자","여자"};
-		JComboBox<String> jtf_ggender = new JComboBox<String>(genderList);
+		JComboBox   jtf_ggender = new JComboBox(genderList);
 		JButton		jbtn_get	= new JButton("가입");
 		JButton		jbtn_back	= new JButton("뒤로가기");	
 		JButton		jbtn_bok	= new JButton("중복검사");
 		String		imgPath		= "E:\\dev_kosmo201804\\dev_java\\src\\com\\image\\";
 		
 		// 메뉴바
-		JMenuBar jmb_menu = new JMenuBar();
-		JMenuItem jmi_fri = new JMenuItem("친구목록");
-		JMenuItem jmi_chat = new JMenuItem("대화목록");
-		JMenuItem jmi_news = new JMenuItem("뉴스");
-		JMenuItem jmi_calender = new JMenuItem("캘린더");
-		JMenu jm_add = new JMenu("메뉴");
-		JMenuItem jmi_addfri = new JMenuItem("새로운 친구");
-		JMenuItem jmi_addchat = new JMenuItem("새로운 채팅");
-		JMenuItem jmi_upd = new JMenuItem("회원정보수정");
-		JMenuItem jmi_logout = new JMenuItem("로그아웃");
-		JMenuItem jmi_exit = new JMenuItem("종료");
+		JMenuBar  jmb_menu 		= new JMenuBar();
+		JMenuItem jmi_fri 		= new JMenuItem("친구목록");
+		JMenuItem jmi_chat 		= new JMenuItem("대화목록");
+		JMenuItem jmi_news 		= new JMenuItem("뉴스");
+		JMenuItem jmi_calender  = new JMenuItem("캘린더");
+		JMenu 	  jm_add 		= new JMenu("메뉴");
+		JMenuItem jmi_addfri 	= new JMenuItem("새로운 친구");
+		JMenuItem jmi_addchat   = new JMenuItem("새로운 채팅");
+		JMenuItem jmi_upd 		= new JMenuItem("회원정보수정");
+		JMenuItem jmi_logout 	= new JMenuItem("로그아웃");
+		JMenuItem jmi_exit 		= new JMenuItem("종료");
+		
 		// 상태창
-		JPanel jp_list	= new JPanel();
-		JPanel jp_List = new JPanel();
-		JPanel jp_chat = new JPanel();
-		JPanel jp_talk = new JPanel();
-		JPanel jp_news = new JPanel();
-		JPanel jp_calender = new JPanel();
-		JPanel jp_my = new JPanel();
-		JPanel jp_fri = new JPanel();
-		JLabel jl_my = new JLabel("내정보");
-		JTextField jtf_my = new JTextField();
-		JLabel jl_fri = new JLabel("친구정보");
-		JLabel jl_talk = new JLabel("대화방");
-		JLabel jl_news = new JLabel("뉴스");
-		JLabel jl_calender = new JLabel("캘린더");
-		JScrollPane jsp_list = new JScrollPane(jp_card);
+		JPanel 		jp_list		= new JPanel();
+		JPanel 		jp_List 	= new JPanel();
+		JPanel 		jp_chat 	= new JPanel();
+		JPanel 		jp_talk 	= new JPanel();
+		JPanel 		jp_news 	= new JPanel();
+		JPanel 		jp_calender = new JPanel();
+		JPanel 		jp_my 		= new JPanel();
+		JPanel 		jp_fri 		= new JPanel();
+		JLabel 		jl_no 		= new JLabel();
+		JLabel 		jl_my 		= new JLabel("내정보");
+		JTextField  jtf_my 		= new JTextField();
+		JLabel 		jl_fri 		= new JLabel("친구정보");
+		JLabel 		jl_talk 	= new JLabel("대화방");
+		JLabel 		jl_news 	= new JLabel("뉴스");
+		JLabel 		jl_calender = new JLabel("캘린더");
+		JScrollPane jsp_list 	= new JScrollPane(jp_card);
+		
+		//마우스 팝업 메뉴
+		JPopupMenu popup 	   = new JPopupMenu();
+		JMenuItem  jmi_popfile = new JMenuItem("프로필보기");
+		JMenuItem  jmi_popchat = new JMenuItem("대화하기");
+		JMenuItem  jmi_popdel  = new JMenuItem("삭제하기");
+		
 		// 임시 이미지 소스
 		String noname = "E:\\dev_kosmo201804\\dev_java\\src\\com\\image\\";
-		JLabel jl_no = new JLabel();
-		boolean isView = false;
 		
-		/*public ClientFrame(Jungbok jungbok) {
-			this.jb = jungbok;
-			this.initDisplay();
-		}*/
-		//화면부
+	//화면부
 		public void initDisplay() {
 		//메인 액션
 			jbtn_gaip.addActionListener(this);
@@ -165,7 +173,6 @@ public class ClientFrame extends JFrame implements ActionListener{
 			
 		//가입창 패널
 			jp_gaip.setLayout(null);
-			//jp_gaip.setVisible(true);
 			jp_gaip.add(jbtn_get);
 			jp_gaip.add(jbtn_back);
 			jp_gaip.add(jbtn_bok);
@@ -239,7 +246,7 @@ public class ClientFrame extends JFrame implements ActionListener{
 			jp_news.setBackground(Color.green);
 			jp_calender.setBackground(Color.yellow);
 
-			
+
 			//금지문자열 메소드
 			jtf_id.addKeyListener(new KeyAdapter() {
 				@Override
@@ -297,6 +304,23 @@ public class ClientFrame extends JFrame implements ActionListener{
 					}///////////// end switch
 				}///////////// end keyPressed
 			});/////////// end addKeyListener
+			
+			popup = new JPopupMenu();
+			popup.add(jmi_popfile);
+			popup.add(jmi_popdel);
+			popup.add(jmi_popchat);
+			jp_fri.add(popup);
+			//팝업마우스 액션리스너
+			jp_fri.addMouseListener(new MouseAdapter() {
+				   @Override
+				   public void mousePressed(MouseEvent e) {
+				    // 오른쪽 버튼 클릭 시 ...
+				    if(e.getModifiers() == MouseEvent.BUTTON3_MASK) {
+				      System.out.println("반응");
+				     popup.show(jp_fri, e.getX(), e.getY());
+				    }
+				   }
+				  });
 		}///////////// end initDisplay
 		
 			
@@ -342,12 +366,10 @@ public class ClientFrame extends JFrame implements ActionListener{
 				jb.Gumsa();
 			}
 			if(e.getSource()==jbtn_get) {
-				if(jb.answer == 0) {
-					System.out.println(jb.answer);
+				if(jb.answer == 1) {
 					System.out.println("가입성공");
 				}
 				else {
-					System.out.println(jb.answer);
 					JOptionPane.showMessageDialog(jp_gaip, "아이디를 중복검사를 해주세요.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -356,6 +378,7 @@ public class ClientFrame extends JFrame implements ActionListener{
 				card.show(jp_card, "친구목록");
 			} else if (e.getActionCommand().equals("대화목록")) {
 				System.out.println("대화목록");
+				
 				card.show(jp_card, "대화목록");
 			} else if (e.getActionCommand().equals("뉴스")) {
 				System.out.println("뉴스");

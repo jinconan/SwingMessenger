@@ -74,7 +74,6 @@ public class MemberServerThread implements Runnable{
 					oout.flush();
 					break;
 				case Message.MEMBER_IDCHECK:
-					response.add(mvo);
 					mm.MemberOverlap(request);
 					if(mm.MemberOverlap(request)==1) {
 						response=null;

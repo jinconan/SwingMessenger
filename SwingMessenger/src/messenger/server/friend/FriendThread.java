@@ -60,13 +60,17 @@ public class FriendThread implements Runnable{
 				ArrayList<MemberVO> request = (ArrayList<MemberVO>) msg.getRequest();
 				ArrayList<MemberVO> response = new ArrayList<MemberVO>();
 				MemberVO mvo = request.get(0);//클라이언트에서 받은 정보를 mvo에 담음.
-				
+				/*
+				 * 받는 인풋스트림이 1개면 보내는 아웃풋 스트림도 무조건 1개여야됨.
+				 * 받는 인풋스트림이 2개고 보내는 아웃풋 스트림이 1개일경우 EOFException 에러가 뜸.
+				 * 받는건 두개인데 보내는쪽이 한개면 자동으로 사용안한 인풋스트림은 널로 대기상태로 되는줄 알았는데 아니였음..
+				 * 
+				 */
 				switch(msg.getType()) {
 				case Message.FRIEND_ALL://친구 전체 조회 1단계 완료. --일단은요..(에러뜨면 컴터 던지고 ㅌㅌ)
 					ArrayList<MemberVO> result = fm.FriendSelectALL(request);//서버에서 보낼 정보를 selectAll의 파라미터로 전달.
 					response = result;
 					msg.setResponse(response);//데이터 저장.
-
 					oout.writeObject(msg);//아웃풋 스트림으로 작성
 					oout.flush();//데이터 강제로 보냄.
 					break;

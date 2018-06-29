@@ -29,6 +29,7 @@ public class ClientFriendAdd {
 	String friendId = null;		 //UI에서 조회한 검색결과로 추가하고자하는 친구아이디
 	Message<MemberVO> mms = null;//Client-Server간 주고받을 메세지와
 	List<MemberVO> mli = null;	 //메시지에 담길 자료구조 List
+<<<<<<< HEAD
 	MemberVO mvo = null;		 //List에 담겨질 클래스자료 MemberVO
 	ClientFriend cf = null;		 //친구관련 작업을 수행할 Thread가 위치한 클래스
 	
@@ -55,6 +56,40 @@ public class ClientFriendAdd {
 		mvo.setMem_id(friendId);
 		mli.add(mvo);
 		mms.setRequest(mli);//보낼 데이터를 메시지로 묶음
+=======
+	List<MemberVO> mli_f = null; //친구
+	MemberVO mvo = null;		 //List에 담겨질 클래스자료 MemberVO
+	MemberVO mvo_f = null;		 //친구
+	ClientFriend cf = null;		 //친구관련 작업을 수행할 Thread가 위치한 클래스
+	
+	Vector<MemberVO> vec = null;;//서버로부터 받은 메시지를 순서대로 담을 변수
+	/*생성자*/
+	//디펄트 생성자
+	public ClientFriendAdd() {}
+	//userNo,friendId 전역변수 초기화
+	public ClientFriendAdd(int userNo, String friendId) {
+		this.userNo   = userNo;
+		this.friendId = friendId;
+	}
+	
+	/*사용자정의메소드*/
+	//본인회원번호와 친구아이디를 서버로 전달하기
+	public void getAddFriend() {
+		//서버로 보낼 메세지&자료구조&클래스자료 생성
+		mms = new Message<MemberVO>();
+		mli = new ArrayList<MemberVO>();
+		mli_f = new ArrayList<MemberVO>();
+		mvo = new MemberVO();
+		mvo_f = new MemberVO();
+		
+		//담기
+		mvo.setMem_no(userNo);
+		mvo_f.setMem_id(friendId);
+		mli.add(mvo);
+		mli_f.add(mvo_f);
+		mms.setRequest(mli);//보낼 데이터를 메시지로 묶음
+		mms.setRequest(mli_f);//보낼 데이터를 메시지로 묶음
+>>>>>>> refs/heads/JeongRyeol
 		mms.setType(Message.FRIEND_INSERT);//이 메시지의 프로토콜 지정
 		
 		//Thread클래스로 보내서 실행

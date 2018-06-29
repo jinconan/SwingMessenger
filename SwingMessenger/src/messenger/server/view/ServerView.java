@@ -2,24 +2,14 @@ package messenger.server.view;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-
-import messenger.protocol.Message;
 import messenger.server.chat.ChatServer;
-import messenger.server.chat.ChatServerThread;
-import messenger.server.chat.ChatServerThreadList;
 import messenger.server.emoticon.EmoticonServer;
 import messenger.server.friend.FriendServer;
-import messenger.server.login.LoginServer;
+import messenger.server.login.MemberServer;
 
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
@@ -33,12 +23,10 @@ import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import javax.swing.JTable;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class ServerView extends JFrame {
 	//서버 소켓
-	private LoginServer loginServer;
+	private MemberServer memberServer;
 	private ChatServer	chatServer;
 	private	FriendServer friendServer;
 	private EmoticonServer emoticonServer;
@@ -239,8 +227,8 @@ public class ServerView extends JFrame {
 				new SwingWorker<Object, Object>() {
 					@Override
 					protected Object doInBackground() throws Exception {
-						loginServer = new LoginServer(jta_loginlog);
-						loginServer.run();
+						memberServer = new MemberServer(jta_loginlog);
+						memberServer.run();
 						return null;
 					}
 				}.execute();

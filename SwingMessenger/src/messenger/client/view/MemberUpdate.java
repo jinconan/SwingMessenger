@@ -43,7 +43,7 @@ public class MemberUpdate<T> {
 			socket = new Socket("",);
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			oos.writeObject(mem);
-			//MemberVO에 수정한 회원정보 담기
+			//MemberVO에 수정한 회원+정보 담기
 			mem.setMem_nick(sm.jtf_unick.getText());
 			mem.setMem_pw(sm.jtf_upw.getText());
 			mem.setMem_name(sm.jtf_uname.getText());

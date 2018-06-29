@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -52,7 +51,7 @@ public class ClientFrame extends JFrame implements ActionListener{
 		JTextField  jtf_gname 	= new JTextField(20);
 		JTextField  jtf_ghp 	= new JTextField(20);
 		String[] 	genderList  = {"남자","여자"};
-		JComboBox   jtf_ggender = new JComboBox(genderList);
+		JComboBox<String> jtf_ggender = new JComboBox<String>(genderList);
 		JButton		jbtn_get	= new JButton("가입");
 		JButton		jbtn_back	= new JButton("뒤로가기");	
 		JButton		jbtn_bok	= new JButton("중복검사");
@@ -91,6 +90,10 @@ public class ClientFrame extends JFrame implements ActionListener{
 		JLabel jl_no = new JLabel();
 		boolean isView = false;
 		
+		/*public ClientFrame(Jungbok jungbok) {
+			this.jb = jungbok;
+			this.initDisplay();
+		}*/
 		//화면부
 		public void initDisplay() {
 		//메인 액션
@@ -236,7 +239,7 @@ public class ClientFrame extends JFrame implements ActionListener{
 			jp_news.setBackground(Color.green);
 			jp_calender.setBackground(Color.yellow);
 
-
+			
 			//금지문자열 메소드
 			jtf_id.addKeyListener(new KeyAdapter() {
 				@Override
@@ -339,10 +342,12 @@ public class ClientFrame extends JFrame implements ActionListener{
 				jb.Gumsa();
 			}
 			if(e.getSource()==jbtn_get) {
-				if(jb.answer == 1) {
+				if(jb.answer == 0) {
+					System.out.println(jb.answer);
 					System.out.println("가입성공");
 				}
 				else {
+					System.out.println(jb.answer);
 					JOptionPane.showMessageDialog(jp_gaip, "아이디를 중복검사를 해주세요.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -351,7 +356,6 @@ public class ClientFrame extends JFrame implements ActionListener{
 				card.show(jp_card, "친구목록");
 			} else if (e.getActionCommand().equals("대화목록")) {
 				System.out.println("대화목록");
-				
 				card.show(jp_card, "대화목록");
 			} else if (e.getActionCommand().equals("뉴스")) {
 				System.out.println("뉴스");

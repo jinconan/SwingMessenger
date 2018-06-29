@@ -26,10 +26,10 @@ import messenger.protocol.Message;
 public class ClientFriendSearch{
 
 	/*선언부*/
-	String userId = null;		 //UI로부터받은 '찾고자하는 친구의 아이디'를 담을 변수
+	String userId_f = null;		 //UI로부터받은 '찾고자하는 친구의 아이디'를 담을 변수
 	Message<MemberVO> mms = null;//Client-Server간 주고받을 메세지와
-	List<MemberVO> mli = null;	 //메시지에 담길 자료구조 List
-	MemberVO mvo = null;		 //List에 담겨질 클래스자료 MemberVO
+	List<MemberVO> mli_f = null;	 //메시지에 담길 자료구조 List
+	MemberVO mvo_f = null;		 //List에 담겨질 클래스자료 MemberVO
 	ClientFriend cf = null;		 //친구관련 작업을 수행할 Thread가 위치한 클래스
 	
 	Vector<MemberVO> vec = null; //서버로부터 받은 메시지를 순서대료 담을 변수
@@ -40,8 +40,8 @@ public class ClientFriendSearch{
 	
 	//userId 전역변수 초기화 /생성자
 	//사용자가 찾고자하는 아이디의 입력값을 파라미터로 받음
-	public ClientFriendSearch(String userId) {
-		this.userId = userId;
+	public ClientFriendSearch(String userId_f) {
+		this.userId_f = userId_f;
 	}
 	
 	/*사용자정의메소드*/
@@ -49,13 +49,13 @@ public class ClientFriendSearch{
 	public void getFriendSearch() {//UI에서 호출할때 사용할 메소드
 		//서버로 보낼 메세지&자료구조&클래스자료 생성
 		mms = new Message<MemberVO>();
-		mli = new ArrayList<MemberVO>();
-		mvo = new MemberVO();
+		mli_f = new ArrayList<MemberVO>();
+		mvo_f = new MemberVO();
 		
 		//담기
-		mvo.setMem_id(userId);
-		mli.add(mvo);
-		mms.setRequest(mli);//담기완료
+		mvo_f.setMem_id(userId_f);
+		mli_f.add(mvo_f);
+		mms.setRequest(mli_f);//담기완료
 		mms.setType(Message.FRIEND_SEARCH);//이 메시지의 프로토콜 지정
 		
 		//Thread클래스로 보내서 실행

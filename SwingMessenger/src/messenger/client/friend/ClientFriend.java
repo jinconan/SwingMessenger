@@ -62,7 +62,7 @@ public class ClientFriend extends Thread{
 			//듣기
 			ois = new ObjectInputStream(flsc.getInputStream());
 			//들은 내용을 확인하고 메시지프로토콜로 담아냄
-			mms = (Message<MemberVO>) ois.readObject();
+			mms = (Message<MemberVO>)ois.readObject();
 			//메시지프로토콜에 들어있는 데이터부분을 골라냄 (List타입)
 			List<MemberVO> res = mms.getResponse();
 				//메시지데이터의 부분을 얻어내야하는 경우

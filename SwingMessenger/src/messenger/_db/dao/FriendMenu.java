@@ -111,6 +111,7 @@ public class FriendMenu {
 			cstmt.setObject(1, fo.get(0).getMem_id());// 유저 ID
 			cstmt.setObject(2, fo.get(1).getMem_id());// 친구 ID
 			cstmt.setInt(3, option);
+			
 			cstmt.registerOutParameter(4, java.sql.Types.VARCHAR);
 			// rs=cstmt.executeQuery();
 			cstmt.executeUpdate();

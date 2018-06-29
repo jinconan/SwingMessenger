@@ -1,5 +1,6 @@
 package messenger.server.emoticon;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -105,6 +106,7 @@ public class EmoticonServerThread implements Runnable{
 				
 				ImageIcon icon = new ImageIcon(emoticonPath.toString());
 				JLabel iconLabel = new JLabel(emoticonName.toString(), icon, SwingConstants.CENTER);
+				iconLabel.setPreferredSize(new Dimension(50,50));
 				iconLabel.setFont(new Font("±¼¸²", Font.BOLD,0));
 				list.add(iconLabel);
 			}

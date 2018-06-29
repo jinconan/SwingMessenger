@@ -80,21 +80,10 @@ public class MemberServerThread implements Runnable {
 				if(jta_log != null)
 					jta_log.append(e.toString()+"\n");
 			}
-<<<<<<< HEAD
-			catch (Exception e) {
-				// TODO: handle exception
-				System.out.println(e.toString());
-			}
-		} 
-		catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e.toString());
-=======
 		} catch (Exception e) {
 			e.printStackTrace();
 			if(jta_log != null)
 				jta_log.append(e.toString()+"\n");
->>>>>>> refs/heads/master3
 		}
 
 	}

@@ -110,6 +110,9 @@ public class FriendThread implements Runnable{
 					break;
 				}
 			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 		} 
 		catch (Exception e) {
 			// TODO: handle exception

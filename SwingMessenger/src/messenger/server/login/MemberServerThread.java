@@ -67,6 +67,8 @@ public class MemberServerThread implements Runnable{
 					break;
 				case Message.MEMBER_MODIFY://회원정보 수정.
 					mm.MemberUpdate(request, Message.MEMBER_MODIFY);
+					request.get(0).getMem_background();//
+					request.get(0).getMem_profile();
 					response.add(mvo);
 					oout.writeObject(msg);
 					oout.flush();

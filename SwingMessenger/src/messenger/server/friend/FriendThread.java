@@ -81,6 +81,7 @@ public class FriendThread implements Runnable{
 					//친구정보까지 담기면 request 인덱스0에는 유저가 담기고 인덱스 1에는 친구정보가 담기겠지..?
 					if(out_msg!=null) {
 					response.add(fmvo);//mvo 대신 친구VO였음 좋겠다
+					msg.setResponse(response);//데이터 저장.
 					//이건 자기 자신에 대한 정보를 담는거임.. 오는것과 가는것이 같음...
 					//사실 이러면 의미가 없음...  그럼 리스폰스에는 뭘 담아야 될까..?
 					//리스폰스는 어레이리스트 멤버VO타입인데, 출력결과가 널값이 아니면 그대로 자기 자신의 정보를 클라이언트에 보내주는것이고.
@@ -95,6 +96,7 @@ public class FriendThread implements Runnable{
 					String out_msg2 = fm.FriendDelete(request, 5);
 					if(out_msg2!=null) {
 						response.add(fmvo2);//mvo 대신 친구VO였음 좋겠다
+						msg.setResponse(response);//데이터 저장.
 						//이건 자기 자신에 대한 정보를 담는거임.. 오는것과 가는것이 같음...
 						//사실 이러면 의미가 없음...  그럼 리스폰스에는 뭘 담아야 될까..?
 						//리스폰스는 어레이리스트 멤버VO타입인데, 출력결과가 널값이 아니면 그대로 자기 자신의 정보를 클라이언트에 보내주는것이고.
@@ -105,6 +107,7 @@ public class FriendThread implements Runnable{
 					break;
 				case Message.FRIEND_SEARCH:
 					response = fm.FriendSearch(request);//친구 검색 결과를 리스폰스에 담음.
+					msg.setResponse(response);//데이터 저장.
 					oout.writeObject(msg);
 					oout.flush();
 					break;

@@ -1,4 +1,4 @@
-package messenger.client.view;
+package messenger.client.member_table;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JTable;

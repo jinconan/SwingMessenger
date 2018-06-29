@@ -23,6 +23,11 @@ import javax.swing.table.DefaultTableModel;
 
 public class SubMenu implements ActionListener{
 	///////선언부
+	//프로필창
+	JDialog				jd_profile = new JDialog();
+	JPanel				jp_profile = new JPanel();
+	JLabel				jl_profile = new JLabel();
+	
 	//친구검색창
 	JDialog 			jd_fri 	   = new JDialog();
 	JTable 				jt_fri 	   = new JTable();
@@ -77,6 +82,13 @@ public class SubMenu implements ActionListener{
 	JButton		jbtn_cert	= new JButton("인증하기");
 	JButton		jbtn_upd	= new JButton("수정");
 	JButton		jbtn_back	= new JButton("뒤로가기");	
+	
+	//프로필창 다이얼로그
+	public void Profile() {
+		jd_profile.setSize(350,500);
+		jd_profile.setVisible(true);
+		jd_profile.setTitle("프로필");
+	}
 	
 	//친구검색 다이얼로그
 	public void addFriends() {
@@ -275,8 +287,8 @@ public class SubMenu implements ActionListener{
 		}
 		else if(e.getActionCommand().equals("수정")) {
 			System.out.println("MemberUpdate 클래스 호출");
-			MemberUpdate mupd = new MemberUpdate();
-			mupd.Update();
+//			MemberUpdate mupd = new MemberUpdate();
+//			mupd.Update();
 		}
 	}
 	public static void main(String[] args) {
@@ -284,5 +296,6 @@ public class SubMenu implements ActionListener{
 		//ad.Emoticon();
 		//ad.addChatting();
 		ad.UpdateInfo();
+		//ad.Profile();
 	}
 }

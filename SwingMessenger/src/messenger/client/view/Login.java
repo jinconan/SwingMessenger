@@ -287,7 +287,8 @@ public class Login extends JFrame implements ActionListener {
 				try {
 					msg = (Message<MemberVO>) ois.readObject();
 				
-				
+		
+				    
 					if(msg.getResponse().size()==1) {
 						System.out.println(msg);
 						card.show(jp_card,"로그인창");
@@ -339,6 +340,7 @@ public class Login extends JFrame implements ActionListener {
 						System.out.println(msg);
 						this.dispose();
 						MainMenu main = new MainMenu(this);
+						main.start();
 						main.initDisplay();
 						
 					}

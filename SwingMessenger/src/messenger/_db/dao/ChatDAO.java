@@ -14,7 +14,6 @@ import java.util.List;
 import messenger._db.DBConnection;
 import messenger._db.vo.ChatVO;
 import messenger._db.vo.MemberVO;
-import messenger._db.vo.RoomMemberVO;
 import messenger._db.vo.RoomVO;
 
 /**

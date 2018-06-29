@@ -6,7 +6,11 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.sound.sampled.Port;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -15,27 +19,30 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.plaf.basic.BasicPasswordFieldUI;
 import javax.swing.table.DefaultTableModel;
 
-public class MainMenu implements ActionListener {
+import messenger._db.vo.ChatVO;
+import messenger._db.vo.RoomVO;
+import messenger.protocol.Message;
+
+public class MainMenu extends Thread implements ActionListener {
 	// 선언부
 	CardLayout card = new CardLayout();
 	JFrame jf_m = new JFrame();
 	// 메뉴바
-	JMenuBar  jmb_menu = new JMenuBar();
+	JMenuBar jmb_menu = new JMenuBar();
 	JMenuItem jmi_fri = new JMenuItem("친구목록");
 	JMenuItem jmi_chat = new JMenuItem("대화목록");
 	JMenuItem jmi_news = new JMenuItem("뉴스");
 	JMenuItem jmi_calender = new JMenuItem("캘린더");
-	JMenu 	  jm_add = new JMenu("메뉴");
+	JMenu jm_add = new JMenu("메뉴");
 	JMenuItem jmi_addfri = new JMenuItem("새로운 친구");
 	JMenuItem jmi_addchat = new JMenuItem("새로운 채팅");
-	JMenuItem jmi_upd = new JMenuItem("회원정보수정");
 	JMenuItem jmi_logout = new JMenuItem("로그아웃");
 	JMenuItem jmi_exit = new JMenuItem("종료");
 	// 상태창
@@ -54,20 +61,23 @@ public class MainMenu implements ActionListener {
 	JLabel jl_news = new JLabel("뉴스");
 	JLabel jl_calender = new JLabel("캘린더");
 	JScrollPane jsp_list = new JScrollPane(jp_card);
-	BasicPasswordFieldUI bpf_pw = new BasicPasswordFieldUI(); 
+	Message<ChatVO> chat_msg = null;
+	List<ChatVO> room_msg = null;
+
 	// 임시 이미지 소스
 	String noname = "E:\\dev_kosmo201804\\dev_java\\src\\com\\image\\";
 	JLabel jl_no = new JLabel();
 
 	Login login = null;
+
 	public MainMenu() {
-		
+
 	}
+
 	public MainMenu(Login login) {
 		// TODO Auto-generated constructor stub
 		this.login = login;
 	}
-
 
 	// 화면부
 	public void initDisplay() {
@@ -77,7 +87,6 @@ public class MainMenu implements ActionListener {
 		jmi_calender.addActionListener(this);
 		jmi_addfri.addActionListener(this);
 		jmi_addchat.addActionListener(this);
-		jmi_upd.addActionListener(this);
 		jmi_logout.addActionListener(this);
 		jmi_exit.addActionListener(this);
 		// 메인화면
@@ -93,7 +102,6 @@ public class MainMenu implements ActionListener {
 		jmb_menu.add(jm_add);
 		jm_add.add(jmi_addfri);
 		jm_add.add(jmi_addchat);
-		jm_add.add(jmi_upd);
 		jm_add.add(jmi_logout);
 		jm_add.add(jmi_exit);
 		// 카드
@@ -106,8 +114,9 @@ public class MainMenu implements ActionListener {
 		// 목록창
 		jp_List.setLayout(new GridLayout(5, 1, 0, 0));
 		// jp_List.add(jp_my,"내정보");
-		jp_List.add(jl_no, "내정보");
 		jl_no = login.msg.getResponse().get(0).getMem_profile();
+		jp_List.add(jl_no, "내정보");
+
 		System.out.println(jl_no.getWidth());
 		jl_no.setText("내이름");
 		jp_List.add(jp_fri, "친구정보");
@@ -122,16 +131,35 @@ public class MainMenu implements ActionListener {
 	}////////// end initDisplay
 
 	// 메인메소드
+	/*@Override
+	public void run() {
 
+		while (true) {
 
-	//버튼 액션부
+			try {
+
+				chat_msg = (Message<ChatVO>) login.ois.readObject();
+
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+	}*/
+
+	// 버튼 액션부
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		SubMenu ad = new SubMenu();
 		MainMenu mm = new MainMenu();
 		// 메인화면 이벤트
-		
+
 		if (e.getActionCommand().equals("친구목록")) {
 			card.show(jp_card, "친구목록");
 		} else if (e.getActionCommand().equals("대화목록")) {
@@ -149,6 +177,7 @@ public class MainMenu implements ActionListener {
 			ad.addFriends();
 		} else if (e.getActionCommand().equals("새로운 채팅")) {
 			ad.addChatting();
+			
 		} else if (e.getActionCommand().equals("회원정보수정")) {
 			ad.UpdateInfo();
 		} else if (e.getActionCommand().equals("로그아웃")) {
@@ -158,16 +187,12 @@ public class MainMenu implements ActionListener {
 		} else if (e.getActionCommand().equals("종료")) {
 			System.exit(0);
 		}
-
 		if (e.getActionCommand().equals(jp_my)) {
-			/*Identify idf = new Identify();
-			idf.initDisplay();*/
+			/*
+			 * Identify idf = new Identify(); idf.initDisplay();
+			 */
 		}
 
-		/*if (e.getActionCommand().equals(jp_my)) {
-			Identify idf = new Identify();
-			idf.initDisplay();
-		}*/
-
 	}////////// end actionPerformed
+
 }/////////// end Login

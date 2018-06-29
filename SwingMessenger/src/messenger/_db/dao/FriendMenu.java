@@ -69,7 +69,7 @@ public class FriendMenu {
 		ArrayList<MemberVO> list = new ArrayList<MemberVO>();
 		String sql = "";
 		sql += "select mem_id, mem_name, mem_nick from member";
-		sql += " where mem_id = ?";
+		sql += " where mem_id = '?'";
 		try {
 			con = dbCon.getConnection();
 			pstmt = con.prepareStatement(sql);

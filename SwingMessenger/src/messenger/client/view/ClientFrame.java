@@ -28,7 +28,7 @@ import javax.swing.JTextField;
 
 public class ClientFrame extends JFrame implements ActionListener{
 		Joongbok jb = new Joongbok(this);
-		
+		ClientData clientData = new ClientData(this);
 	//선언부
 		//로그인 패널
 		CardLayout 	card		= new CardLayout();
@@ -77,8 +77,10 @@ public class ClientFrame extends JFrame implements ActionListener{
 		
 		// 상태창
 		JPanel 		jp_list		= new JPanel();
-		JPanel 		jp_List 	= new JPanel();
-		JPanel 		jp_chat 	= new JPanel();
+		FriendPanel jp_List     = new FriendPanel(this);
+//		JPanel 		jp_List 	= new JPanel();
+//		JPanel 		jp_chat 	= new JPanel();
+		RoomPanel	jp_chat		= new RoomPanel(this);
 		JPanel 		jp_talk 	= new JPanel();
 		JPanel 		jp_news 	= new JPanel();
 		JPanel 		jp_calender = new JPanel();
@@ -125,6 +127,7 @@ public class ClientFrame extends JFrame implements ActionListener{
 			jp_card.add(jp_gaip,"가입창");
 			jp_card.add(jp_List, "친구목록");
 			jp_card.add(jp_chat, "대화목록");
+			
 			jp_card.add(jp_news, "뉴스");
 			jp_card.add(jp_calender, "캘린더");
 			//프레임
@@ -233,11 +236,11 @@ public class ClientFrame extends JFrame implements ActionListener{
 			// 목록창
 			jp_list.setVisible(true);
 			jp_list.setBackground(Color.YELLOW);
-			jp_List.setLayout(new GridLayout(5, 1));
-			jp_List.add(jl_no, "내정보");
+//			jp_List.setLayout(new GridLayout(5, 1));
+//			jp_List.add(jl_no, "내정보");
 			jl_no.setIcon(new ImageIcon(noname + "알수없음2.png"));
 			jl_no.setText("내이름");
-			jp_List.add(jp_fri, "친구정보");
+//			jp_List.add(jp_fri, "친구정보");
 			jp_my.add(jl_my);
 			jp_fri.add(jl_fri);
 			jp_my.setBackground(Color.CYAN);
@@ -356,8 +359,18 @@ public class ClientFrame extends JFrame implements ActionListener{
 				card.show(jp_card,"가입창");
 			}
 			else if(e.getActionCommand().equals("로그인")) {
-				card.show(jp_card,"친구목록");
-				jmb_menu.setVisible(true);
+				if(clientData.login(jtf_id.getText(), jtf_pw.getText())) {
+					//로그인 성공시 멤버서버에 연결하여 친구리스트가져오기, 채팅서버에 연결하여 방 리스트 가져오기, 이모티콘서버에 연결하여 이모티콘 받아오기 수행
+					clientData.initChat();
+					jp_List.refreshMyTable(clientData.getMyData());
+					clientData.getEmoticonFromServer();
+					card.show(jp_card,"친구목록");
+					jmb_menu.setVisible(true);
+//					clientData.
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "에러", "로그인 실패", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			
 			// 회원가입 이벤트
@@ -403,5 +416,9 @@ public class ClientFrame extends JFrame implements ActionListener{
 
 		//버튼이벤트성공->액션이벤트->card.show
 		}///////////// end actionPerformed
+
+		public RoomPanel getRoomPanel() {
+			return jp_chat;
+		}
 }
 

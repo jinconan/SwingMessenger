@@ -14,7 +14,7 @@ import messenger.protocol.Port;
 
 public class RoomListSocket extends JFrame {
 	Socket socket = null;
-	String serverIP = "192.168.0.235";
+	String serverIP = "localhost";
 	// 테스트용
 	JPanel jp = new JPanel();
 	JTable jt = new JTable();

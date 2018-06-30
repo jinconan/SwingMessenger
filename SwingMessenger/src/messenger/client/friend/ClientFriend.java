@@ -27,7 +27,7 @@ import messenger.protocol.Port;
 public class ClientFriend extends Thread{
 
 	Socket flsc	= null;
-	String IP	= "192.168.0.235";	//서버IP주소
+	String IP	= "localhost";	//서버IP주소
 	ObjectOutputStream	oos = null;	//클라이언트가 전달하는 것이 먼저이므로 out을 먼저 사용
 	ObjectInputStream	ois = null;
 	

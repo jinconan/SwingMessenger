@@ -22,6 +22,6 @@ public class MemberVOTable extends JTable{
 		setDefaultRenderer(MemberVO.class, memberVOCell);
 		setDefaultEditor(MemberVO.class, memberVOCell);
 		setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
-		setRowHeight(60);
+		setRowHeight(85);
 	}
 }

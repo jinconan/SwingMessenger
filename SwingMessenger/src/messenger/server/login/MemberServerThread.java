@@ -58,12 +58,11 @@ public class MemberServerThread implements Runnable {
 					if(this.jta_log != null)
 						jta_log.append("MEMBER_LOGIN  | " + socket.getInetAddress().toString() + ", " + socket.getPort()+"\n");
 					sendLoginResult(msg, oout);
-					
+					break;
 				case Message.MEMBER_JOIN:// 회원가입
 					if(this.jta_log != null)
 						jta_log.append("MEMBER_JOIN   | " + socket.getInetAddress().toString() + ", " + socket.getPort()+"\n");
 					sendJoinResult(msg,oout);
-					
 					break;
 				case Message.MEMBER_MODIFY:// 회원정보 수정.
 					if(this.jta_log != null)
@@ -74,6 +73,7 @@ public class MemberServerThread implements Runnable {
 					if(this.jta_log != null)
 						jta_log.append("MEMBER_IDCHECK| " + socket.getInetAddress().toString() + ", " + socket.getPort()+"\n");
 					sendOverlapResult(msg,oout);
+					break;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

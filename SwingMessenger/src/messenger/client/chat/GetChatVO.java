@@ -5,13 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.JDialog;
-
 import messenger._db.vo.ChatVO;
-import messenger._db.vo.RoomVO;
 import messenger.client.view.ClientData;
 import messenger.client.view.ClientFrame;
 import messenger.protocol.Message;

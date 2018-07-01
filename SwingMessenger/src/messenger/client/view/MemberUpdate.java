@@ -8,6 +8,7 @@ import java.util.List;
 import messenger._db.vo.MemberVO;
 import messenger.protocol.Message;
 import messenger.protocol.Port;
+import messenger.protocol.Server;
 
 public class MemberUpdate<T> {
 	Socket socket = new Socket();
@@ -22,7 +23,7 @@ public class MemberUpdate<T> {
 		
 		try {
 			
-			socket = new Socket("192.168.0.235",Port.LOGIN);
+			socket = new Socket(Server.IP,Port.LOGIN);
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			message = new Message<MemberVO>();
 			request = new ArrayList<MemberVO>();

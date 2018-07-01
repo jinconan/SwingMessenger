@@ -1,6 +1,7 @@
 package messenger.client.member_table;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -18,11 +19,14 @@ public class MemberVOTableModel extends AbstractTableModel {
 	
 	public MemberVOTableModel(List<MemberVO> list) {
 		this(list, null);
-		DefaultTableModel dtm;
 	}
 
+	public MemberVOTableModel(String columnName) {
+		this(new ArrayList<MemberVO>(), columnName);
+	}
+	
 	public MemberVOTableModel(List<MemberVO> list, String columnName) {
-		this.list = list;
+		this.list = Collections.synchronizedList(list);
 		this.columnName = columnName;
 	}
 

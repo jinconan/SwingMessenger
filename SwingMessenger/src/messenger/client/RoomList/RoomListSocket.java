@@ -11,10 +11,11 @@ import javax.swing.JTable;
 import messenger._db.vo.MemberVO;
 import messenger.protocol.Message;
 import messenger.protocol.Port;
+import messenger.protocol.Server;
 
 public class RoomListSocket extends JFrame {
 	Socket socket = null;
-	String serverIP = "localhost";
+	String serverIP = Server.IP;
 	// 테스트용
 	JPanel jp = new JPanel();
 	JTable jt = new JTable();

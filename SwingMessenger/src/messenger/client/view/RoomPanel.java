@@ -20,7 +20,7 @@ import messenger._db.vo.RoomVO;
 import messenger.protocol.Message;
 
 public class RoomPanel extends JPanel implements ActionListener {
-	private ClientFrame 		clientFrame;
+	private ClientData			clientData;
 	private JButton				jb_newRoom 	= new JButton("방 만들기");
 	private DefaultTableModel 	dtm  		= new DefaultTableModel(new String[] {"번호", "제목"}, 0) {
 											 	@Override
@@ -30,20 +30,23 @@ public class RoomPanel extends JPanel implements ActionListener {
 											 	}
 			 								};
 	private JTable				jt_room 	= new JTable(dtm);
-	private JScrollPane 		jsp_room 	= new JScrollPane(jt_room, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
+	private JScrollPane 		jsp_room 	= new JScrollPane(jt_room, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
+																	 , JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
 	
-	public RoomPanel(ClientFrame clientFrame) {
-		this.clientFrame = clientFrame;
+	public RoomPanel(ClientData clientData) {
+		this.clientData = clientData;
 		this.setLayout(new BorderLayout());
 		jt_room.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
+		//방 목록에서 방을 클릭했을때 채팅방 다이얼로그를 화면에 띄운다.
 		jt_room.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getButton() == 3) {
+				if(e.getButton() == 3) { //방을 우클릭했을 때 - 우클릭 대신 좋은거 찾을 필요가 있음.
+					
 					int row = jt_room.getSelectedRow();
 					int room_no = Integer.parseInt((String)jt_room.getValueAt(row, 0));
-					ChatDialog dialog = clientFrame.clientData.getChatDialog(room_no);
-					System.out.println(dialog);
+					ChatDialog dialog = clientData.getChatDialog(room_no);
 					if(dialog != null) 
 						dialog.setVisible(true);
 				}
@@ -56,6 +59,7 @@ public class RoomPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		System.out.println("방 만들기");
 //		ArrayList<ChatVO> request = new ArrayList<ChatVO>();
 //		
 //		ChatVO chatVO = new ChatVO(0, null, null, null, clientFrame.clientData.myData);
@@ -77,7 +81,7 @@ public class RoomPanel extends JPanel implements ActionListener {
 	}
 	
 	public void refreshRoomList(ArrayList<RoomVO> rVOList) {
-		clientFrame.clientData.refreshRoomList(rVOList);
+		clientData.refreshRoomList(rVOList);
 		
 		dtm.setRowCount(0);
 		for(RoomVO rVO : rVOList) {

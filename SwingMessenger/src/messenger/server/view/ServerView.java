@@ -43,11 +43,7 @@ public class ServerView extends JFrame {
 	private JLabel jlb_friendlog;
 	
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	
-	//DefaultTableModel 잠시 제거.
-	private JTable jtb_member;
-	private JTable jtb_room;
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -119,7 +115,7 @@ public class ServerView extends JFrame {
 		
 		JPanel jp_chat = new JPanel();
 		jp_center.add(jp_chat);
-		jp_chat.setLayout(new GridLayout(3, 1, 0, 0));
+		jp_chat.setLayout(new GridLayout(1, 1, 0, 0));
 		
 		jsp_chatlog = new JScrollPane();
 		jp_chat.add(jsp_chatlog);
@@ -129,28 +125,6 @@ public class ServerView extends JFrame {
 		jta_chatlog.setEditable(false);
 		jta_chatlog.setLineWrap(true);
 		jsp_chatlog.setViewportView(jta_chatlog);
-		
-		JScrollPane jsp_room = new JScrollPane();
-		jp_chat.add(jsp_room);
-		
-		jtb_room = new JTable();
-
-		
-		jsp_room.setViewportView(jtb_room);
-		
-//		refreshRoomList();
-//		dtm_room = new DefaultTableModel();
-//		dtm_room.setColumnIdentifiers(cols_room);
-//		dtm_room.addRow(new String[] {"0","0명"});
-//		jtb_room.setModel(dtm_room);
-		
-		
-		
-		JScrollPane jsp_member = new JScrollPane();
-		jp_chat.add(jsp_member);
-		
-		jtb_member = new JTable();
-		jsp_member.setViewportView(jtb_member);
 		
 		
 		jsp_friendlog = new JScrollPane();

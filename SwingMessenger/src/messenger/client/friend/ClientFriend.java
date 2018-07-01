@@ -11,6 +11,7 @@ import java.util.List;
 import messenger._db.vo.MemberVO;
 import messenger.protocol.Message;
 import messenger.protocol.Port;
+import messenger.protocol.Server;
 
 /**********************************************************************
  * [클러이언트]친구리스트 불러오기
@@ -27,7 +28,7 @@ import messenger.protocol.Port;
 public class ClientFriend extends Thread{
 
 	Socket flsc	= null;
-	String IP	= "localhost";	//서버IP주소
+	String IP	= Server.IP;	//서버IP주소
 	ObjectOutputStream	oos = null;	//클라이언트가 전달하는 것이 먼저이므로 out을 먼저 사용
 	ObjectInputStream	ois = null;
 	

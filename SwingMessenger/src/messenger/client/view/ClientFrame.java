@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -26,7 +28,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-public class ClientFrame extends JFrame implements ActionListener{
+public class ClientFrame extends JFrame implements ActionListener, FocusListener{
 		Joongbok jb = new Joongbok(this);
 		ClientData clientData = new ClientData(this);
 	//선언부
@@ -35,30 +37,33 @@ public class ClientFrame extends JFrame implements ActionListener{
 		JPanel 		jp_card		= new JPanel();
 		JPanel 		jp_login 	= new JPanel();
 		JLabel		jp_img 		= new JLabel();
-		JLabel 		jl_id 		= new JLabel("아이디");
-		JLabel 		jl_pw 		= new JLabel("비밀번호");
 		JTextField 	jtf_id   	= new JTextField();
 		JTextField 	jtf_pw 		= new JTextField();
 		JButton 	jbtn_log 	= new JButton("로그인");
 		JButton 	jbtn_gaip 	= new JButton("회원가입");
+		JButton 	jbtn_exit 	= new JButton("나가기");
+		JMenuItem	jmi_gaip	= new JMenuItem("회원가입");
+		JMenuItem	jmi_system	= new JMenuItem("나가기");
 		JLabel		jta_error	= new JLabel();
-		boolean 	isView 		= false;
 		
 		//가입창 패널
 		JPanel 		jp_gaip		= new JPanel();
 		JLabel 		jl_gid  	= new JLabel("아이디 :");
 		JLabel 		jl_gpw 		= new JLabel("비밀번호 :");
+		JLabel 		jl_gpw_re 	= new JLabel("비밀번호 :");
 		JLabel 		jl_gname 	= new JLabel("이름 :");
 		JLabel 		jl_ggender  = new JLabel("성별 :");
 		JLabel 		jl_ghp		= new JLabel("핸드폰번호 :");
+		JLabel		jta_gerror	= new JLabel();
 		JTextField  jtf_gid		= new JTextField(20);
 		JTextField  jtf_gpw		= new JTextField(20);
+		JTextField  jtf_gpw_re	= new JTextField(20);
 		JTextField  jtf_gname 	= new JTextField(20);
 		JTextField  jtf_ghp 	= new JTextField(20);
 		String[] 	genderList  = {"남자","여자"};
 		JComboBox   jtf_ggender = new JComboBox(genderList);
-		JButton		jbtn_get	= new JButton("가입");
-		JButton		jbtn_back	= new JButton("뒤로가기");	
+		JMenuItem	jmi_get		= new JMenuItem("   회     원     가     입");
+		JMenuItem	jmi_back	= new JMenuItem("   뒤     로     가     기");
 		JButton		jbtn_bok	= new JButton("중복검사");
 		String		imgPath		= "E:\\dev_kosmo201804\\dev_java\\src\\com\\image\\";
 		
@@ -77,10 +82,10 @@ public class ClientFrame extends JFrame implements ActionListener{
 		
 		// 상태창
 		JPanel 		jp_list		= new JPanel();
-		FriendPanel jp_List     = new FriendPanel(this);
 //		JPanel 		jp_List 	= new JPanel();
 //		JPanel 		jp_chat 	= new JPanel();
-		RoomPanel	jp_chat		= new RoomPanel(this);
+		FriendPanel jp_List     = new FriendPanel(clientData);
+		RoomPanel	jp_chat		= new RoomPanel(clientData);
 		JPanel 		jp_talk 	= new JPanel();
 		JPanel 		jp_news 	= new JPanel();
 		JPanel 		jp_calender = new JPanel();
@@ -102,15 +107,16 @@ public class ClientFrame extends JFrame implements ActionListener{
 		JMenuItem  jmi_popdel  = new JMenuItem("삭제하기");
 		
 		// 임시 이미지 소스
-		String noname = "E:\\dev_kosmo201804\\dev_java\\src\\com\\image\\";
+		String noname = ".//src//messenger//client//images//";
 		
 	//화면부
 		public void initDisplay() {
 		//메인 액션
-			jbtn_gaip.addActionListener(this);
+			jmi_gaip.addActionListener(this);
 			jbtn_log.addActionListener(this);
-			jbtn_get.addActionListener(this);
-			jbtn_back.addActionListener(this);
+			jmi_system.addActionListener(this);
+			jmi_get.addActionListener(this);
+			jmi_back.addActionListener(this);
 			jbtn_bok.addActionListener(this);
 			jmi_fri.addActionListener(this);
 			jmi_chat.addActionListener(this);
@@ -127,11 +133,10 @@ public class ClientFrame extends JFrame implements ActionListener{
 			jp_card.add(jp_gaip,"가입창");
 			jp_card.add(jp_List, "친구목록");
 			jp_card.add(jp_chat, "대화목록");
-			
 			jp_card.add(jp_news, "뉴스");
 			jp_card.add(jp_calender, "캘린더");
 			//프레임
-			this.setTitle("코스모톡");
+			this.setTitle("보노보노톡");
 			this.setSize(380, 550);
 			this.setVisible(true);
 			this.add(jp_card, BorderLayout.CENTER);
@@ -140,82 +145,99 @@ public class ClientFrame extends JFrame implements ActionListener{
 		//로그인창패널
 			//로그인창
 			jp_login.add(jp_img);
-			jp_login.add(jl_id);
-			jp_login.add(jl_pw);
 			jp_login.add(jtf_id);
 			jp_login.add(jtf_pw);
 			jp_login.add(jta_error);
 			jp_login.add(jbtn_log);
-			jp_login.add(jbtn_gaip);
+			jp_login.add(jmi_gaip);
+			jp_login.add(jmi_system);
 			jp_login.setLayout(null);
-			jp_login.setBackground(Color.YELLOW);
-			jp_img.setBounds(10, 10, 336, 255);
-			jp_img.setIcon(new ImageIcon(imgPath+"kakao.jpg"));
-			jl_id.setBounds(50, 300, 80, 20);
+			jp_login.setBackground(new Color(126, 195, 237));
+			jp_img.setBounds(70, 10, 250, 260);
+			jp_img.setIcon(new ImageIcon(noname+"bonobono2.jpg"));
 			jp_img.setVisible(true);
-			jl_id.setVisible(true);
-			jtf_id.setBounds(130, 300, 160, 20);
+			jtf_id.setBounds(60, 260, 250, 30);
 			jtf_id.setVisible(true);
-			jta_error.setBounds(150, 320, 200, 20);
+			jtf_id.setText("");
+			jta_error.setBounds(60, 320, 250, 20);
 			jta_error.setText("금지된 문자열입니다.");
 			Font e = new Font("돋움체",Font.CENTER_BASELINE,9);
 			jta_error.setFont(e);
 			jta_error.setForeground(Color.RED);
-			jta_error.setVisible(isView);
-			jl_pw.setBounds(50, 340, 80, 20);
-			jl_pw.setVisible(true);
-			jtf_pw.setBounds(130, 340, 160, 20);
+			jta_error.setVisible(false);
+			jtf_pw.setBounds(60, 290, 250, 30);
 			jtf_pw.setVisible(true);
-			jbtn_log.setBounds(80, 380, 180, 20);
+			jtf_pw.setText("비밀번호");
+			jbtn_log.setBounds(60, 340, 250, 30);
 			jbtn_log.setVisible(true);
-			jbtn_log.setBackground(Color.YELLOW);
-			jbtn_gaip.setVisible(true);
-			jbtn_gaip.setBounds(130, 480, 120, 20);
-			jbtn_gaip.setBackground(Color.YELLOW);
+			jbtn_log.setBackground(new Color(126, 195, 237));
+			jmi_gaip.setVisible(true);
+			jmi_gaip.setBounds(90, 460, 100, 20);
+			jmi_gaip.setHorizontalTextPosition(0);
+			jmi_gaip.setBackground(new Color(126, 195, 237));
+			jmi_system.setVisible(true);
+			jmi_system.setBounds(210, 460, 100, 20);
+			jmi_system.setHorizontalTextPosition(0);
+			jmi_system.setBackground(new Color(126, 195, 237));
 			jp_login.setVisible(true);
 			
 		//가입창 패널
 			jp_gaip.setLayout(null);
-			jp_gaip.add(jbtn_get);
-			jp_gaip.add(jbtn_back);
+			jp_gaip.add(jmi_get);
+			jp_gaip.add(jmi_back);
 			jp_gaip.add(jbtn_bok);
 			jp_gaip.add(jl_gid);
+			jp_gaip.add(jta_gerror);
 			jp_gaip.add(jl_gpw);
+			jp_gaip.add(jl_gpw_re);
 			jp_gaip.add(jl_gname);
 			jp_gaip.add(jl_ghp);
 			jp_gaip.add(jl_ggender);
 			jp_gaip.add(jtf_gid);
 			jp_gaip.add(jtf_gpw);
+			jp_gaip.add(jtf_gpw_re);
 			jp_gaip.add(jtf_gname);
 			jp_gaip.add(jtf_ggender); 
 			jp_gaip.add(jtf_ghp);
-			jp_gaip.setBackground(Color.YELLOW);
-			jl_gid.setBounds(30, 30, 80, 20);
+			jp_gaip.setBackground(new Color(126, 195, 237));
+			jl_gid.setBounds(40, 70, 180, 20);
 			jl_gid.setVisible(true);
-			jbtn_bok.setBounds(250, 30, 60, 20);
+			jbtn_bok.setBounds(120, 110, 200, 20);
 			jbtn_bok.setVisible(true);
-			jl_gpw.setBounds(30, 70, 80, 20);
+			jbtn_bok.setBackground(new Color(126, 195, 237));
+			jta_gerror.setBounds(120, 90, 200, 20);
+			jta_gerror.setHorizontalTextPosition(0);
+			jta_gerror.setText("금지된 문자열입니다.");
+			Font f = new Font("돋움체",Font.CENTER_BASELINE,9);
+			jta_gerror.setFont(f);
+			jta_gerror.setForeground(Color.RED);
+			jta_gerror.setVisible(false);
+			jl_gpw.setBounds(40, 150, 80, 20);
 			jl_gpw.setVisible(true);
-			jl_gname.setBounds(30, 110, 80, 20);
+			jl_gpw_re.setBounds(40, 190, 80, 20);
+			jl_gpw_re.setVisible(true);
+			jl_gname.setBounds(40, 230, 80, 20);
 			jl_gname.setVisible(true);
-			jl_ggender.setBounds(30, 150, 80, 20);
+			jl_ggender.setBounds(40, 270, 80, 20);
 			jl_ggender.setVisible(true);
-			jl_ghp.setBounds(30, 190, 80, 20);
+			jl_ghp.setBounds(40, 310, 80, 20);
 			jl_ghp.setVisible(true);
-			jl_ghp.setBounds(30, 190, 80, 20);
-			jl_ghp.setVisible(true);
-			jtf_gid.setBounds(120, 30, 120, 20);
+			jtf_gid.setBounds(120, 70, 200, 20);
 			jtf_gid.setVisible(true);
-			jtf_gpw.setBounds(120, 70, 180, 20);
+			jtf_gpw.setBounds(120, 150, 200, 20);
 			jtf_gpw.setVisible(true);
-			jtf_gname.setBounds(120, 110, 180, 20);
+			jtf_gpw_re.setBounds(120, 190, 200, 20);
+			jtf_gpw_re.setVisible(true);
+			jtf_gname.setBounds(120, 230, 200, 20);
 			jtf_gname.setVisible(true);
-			jtf_ggender.setBounds(120, 150, 180, 20);
+			jtf_ggender.setBounds(120, 270, 200, 20);
 			jtf_ggender.setVisible(true);
-			jtf_ghp.setBounds(120, 190, 180, 20);
+			jtf_ghp.setBounds(120, 310, 200, 20);
 			jtf_ghp.setVisible(true);
-			jbtn_get.setBounds(90, 450, 180, 30);
-			jbtn_back.setBounds(90, 480, 180, 30);
+			jmi_get.setBounds(40, 430, 140, 30);
+			jmi_get.setBackground(new Color(126, 195, 237));
+			jmi_back.setBounds(180, 430, 140, 30);
+			jmi_back.setBackground(new Color(126, 195, 237));
 							
 		// 메인화면
 			this.add("North", jmb_menu);
@@ -249,8 +271,12 @@ public class ClientFrame extends JFrame implements ActionListener{
 			jp_news.setBackground(Color.green);
 			jp_calender.setBackground(Color.yellow);
 
-
-			//금지문자열 메소드
+			//포커스 리스너 추가(로그인 창 - 아이디, 비밀번호)
+			jtf_id.addFocusListener(this);
+			jtf_pw.addFocusListener(this);
+			
+		//금지문자열 메소드
+			//로그인창
 			jtf_id.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent e) {
@@ -308,6 +334,65 @@ public class ClientFrame extends JFrame implements ActionListener{
 				}///////////// end keyPressed
 			});/////////// end addKeyListener
 			
+			//가입창
+			jtf_gid.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					// TODO Auto-generated method stub
+					if(jta_gerror.getText() != " " && jta_gerror.getText() != "/" && jta_error.getText() != "-"
+							&& jta_gerror.getText() != "=" && jta_gerror.getText() != "|" 
+							&& jta_gerror.getText() != "," && jta_gerror.getText() != "."
+							&& jta_gerror.getText() != "[" && jta_gerror.getText() != "]"
+							&& jta_gerror.getText() != "`" ) {
+						jta_gerror.setVisible(false);
+					}
+					super.keyPressed(e);
+					System.out.println("Key Released: "+ e.getKeyCode());
+					switch(e.getKeyCode()) {
+					case 32:
+						try {
+							System.out.println("NUMPAD0: "+ e.getKeyCode());
+							System.out.println("금지된 문자열입니다.");
+						} catch (Exception e2) {
+							// TODO: handle exception
+							e2.printStackTrace();
+						}
+						jta_gerror.setVisible(true);
+						break;
+					case 44:
+						jta_gerror.setVisible(true);
+						break;
+					case 45:
+						jta_gerror.setVisible(true);
+						break;
+					case 46:
+						jta_gerror.setVisible(true);
+						break;
+					case 47:
+						jta_gerror.setVisible(true);
+						break;
+					case 61:
+						jta_gerror.setVisible(true);
+						break;
+					case 91:
+						jta_gerror.setVisible(true);
+						break;
+					case 92:
+						jta_gerror.setVisible(true);
+						break;
+					case 93:
+						jta_gerror.setVisible(true);
+						break;
+					case 192:
+						jta_gerror.setVisible(true);
+						break;
+					default:
+					break;
+					}///////////// end switch
+				}///////////// end keyPressed
+			});/////////// end addKeyListener
+			
+			//마우스 팝업 레이아웃
 			popup = new JPopupMenu();
 			popup.add(jmi_popfile);
 			popup.add(jmi_popdel);
@@ -350,15 +435,12 @@ public class ClientFrame extends JFrame implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			SubMenu ad = new SubMenu();
-			if(e.getActionCommand().equals("뒤로가기")) {
-				card.show(jp_card,"로그인창"); 
-			}
-			else if(e.getActionCommand().equals("회원가입")) {
+			//로그인창 이벤트
+			if(e.getSource()==jmi_gaip) {
 				//System.out.println(jp_card);
 				//card.next(jp_card);
 				card.show(jp_card,"가입창");
-			}
-			else if(e.getActionCommand().equals("로그인")) {
+			} else if(e.getActionCommand().equals("로그인")) {
 				if(clientData.login(jtf_id.getText(), jtf_pw.getText())) {
 					//로그인 성공시 멤버서버에 연결하여 친구리스트가져오기, 채팅서버에 연결하여 방 리스트 가져오기, 이모티콘서버에 연결하여 이모티콘 받아오기 수행
 					clientData.initChat();
@@ -366,32 +448,40 @@ public class ClientFrame extends JFrame implements ActionListener{
 					clientData.getEmoticonFromServer();
 					card.show(jp_card,"친구목록");
 					jmb_menu.setVisible(true);
-//					clientData.
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "에러", "로그인 실패", JOptionPane.ERROR_MESSAGE);
 				}
+			} else if(e.getActionCommand().equals("나가기")) {
+				System.exit(0);
 			}
 			
 			// 회원가입 이벤트
 			if(e.getSource()==jbtn_bok) {
 				//System.out.println(jtf_id.getText());
-				jb.Gumsa();
+				//jb.Gumsa();
 			}
-			if(e.getSource()==jbtn_get) {
-				if(jb.answer == 1) {
+			if(e.getSource()==jmi_get) {
+				System.out.println("가입버튼");
+				/*if(jb.answer == 1) {
 					System.out.println("가입성공");
 				}
 				else {
 					JOptionPane.showMessageDialog(jp_gaip, "아이디를 중복검사를 해주세요.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
+				if(jtf_gpw.getText()!=jtf_gpw_re.getText()) {
+					JOptionPane.showMessageDialog(jp_gaip, "비밀번호가 같지 않습니다.", "Error", JOptionPane.ERROR_MESSAGE);		
+				} else {return;}
+				*/
+			} else if(e.getSource()==jmi_back) {
+				card.show(jp_card,"로그인창"); 
 			}
+			
 			// 메인화면 이벤트
 			if (e.getActionCommand().equals("친구목록")) {
 				card.show(jp_card, "친구목록");
 			} else if (e.getActionCommand().equals("대화목록")) {
 				System.out.println("대화목록");
-				
 				card.show(jp_card, "대화목록");
 			} else if (e.getActionCommand().equals("뉴스")) {
 				System.out.println("뉴스");
@@ -419,6 +509,33 @@ public class ClientFrame extends JFrame implements ActionListener{
 
 		public RoomPanel getRoomPanel() {
 			return jp_chat;
+		}
+
+
+		@Override
+		public void focusGained(FocusEvent e) {
+			if(e.getSource() == jtf_id) {
+				if(jtf_id.getText().equals("아이디"))
+					jtf_id.setText("");
+			}
+			else if(e.getSource() == jtf_pw) {
+				if(jtf_pw.getText().equals("비밀번호"))
+					jtf_pw.setText("");
+			}
+			
+		}
+
+
+		@Override
+		public void focusLost(FocusEvent e) {
+			if(e.getSource() == jtf_id) {
+				if(jtf_id.getText().length() == 0)
+					jtf_id.setText("아이디");
+			}
+			else if(e.getSource() == jtf_pw) {
+				if(jtf_pw.getText().length() == 0)
+					jtf_pw.setText("비밀번호");
+			}
 		}
 }
 

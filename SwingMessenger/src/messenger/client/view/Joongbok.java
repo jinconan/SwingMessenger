@@ -12,6 +12,7 @@ import SemiProjectChat.Protocol;
 import messenger._db.vo.MemberVO;
 import messenger.protocol.Message;
 import messenger.protocol.Port;
+import messenger.protocol.Server;
 
 public class Joongbok {
 	ClientFrame cf = null;
@@ -34,7 +35,7 @@ public class Joongbok {
 			JOptionPane.showMessageDialog(cf.jtf_gid, "아이디를 입력해주세요.", "Error", JOptionPane.ERROR_MESSAGE);
 		} else {
 			try {
-				socket = new Socket("192.168.0.235", Port.LOGIN);
+				socket = new Socket(Server.IP, Port.LOGIN);
 				oos = new ObjectOutputStream(socket.getOutputStream());
 				message = new Message<MemberVO>();
 				request = new ArrayList<MemberVO>();

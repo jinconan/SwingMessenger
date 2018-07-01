@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 
 import messenger.protocol.Message;
 import messenger.protocol.Port;
+import messenger.protocol.Server;
 
 public class GetEmoticon {
 	// 회원이 로그인에 성공해서 서버에 접속하는 순간 이모티콘을 불러오면됨
@@ -23,7 +24,7 @@ public class GetEmoticon {
 		// TODO Auto-generated constructor stub
 
 		try {
-			Socket socket = new Socket("localhost", Port.EMOTICON);
+			Socket socket = new Socket(Server.IP, Port.EMOTICON);
 			try (
 				OutputStream os = socket.getOutputStream();
 				ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(os));

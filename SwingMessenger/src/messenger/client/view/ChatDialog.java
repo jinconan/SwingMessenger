@@ -31,6 +31,7 @@ public class ChatDialog extends JDialog implements ActionListener{
 	JButton				jbtn_jun   = new JButton("전송");
 	JButton				jbtn_inv   = new JButton("친구초대");
 	JButton				jbtn_emti  = new JButton("이모티콘");
+	JButton				jbtn_exit  = new JButton("나가기");
 	JToolBar			jtb_chat   = new JToolBar();
 	
 	JScrollPane 		jsp_chatA  = new JScrollPane(jtp_chat);
@@ -48,6 +49,7 @@ public class ChatDialog extends JDialog implements ActionListener{
 		jbtn_inv.addActionListener(this);
 		jbtn_emti.addActionListener(this);
 		jbtn_jun.addActionListener(this);
+		jbtn_exit.addActionListener(this);
 		
 		this.setSize(360,550);
 		this.setVisible(false);
@@ -61,6 +63,7 @@ public class ChatDialog extends JDialog implements ActionListener{
 		jtb_chat.add(jbtn_emti);
 		jtb_chat.add(jbtn_inv);
 		jtb_chat.add(jbtn_jun);
+		jtb_chat.add(jbtn_exit);
 		
 	}
 

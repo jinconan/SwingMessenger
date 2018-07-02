@@ -42,8 +42,25 @@ public class ClientFriend extends Thread{
 	ClientFriendDelete	cfd = null;
 
 	//친구관련 메소드는 모두 이것으로 실행
-	public ClientFriend(Message<MemberVO> mms) {
+	public ClientFriend(Message<MemberVO> mms, Object obj) {
 		this.mms = mms;
+		
+		if(obj instanceof ClientFriendSearch) {
+			cfs = (ClientFriendSearch) obj;
+		}
+		else if(obj instanceof ClientFriendList) {
+			cfl = (ClientFriendList)obj;
+		}
+		else if(obj instanceof ClientFriendAdd) {
+			cfa = (ClientFriendAdd)obj;
+		}
+		else if(obj instanceof ClientFriendDelete) {
+			cfd =(ClientFriendDelete) obj;
+		}
+		else {
+			throw new ClassCastException();
+		}
+		
 		this.start();
 	}
 
@@ -51,7 +68,7 @@ public class ClientFriend extends Thread{
 	@Override
 	public void run() {
 		try {//소켓을 생성하고, 소켓을 통한 듣기와 말하기 창구 생성
-			flsc = new Socket(IP, Port.FRIEND);
+			flsc = new Socket(IP, Port.MEMBER);
 			oos  = new ObjectOutputStream(flsc.getOutputStream());
 
 		//do {
@@ -74,7 +91,7 @@ public class ClientFriend extends Thread{
 			
 			case Message.FRIEND_ALL://친구전체조회
 				//화면에 띄우는 메소드호출
-				cfl = new ClientFriendList();
+//				cfl = new ClientFriendList();
 				cfl.setFriendList(res);//골라낸 List자료 넘김
 				break;
 			

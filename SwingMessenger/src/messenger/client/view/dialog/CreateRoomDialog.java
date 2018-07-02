@@ -33,15 +33,17 @@ public class CreateRoomDialog extends JDialog implements ActionListener{
 	private       JTable               friend_list         = new JTable(model_friend_list);
 	private       JTable               Room_add_list       = new JTable(model_Room_add_list);
 	
-	private       JLabel               lblNewLabel         = new JLabel("规父甸扁");
-	private       JLabel               lblNewLabel_1       = new JLabel("力格");
-	private       JButton              jbt_add             = new JButton("Add");
-	private       JButton              jbt_del             = new JButton("Del");
 	private       JScrollPane          Jsc_friend_list     = new JScrollPane(friend_list);
 	private       JScrollPane          Jsc_Room_add_list   = new JScrollPane(Room_add_list);
+	
+	private       JLabel               lblNewLabel         = new JLabel("规父甸扁");
+	private       JLabel               lblNewLabel_1       = new JLabel("力格");
 	private       JPanel               buttonPane          = new JPanel();
+	private       JButton              jbt_add             = new JButton("Add");
+	private       JButton              jbt_del             = new JButton("Del");
 	private       JButton              jbt_ok              = new JButton("OK");
 	private       JButton              jbt_Cancel          = new JButton("Cancel");
+	
 	private       Vector               list                = null;
 	private       Vector               V_Room_add_list     = new Vector();
 	

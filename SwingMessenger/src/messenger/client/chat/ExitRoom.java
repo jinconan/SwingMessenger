@@ -31,7 +31,7 @@ public class ExitRoom {
 	}
 	public void Exit(ChatDialog chat) {
 		try {
-			socket = new Socket(Server.IP,Port.LOGIN);
+			socket = new Socket(Server.IP,Port.MEMBER);
 			oos    = new ObjectOutputStream(socket.getOutputStream());
 			msg1.setType(Message.CHATROOM_EXIT);
 			//서버에게  나의 MSG를 보낸다.~

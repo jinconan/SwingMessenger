@@ -78,7 +78,11 @@ public class GetChatVO extends Thread {
 
 	}
 	
-	
+	/**
+	 * 받은 채팅 메세지를 특정 방에 출력한다.
+	 * @param msg 서버로부터 받은 메세지
+	 * @param clientData 클라이언트의 정보
+	 */
 	private void printChatContent(Message<ChatVO> msg, ClientData clientData) {
 		ArrayList<ChatVO> response = (ArrayList<ChatVO>) msg.getResponse();
 		ChatVO cVO = (response != null && response.size() > 0) ? response.get(0) : null;
@@ -95,7 +99,11 @@ public class GetChatVO extends Thread {
 		dialog.append(mVO.getMem_name() + " > " +chat_content, pattern);
 	}
 	
-	
+	/**
+	 * 서버로부터 받은 방 리스트를 화면에 출력한다.
+	 * @param msg 서버로부터 받은 메세지
+	 * @param clientFrame 클라이언트의 정보
+	 */
 	public void getRoomList(Message<ChatVO> msg, ClientFrame clientFrame) {
 		ArrayList<ChatVO> response = (ArrayList<ChatVO>)msg.getResponse();
 		ArrayList<RoomVO> rVOList = new ArrayList<RoomVO>();
@@ -110,5 +118,9 @@ public class GetChatVO extends Thread {
 		
 		//RoomVo의 리스트를 가지고 방 목록을 새로고침한다..
 		clientFrame.getRoomPanel().refreshRoomList(rVOList);
+	}
+	
+	public void exitRoom(Message<ChatVO> msg, ClientFrame clientFrame) {
+		ArrayList<ChatVO> response = (ArrayList<ChatVO>) msg.getResponse();
 	}
 }

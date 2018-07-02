@@ -51,8 +51,8 @@ public class ClientData {
 	
 	//actionPerformed에서 친구전체조회를 실행하도록 호출할 메소드
 	public void actionFriendList() {
-		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
-		ClientFriendList cfl = new ClientFriendList(myData.getMem_no(),f_Panel);
+//		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
+		ClientFriendList cfl = new ClientFriendList(myData.getMem_no(),clientFrame.jp_List);
 		cfl.getFriendList();
 	}
 	/******************************************
@@ -60,8 +60,8 @@ public class ClientData {
 	 * @param 검색하고자하는 친구아이디
 	 ******************************************/
 	public void actionFriendSearch(String FriendId) {
-		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
-		ClientFriendSearch cfc = new ClientFriendSearch(FriendId,f_Panel);
+//		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
+		ClientFriendSearch cfc = new ClientFriendSearch(FriendId,clientFrame.jp_List);
 		cfc.getFriendSearch();
 	}
 	/******************************************
@@ -69,8 +69,8 @@ public class ClientData {
 	 * @param 추가하고자하는 친구아이디
 	 ******************************************/
 	public void actionAddFriend(String FriendId) {
-		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
-		ClientFriendAdd cfa = new ClientFriendAdd(myData.getMem_id(),FriendId,f_Panel);
+//		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
+		ClientFriendAdd cfa = new ClientFriendAdd(myData.getMem_id(),FriendId,clientFrame.jp_List);
 		cfa.getFriendAdd();
 	}
 	/******************************************
@@ -78,8 +78,8 @@ public class ClientData {
 	 * @param 삭제하고자하는 친구아이디를 넘겨받아와야함
 	 ******************************************/
 	public void actionDeleteFriend(String FriendId) {
-		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
-		ClientFriendDelete cfd = new ClientFriendDelete(myData.getMem_id(),FriendId,f_Panel);
+//		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
+		ClientFriendDelete cfd = new ClientFriendDelete(myData.getMem_id(),FriendId,clientFrame.jp_List);
 		cfd.getFriendDelete();
 	}
 //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -141,10 +141,6 @@ public class ClientData {
 		}
 	}
 
-	public void getFriendListFromServer() {
-		ClientFriendList ClientFriendList = new ClientFriendList(myData.getMem_no());
-	}
-	
 	/**
 	 * 멤버서버에 연결하여 로그인을 요청한다.
 	 * @param mem_id : 아이디
@@ -161,7 +157,7 @@ public class ClientData {
 	
 		//서버에 연결하여 메시지 전송
 		try (
-			Socket socket = new Socket(Server.IP, Port.LOGIN);
+			Socket socket = new Socket(Server.IP, Port.MEMBER);
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 		){
 			out.writeObject(msg);

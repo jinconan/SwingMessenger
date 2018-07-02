@@ -56,7 +56,6 @@ public class ClientFriendList extends Thread {
 	//userNo 전역변수 초기화
 	public ClientFriendList(int userNo) {
 		this.userNo = userNo;
-		this.f_Panel = f_Panel;
 	}
 	
 	//userNo 전역변수 초기화
@@ -77,16 +76,19 @@ public class ClientFriendList extends Thread {
 		mli.add(mvo);
 		mms.setRequest(mli);//보낼 데이터를 메시지로 묶음
 		mms.setType(Message.FRIEND_ALL);//타입설정 -18.06.27 이진 디버깅
-		cf = new ClientFriend(mms);//메시지를 넘겨서 start()호출
+		cf = new ClientFriend(mms, this);//메시지를 넘겨서 start()호출
 	}
 	
 	//전달 받은 정보를 UI에 띄우기(run메소드에서 호출)
 	public void setFriendList(List<MemberVO> res) {
+		f_Panel.refreshFriendTable((ArrayList<MemberVO>) res);
+		
 		//System.out.println(res);//테스트용 출력문
 		
 		//List에 담긴 MemberVO의 데이터를 dtm에 담기
-		vec = new Vector<MemberVO>();;
+//		vec = new Vector<MemberVO>();;
 		for(int i=0;i<res.size();i++) {
+			System.out.println(res.get(i).getMem_id());
 		/*	//굳이 이렇게 찢어서 벡터에 나눠담을 필요가 없음..
 			//왜냐하면, 이미 서버로부터 하나의 정보씩 나눠담겨져서 왔기때문
 			vec.add(res.get(i).getMem_id());
@@ -96,7 +98,7 @@ public class ClientFriendList extends Thread {
 			vec.add(res.get(i).getMem_profile());
 			vec.add(res.get(i).getMem_background());*/
 			
-			vec.add(res.get(i));
+//			vec.add(res.get(i));
 			//System.out.println(vec.get(i).getMem_id());//테스트용 출력문
 			
 			//Insert Here - 친구리스트 패널UI에 자료담기(UI협의 후 완성할 예정)

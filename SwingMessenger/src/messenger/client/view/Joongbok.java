@@ -35,7 +35,7 @@ public class Joongbok {
 			JOptionPane.showMessageDialog(cf.jtf_gid, "아이디를 입력해주세요.", "Error", JOptionPane.ERROR_MESSAGE);
 		} else {
 			try {
-				socket = new Socket(Server.IP, Port.LOGIN);
+				socket = new Socket(Server.IP, Port.MEMBER);
 				oos = new ObjectOutputStream(socket.getOutputStream());
 				message = new Message<MemberVO>();
 				request = new ArrayList<MemberVO>();

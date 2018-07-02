@@ -80,7 +80,7 @@ public class ClientFriendDelete {
 		mms.setType(Message.FRIEND_DELETE);//이 메시지의 프로토콜 지정
 		
 		//Thread클래스로 보내서 실행
-		cf = new ClientFriend(mms);//메시지를 넘겨서 start()호출
+		cf = new ClientFriend(mms, this);//메시지를 넘겨서 start()호출
 	}
 	
 	//서버로부터 받은 메시지에 대해 판단하기

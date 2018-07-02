@@ -23,7 +23,7 @@ public class MemberServer {
 	public MemberServer(JTextArea jta_log) {
 		try {
 			this.jta_log = jta_log;
-			s_socket = new ServerSocket(Port.LOGIN);// 서버 접속하기 위한 소켓[포트번호]
+			s_socket = new ServerSocket(Port.MEMBER);// 서버 접속하기 위한 소켓[포트번호]
 			if (this.jta_log != null)
 				jta_log.append("서버 시작. port : " + s_socket.getLocalPort() + "\n");
 		} catch (Exception e) {

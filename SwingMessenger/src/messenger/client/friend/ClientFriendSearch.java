@@ -68,7 +68,7 @@ public class ClientFriendSearch{
 		mms.setType(Message.FRIEND_SEARCH);//이 메시지의 프로토콜 지정
 		
 		//Thread클래스로 보내서 실행
-		cf = new ClientFriend(mms);
+		cf = new ClientFriend(mms, this);
 	}
 
 	public void setFriendSearch(List<MemberVO> res) {

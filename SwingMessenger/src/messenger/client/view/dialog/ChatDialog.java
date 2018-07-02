@@ -107,7 +107,6 @@ public class ChatDialog extends JDialog implements ActionListener{
 		}
 		
 		else if(e.getActionCommand().equals("³ª°¡±â")) {
-			
 			ArrayList<ChatVO> request = new ArrayList<ChatVO>();
 			request.add(new ChatVO(0, room, null, null, clientData.getMyData()));
 			Message<ChatVO> msg = new Message<ChatVO>(Message.CHATROOM_EXIT, request, null);

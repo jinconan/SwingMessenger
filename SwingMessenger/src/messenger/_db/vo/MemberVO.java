@@ -22,7 +22,6 @@ public class MemberVO implements Serializable{
 	private String mem_hp;
 	private JLabel mem_profile;
 	private JLabel mem_background;
-	private Vector friend_name;
 
 	public MemberVO() {}
 
@@ -112,13 +111,4 @@ public class MemberVO implements Serializable{
 		this.mem_background = mem_background;
 	}
 
-	public Vector getFriend_name() {
-		return friend_name;
-	}
-
-	public void setFriend_name(Vector friend_name) {
-		this.friend_name = friend_name;
-	}
-	
-	
 }

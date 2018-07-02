@@ -91,6 +91,9 @@ public class ChatDialog extends JDialog implements ActionListener{
 			System.out.println("초대실행");
 			//Invited();
 		}
+		if(e.getActionCommand().equals("나가기")) {
+		  
+		}
 	}
 	
 	/**

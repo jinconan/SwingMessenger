@@ -22,6 +22,7 @@ public class ExitRoom {
 	Message<ChatVO>    msg    = null;
 	Message<ChatVO>    msg1    = null;
 	
+	
 	public void method(Message<ChatVO> msg1) {
 
 	   this.msg1 = msg1;
@@ -31,6 +32,7 @@ public class ExitRoom {
 		try {
 			socket = new Socket("192.168.0.235",Port.LOGIN);
 			oos    = new ObjectOutputStream(socket.getOutputStream());
+			msg1.setType(msg1.CHATROOM_EXIT);;
 			//서버에게  나의 MSG를 보낸다.~
 		    oos.writeObject(msg1);
 		    ois    = new ObjectInputStream(socket.getInputStream());

@@ -46,8 +46,8 @@ public class GetChatVO extends Thread {
 				case Message.CHATROOM_INVITE:
 					//새로 참가한 방을 서버로부터 전달받아서 디폴트테이블모델에 추가.
 					AttendRoom attendRoom =new AttendRoom();
-					attendRoom.method(msg);
-					break;
+					/*attendRoom.method(msg);
+					break;*/
 				case Message.CHATROOM_EXIT:
 					// 삭제된 놈을 서버로부터 전달받는데, 이것을 디폴트테이블모델에서 찾아서 제거.
 					// 방 리스트를 새로고침

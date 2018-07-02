@@ -15,6 +15,7 @@ public class MemberVOTable extends JTable{
 	public MemberVOTable(MemberVOTableModel model) {
 		super(model);
 		setDefault();
+		
 	}
 	
 	private void setDefault() {

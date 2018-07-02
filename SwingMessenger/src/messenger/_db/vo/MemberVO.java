@@ -1,6 +1,7 @@
 package messenger._db.vo;
 
 import java.io.Serializable;
+import java.util.Vector;
 
 import javax.swing.JLabel;
 
@@ -21,6 +22,7 @@ public class MemberVO implements Serializable{
 	private String mem_hp;
 	private JLabel mem_profile;
 	private JLabel mem_background;
+	private Vector friend_name;
 
 	public MemberVO() {}
 
@@ -36,7 +38,7 @@ public class MemberVO implements Serializable{
 		this.mem_profile = mem_profile;
 		this.mem_background = mem_background;
 	}
-
+	
 	public int getMem_no() {
 		return mem_no;
 	}
@@ -108,6 +110,14 @@ public class MemberVO implements Serializable{
 
 	public void setMem_background(JLabel mem_background) {
 		this.mem_background = mem_background;
+	}
+
+	public Vector getFriend_name() {
+		return friend_name;
+	}
+
+	public void setFriend_name(Vector friend_name) {
+		this.friend_name = friend_name;
 	}
 	
 	

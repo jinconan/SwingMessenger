@@ -16,13 +16,16 @@ public class MemberVOCell extends AbstractCellEditor implements TableCellRendere
 	private MemberVO mem;
 
 	private JPanel jp_mem = new JPanel();
-	private JLabel jl_id = new JLabel();
+	
 	private JLabel jl_prof = new JLabel();
+	private JLabel jl_id = new JLabel();
+	private JLabel jl_nick = new JLabel();
 	
 	public MemberVOCell() {
 		jp_mem.setLayout(new FlowLayout(FlowLayout.LEADING));
 		jp_mem.add(jl_prof);
 		jp_mem.add(jl_id);
+		jp_mem.add(jl_nick);
 	}
 	
 	private void updateData(MemberVO mem, boolean isSelected, JTable table) {
@@ -30,7 +33,7 @@ public class MemberVOCell extends AbstractCellEditor implements TableCellRendere
 		
 		jl_prof.setIcon(mem.getMem_profile().getIcon());
 		jl_id.setText(mem.getMem_id());
-		
+		jl_nick.setText(mem.getMem_nick());
 		
 		if (isSelected) {
 			jp_mem.setBackground(table.getSelectionBackground());

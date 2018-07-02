@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Vector;
 
 import messenger._db.vo.MemberVO;
+import messenger.client.view.ClientData;
+import messenger.client.view.FriendPanel;
 import messenger.protocol.Message;
 
 /**********************************************************************
@@ -29,16 +31,24 @@ import messenger.protocol.Message;
  * @author3 이정렬...18/06/27
  * [체크사항]
  * 1. 서버와의 송수신 확인완료 : Vector타입에 찢어담을 필요없음 (주석확인)
- * 2. 
+ * 
+ * @author4 이정렬...18/07/02
+ * [체크사항]
+ * 1. 서버측과의 데이터송수신 테스트완료 : 친구목록 전체조회/검색/추가/삭제
+ * 2. 뷰 단에서 사용할 수 있도록, test파일처럼 진행해보기
+ *
  **********************************************************************/
 public class ClientFriendList extends Thread {
 
 	int userNo	= 0;
-	ClientFriend cf = null;
-	Message<MemberVO> mms = null;
-	List<MemberVO> mli = null;
-	MemberVO mvo = null;
-	Vector<MemberVO> vec = null;
+	FriendPanel f_Panel = null;  //화면에 담는 f_Panel 전역변수
+	
+	Message<MemberVO> mms = null;//Client-Server간 주고받을 메세지와
+	List<MemberVO> mli = null;	 //메시지에 담길 자료구조 List
+	MemberVO mvo = null;		 //List에 담겨질 클래스자료 MemberVO
+	ClientFriend cf = null;		 //친구관련 작업을 수행할 Thread가 위치한 클래스
+	
+	Vector<MemberVO> vec = null; //서버로부터 받은 메시지를 순서대로 담을 변수
 
 	//int타입 생성자가 있어서 만들어준 디펄트 생성자
 	public ClientFriendList() {}
@@ -46,6 +56,14 @@ public class ClientFriendList extends Thread {
 	//userNo 전역변수 초기화
 	public ClientFriendList(int userNo) {
 		this.userNo = userNo;
+		this.f_Panel = f_Panel;
+	}
+	
+	//userNo 전역변수 초기화
+	//화면에 담는 f_Panel 전역변수 초기화 추가
+	public ClientFriendList(int userNo,FriendPanel f_Panel) {
+		this.userNo = userNo;
+		this.f_Panel = f_Panel;
 	}
 
 	//본인회원번호를 서버로 전달하기

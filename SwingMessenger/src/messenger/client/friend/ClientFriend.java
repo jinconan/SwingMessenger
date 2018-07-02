@@ -59,7 +59,7 @@ public class ClientFriend extends Thread{
 			//친구전체조회 : 서버로 본인회원번호를 보내고 친구목록 요청하기
 			//친구찾기 : 서버로 대상회원아이디를 보내고 친구자료 요청하기
 			oos.writeObject(mms);
-
+			
 			//듣기
 			ois = new ObjectInputStream(flsc.getInputStream());
 			//들은 내용을 확인하고 메시지프로토콜로 담아냄
@@ -68,7 +68,7 @@ public class ClientFriend extends Thread{
 			List<MemberVO> res = mms.getResponse();
 				//메시지데이터의 부분을 얻어내야하는 경우
 				//MemberVO memVO = res.get(0);
-
+			
 			//들은 내용의 메시지타입에 따라 개별처리과정
 			switch (mms.getType()) {
 			

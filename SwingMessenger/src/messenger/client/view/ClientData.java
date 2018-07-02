@@ -20,8 +20,10 @@ import messenger._db.vo.MemberVO;
 import messenger._db.vo.RoomVO;
 import messenger.client.Emoticon.GetEmoticon;
 import messenger.client.chat.GetChatVO;
-import messenger.client.friend.ClientFriend;
+import messenger.client.friend.ClientFriendAdd;
 import messenger.client.friend.ClientFriendList;
+import messenger.client.friend.ClientFriendSearch;
+import messenger.client.friend.ClientFriendDelete;
 import messenger.protocol.Message;
 import messenger.protocol.Port;
 import messenger.protocol.Server;
@@ -34,7 +36,52 @@ public class ClientData {
 //	private ArrayList<RoomVO> roomList;
 	private ObjectOutputStream out;
 	
+	private FriendPanel f_Panel;//private로 쓰인 이유?? 
+	
 	public ClientFrame clientFrame;
+	
+//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+	/***************************************************************************************
+	 * @author 이정렬 [18/07/02]
+	 * 1. 화면에서 입력된 데이터가 저장되는 클래스 ClientData의 값을 친구관련기능을 구현하는 클래스로 넘김
+	 * 		인스턴스화할때, 여기의 자료를 선별하여 읽어내서 넘긴다. ( 즉, 액션리스너에서는 이곳의 메소드를 실행함 )
+	 * 2. 친구쪽 메소드에 화면을 처리하는 메소드까지 함께 구현한다
+	 **************************************************************************************/
+	
+	//actionPerformed에서 친구전체조회를 실행하도록 호출할 메소드
+	public void actionFriendList() {
+		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
+		ClientFriendList cfl = new ClientFriendList(myData.getMem_no(),f_Panel);
+		cfl.getFriendList();
+	}
+	/******************************************
+	 * actionPerformed에서 친구검색을 실행하도록 호출할 메소드
+	 * @param 검색하고자하는 친구아이디
+	 ******************************************/
+	public void actionFriendSearch(String FriendId) {
+		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
+		ClientFriendSearch cfc = new ClientFriendSearch(FriendId,f_Panel);
+		cfc.getFriendSearch();
+	}
+	/******************************************
+	 * actionPerformed에서 친구추가를 실행하도록 호출할 메소드
+	 * @param 추가하고자하는 친구아이디
+	 ******************************************/
+	public void actionAddFriend(String FriendId) {
+		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
+		ClientFriendAdd cfa = new ClientFriendAdd(myData.getMem_id(),FriendId,f_Panel);
+		cfa.getFriendAdd();
+	}
+	/******************************************
+	 * actionPerformed에서 친구추가를 실행하도록 호출할 메소드
+	 * @param 삭제하고자하는 친구아이디를 넘겨받아와야함
+	 ******************************************/
+	public void actionDeleteFriend(String FriendId) {
+		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
+		ClientFriendDelete cfd = new ClientFriendDelete(myData.getMem_id(),FriendId,f_Panel);
+		cfd.getFriendDelete();
+	}
+//■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 	
 	public ClientData(ClientFrame frame) {
 		this.clientFrame = frame;
@@ -223,5 +270,7 @@ public class ClientData {
 			}
 		}
 	}
+	
+	
 	
 }

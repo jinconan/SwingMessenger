@@ -1,11 +1,10 @@
 package messenger.server.chat;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-
-import javax.swing.JTextArea;
+import java.util.Set;
 
 import messenger._db.dao.ChatDAO;
 import messenger._db.vo.ChatVO;
@@ -18,12 +17,12 @@ import messenger._db.vo.RoomVO;
  *
  */
 public class ChatServerThreadList {
-	private ArrayList<ChatServerThread> totalList; //모든 쓰레드 리스트
-	private HashMap<Integer, ArrayList<ChatServerThread>> roomMap; //방 리스트(방번호, 참가자리스트)
+	private List<ChatServerThread> totalList; //모든 쓰레드 리스트
+	private HashMap<Integer, List<ChatServerThread>> roomMap; //방 리스트(방번호, 참가자리스트)
 	
 	public ChatServerThreadList() {
 		totalList = new ArrayList<ChatServerThread>();
-		roomMap = new HashMap<Integer, ArrayList<ChatServerThread>>();
+		roomMap = new HashMap<Integer, List<ChatServerThread>>();
 	}
 	
 	/**
@@ -41,7 +40,7 @@ public class ChatServerThreadList {
 	 * 접속 중인 전체 쓰레드 리스트 리턴.
 	 * @return 전체 쓰레드
 	 */
-	public synchronized ArrayList<ChatServerThread> getTotalList() {
+	public synchronized List<ChatServerThread> getTotalList() {
 		return totalList;
 	}
 	
@@ -75,7 +74,7 @@ public class ChatServerThreadList {
 	 * @return : 참여자 수.
 	 */
 	public synchronized int getNumberOfRoomMember(int room_no) {
-		ArrayList<ChatServerThread> list = roomMap.get(room_no);
+		List<ChatServerThread> list = roomMap.get(room_no);
 		return (list != null) ? list.size() : 0;
 	}
 	/**
@@ -83,7 +82,7 @@ public class ChatServerThreadList {
 	 * @param room_no : 방 번호
 	 * @return : 해당 방에 존재하는 쓰레드 리스트
 	 */
-	public synchronized ArrayList<ChatServerThread> getMembersOfRoom(int room_no) {
+	public synchronized List<ChatServerThread> getMembersOfRoom(int room_no) {
 		return roomMap.get(room_no);
 	}
 	
@@ -93,7 +92,7 @@ public class ChatServerThreadList {
 	 * @return : 해당 방에 존재하는 참석자 수
 	 */
 	public synchronized int getNumberOfRoomMembers(int room_no) {
-		ArrayList<ChatServerThread> list =roomMap.get(room_no); 
+		List<ChatServerThread> list = roomMap.get(room_no); 
 		return (list != null) ? list.size() : 0; 
 	}
 	
@@ -115,7 +114,7 @@ public class ChatServerThreadList {
 		ChatDAO dao = ChatDAO.getInstance();
 		
 		//db에서 회원번호를 통해 해당 회원이 참여한 방 리스트 ChatVO 타입으로 얻는다.
-		ArrayList<ChatVO> roomListOfThread = (thread.getMemVO() != null) ?
+		List<ChatVO> roomListOfThread = (thread.getMemVO() != null) ?
 											dao.selectRoomList(thread.getMemVO().getMem_no()) : new ArrayList<ChatVO>();
 		
 		//방 리스트에 대해 반복을 실행
@@ -123,12 +122,12 @@ public class ChatServerThreadList {
 			int room_no = (chatVO.getRoomVO() != null) ? chatVO.getRoomVO().getRoom_no() : 0;
 			
 			//해당 번호의 방 안에 포함된 쓰레드(접속자)의 리스트를 얻는다.
-			ArrayList<ChatServerThread> memListOfRoom = roomMap.get(room_no);
+			List<ChatServerThread> memListOfRoom = roomMap.get(room_no);
 			//해당 번호를 키값으로 하는 쓰레드 리스트가 존재하지 않는 경우 리스트를 인스턴스화하고
 			//해쉬맵에 리스트를 넣어준다.
 			if(memListOfRoom == null) {
 				memListOfRoom = new ArrayList<ChatServerThread>();
-				roomMap.put(room_no, memListOfRoom);
+				roomMap.put(room_no, (ArrayList<ChatServerThread>) memListOfRoom);
 			}
 			else {
 				//쓰레드 리스트가 존재함
@@ -146,11 +145,14 @@ public class ChatServerThreadList {
 	 * 해당 쓰레드가 참여한 방 리스트를 얻음.
 	 * @param thread
 	 */
-	public synchronized ArrayList<RoomVO> getRoomsOfMember(ChatServerThread thread) {
-		ArrayList<RoomVO> list = new ArrayList<RoomVO>();
+	public synchronized List<RoomVO> getRoomsOfMember(ChatServerThread thread) {
+		List<RoomVO> list = new ArrayList<RoomVO>();
+		Set<Integer> keySet = roomMap.keySet();
+		Iterator<Integer> iter = keySet.iterator();
 		
-		for(int i : roomMap.keySet()) {
-			ArrayList<ChatServerThread> tmp_list = roomMap.get(Integer.valueOf(i));
+		while(iter.hasNext()) {
+			int i = iter.next();
+			List<ChatServerThread> tmp_list = roomMap.get(Integer.valueOf(i));
 			if(tmp_list.contains(thread))
 				list.add(new RoomVO(i,null, null));
 		}
@@ -164,9 +166,13 @@ public class ChatServerThreadList {
 	 * @return :  true : 리스트에서 제거 성공, false : totalList에 존재하지 않았음.
 	 */
 	public synchronized boolean removeThread(ChatServerThread thread) {
-		for(Integer room_no : roomMap.keySet()) {
+		Set<Integer> keySet = roomMap.keySet();
+		Iterator<Integer> iter = keySet.iterator();
+		while(iter.hasNext()) {
+			int room_no = iter.next();
 			removeThreadInRoom(thread, room_no);
 		}
+		
 		return totalList.remove(thread);
 	}
 	
@@ -177,7 +183,7 @@ public class ChatServerThreadList {
 	 * @return : true : 리스트에서 제거 성공, false : 리스트에 쓰레드가 존재하지 않았음.
 	 */
 	public synchronized boolean removeThreadInRoom(ChatServerThread thread, int room_no) {
-		ArrayList<ChatServerThread> list = roomMap.get(room_no);
+		List<ChatServerThread> list = roomMap.get(room_no);
 		return (list != null) ? list.remove(thread) : false;
 	}
 }

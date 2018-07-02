@@ -98,7 +98,9 @@ public class MemberServerThread implements Runnable {
 		MemberVO memberVO = dao.login(request.get(0));
 
 		if(memberVO != null) {
+			//여기에 이미 접속 중인지도 따지는 부분 추가.
 			response.add(memberVO);
+		
 		}
 		msg.setResponse(response);
 		try {

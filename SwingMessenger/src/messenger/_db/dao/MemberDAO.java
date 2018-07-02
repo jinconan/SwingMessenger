@@ -32,7 +32,7 @@ import messenger.server.chat.ChatServerThreadList;
  *
  */
 public class MemberDAO {
-	private DBConnection dbCon = new DBConnection();
+	private DBConnection dbCon = DBConnection.getInstance();
 	
 	private static class LazyHolder {
 		private static final MemberDAO INSTANCE = new MemberDAO();

@@ -9,10 +9,11 @@ import java.net.UnknownHostException;
 import javax.swing.JOptionPane;
 
 import messenger._db.vo.ChatVO;
-import messenger.client.view.ChatDialog;
 import messenger.client.view.ClientFrame;
+import messenger.client.view.dialog.ChatDialog;
 import messenger.protocol.Message;
 import messenger.protocol.Port;
+import messenger.protocol.Server;
 
 public class ExitRoom {
 	
@@ -30,9 +31,9 @@ public class ExitRoom {
 	}
 	public void Exit(ChatDialog chat) {
 		try {
-			socket = new Socket("192.168.0.235",Port.LOGIN);
+			socket = new Socket(Server.IP,Port.LOGIN);
 			oos    = new ObjectOutputStream(socket.getOutputStream());
-			msg1.setType(msg1.CHATROOM_EXIT);;
+			msg1.setType(Message.CHATROOM_EXIT);
 			//서버에게  나의 MSG를 보낸다.~
 		    oos.writeObject(msg1);
 		    ois    = new ObjectInputStream(socket.getInputStream());

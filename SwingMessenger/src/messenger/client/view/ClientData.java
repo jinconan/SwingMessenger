@@ -23,6 +23,7 @@ import messenger.client.chat.GetChatVO;
 import messenger.client.friend.ClientFriendAdd;
 import messenger.client.friend.ClientFriendList;
 import messenger.client.friend.ClientFriendSearch;
+import messenger.client.view.dialog.ChatDialog;
 import messenger.client.friend.ClientFriendDelete;
 import messenger.protocol.Message;
 import messenger.protocol.Port;

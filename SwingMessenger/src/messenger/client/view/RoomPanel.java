@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
 import messenger._db.vo.ChatVO;
 import messenger._db.vo.MemberVO;
 import messenger._db.vo.RoomVO;
+import messenger.client.view.dialog.ChatDialog;
 import messenger.protocol.Message;
 
 public class RoomPanel extends JPanel implements ActionListener {

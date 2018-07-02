@@ -1,4 +1,4 @@
-package messenger.client.view;
+package messenger.client.view.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,6 +24,7 @@ import javax.swing.text.StyledDocument;
 
 import messenger._db.vo.ChatVO;
 import messenger._db.vo.RoomVO;
+import messenger.client.view.ClientData;
 import messenger.protocol.Message;
 
 public class ChatDialog extends JDialog implements ActionListener{
@@ -80,7 +82,7 @@ public class ChatDialog extends JDialog implements ActionListener{
 		this.add("North", jtb_North);
 		this.add("Center",jsp_Center);
 		this.add("South",jp_South);
-		this.setVisible(true);
+		this.setVisible(false);
 		
 		jp_emoticon = (clientData != null) ? clientData.getEmoticonPanel(jtf_South) : new JPanel();
 		jsp_emoticon = new JScrollPane(jp_emoticon, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -105,7 +107,21 @@ public class ChatDialog extends JDialog implements ActionListener{
 		}
 		
 		else if(e.getActionCommand().equals("나가기")) {
-			System.out.println("나가기");
+			
+			ArrayList<ChatVO> request = new ArrayList<ChatVO>();
+			request.add(new ChatVO(0, room, null, null, clientData.getMyData()));
+			Message<ChatVO> msg = new Message<ChatVO>(Message.CHATROOM_EXIT, request, null);
+			
+			jd_emoticon.setVisible(false);
+			this.setVisible(false);
+			
+			try {
+				clientData.getOut().writeObject(msg);
+				clientData.getOut().flush();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
 		}
 		
 		else if(e.getActionCommand().equals("전송")) {

@@ -37,22 +37,6 @@ public class SubMenu implements ActionListener{
 	JTextField  jtf_shfri;
 	JButton 	jbtn_gum;
 	
-	//채팅창
-	JDialog 			jd_chat	   = new JDialog();
-	JTextPane 			jtf_South  = new JTextPane();
-	JTextPane 			jtp_Center = new JTextPane();
-	JPanel				jp_North   = new JPanel();
-	JPanel				jp_South   = new JPanel();
-	JToolBar			jtb_North  = new JToolBar();
-	JButton				jbtn_jun   = new JButton("전송");
-	JButton				jbtn_inv   = new JButton("친구초대");
-	JButton				jbtn_exit  = new JButton("채팅방나가기");
-	JButton				jbtn_close = new JButton("창닫기");
-	JButton				jbtn_emti  = new JButton("이모티콘");
-	JScrollPane 		jsp_South  = new JScrollPane(jtf_South,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-	JScrollPane 		jsp_Center = new JScrollPane(jtp_Center,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-	JScrollPane 		jsp_North  = new JScrollPane(jtb_North);
-	
 	//친구초대창
 	JDialog				jd_inv	   = new JDialog();
 	JTable				jt_inv	   = new JTable();
@@ -61,10 +45,6 @@ public class SubMenu implements ActionListener{
 	JButton				jbtn_cancel= new JButton("취소");
 	JScrollPane 		jsp_inv    = new JScrollPane(jt_inv);
 	
-	//이모티콘창
-	JDialog				jd_emti    = new JDialog();
-	JLabel				jl_emti    = new JLabel();
-	String				img_path   = "C:\\Users\\516\\Desktop\\tales_emoticon\\";
 	
 	//회원정보 수정창
 //	CardLayout 	card		= new CardLayout();
@@ -93,68 +73,36 @@ public class SubMenu implements ActionListener{
 	}
 	
 	//프로필창 다이얼로그
-	public void Profile() {
-		jd_profile = new JDialog(clientFrame, true);
-		jp_profile = new JPanel();
-		jl_profile = new JLabel();
-		
-		jd_profile.setSize(350,500);
-		jd_profile.setVisible(true);
-		jd_profile.setTitle("프로필");
-	}
+//	public void Profile() {
+//		jd_profile = new JDialog(clientFrame, true);
+//		jp_profile = new JPanel();
+//		jl_profile = new JLabel();
+//		
+//		jd_profile.setSize(350,500);
+//		jd_profile.setVisible(true);
+//		jd_profile.setTitle("프로필");
+//	}
 	
 	//친구검색 다이얼로그
-	public void addFriends() {
-		jd_shfri  = new JDialog(clientFrame, true);
-		jtf_shfri = new JTextField();
-		jbtn_gum  = new JButton("검색");
-		
-		jbtn_gum.addActionListener(this);
-		jd_shfri.setTitle("친구검색");
-		jd_shfri.setLayout(null);
-		jd_shfri.setSize(300, 200);
-		jd_shfri.add(jtf_shfri);
-		jd_shfri.add(jbtn_gum);
-		
-		Font f = new Font("굴림", Font.CENTER_BASELINE, 10);
-		jbtn_gum.setFont(f);
-		jbtn_gum.setBounds(120, 100, 60, 30);
-
-		jd_shfri.setVisible(true);
-	}
+//	public void addFriends() {
+//		jd_shfri  = new JDialog(clientFrame, true);
+//		jtf_shfri = new JTextField();
+//		jbtn_gum  = new JButton("검색");
+//		
+//		jbtn_gum.addActionListener(this);
+//		jd_shfri.setTitle("친구검색");
+//		jd_shfri.setLayout(null);
+//		jd_shfri.setSize(300, 200);
+//		jd_shfri.add(jtf_shfri);
+//		jd_shfri.add(jbtn_gum);
+//		
+//		Font f = new Font("굴림", Font.CENTER_BASELINE, 10);
+//		jbtn_gum.setFont(f);
+//		jbtn_gum.setBounds(120, 100, 60, 30);
+//
+//		jd_shfri.setVisible(true);
+//	}
 	
-	//새 채팅 다이얼로그
-	public void addChatting() {
-		jbtn_jun.addActionListener(this);
-		jbtn_inv.addActionListener(this);
-		jbtn_emti.addActionListener(this);
-		jbtn_exit.addActionListener(this);
-		jbtn_close.addActionListener(this);
-		jd_chat.setSize(360,550);
-		jd_chat.setVisible(true);
-		jsp_South.setVisible(true);
-		jsp_South.setVisible(true);
-		jtb_North.setVisible(true);
-		jd_chat.add("North", jtb_North);
-		jd_chat.add("Center",jsp_Center);
-		jd_chat.add("South",jp_South);
-		jp_South.setLayout(new BorderLayout());
-		jp_South.add("Center",jsp_South);
-		jp_South.add("East",jbtn_jun);
-		jbtn_jun.setBackground(new Color(126, 195, 237));
-		jsp_South.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		jtb_North.setLayout(new GridLayout(2,2));
-		jtb_North.setBackground(new Color(126, 195, 237));
-		jtb_North.add(jbtn_emti);
-		jbtn_emti.setBackground(new Color(126, 195, 237));
-		jtb_North.add(jbtn_inv);
-		jbtn_inv.setBackground(new Color(126, 195, 237));
-		jtb_North.add(jbtn_exit);
-		jbtn_exit.setBackground(new Color(126, 195, 237));
-		jtb_North.add(jbtn_close);
-		jbtn_close.setBackground(new Color(126, 195, 237));
-		
-	}
 	
 	//친구초대창
 	public void Invited() {
@@ -174,75 +122,61 @@ public class SubMenu implements ActionListener{
 		jsp_inv.setVisible(true);
 	}
 	
-	//이모티콘 다이얼로그창
-	public void Emoticon() {
-		jd_emti.setTitle("이모티콘");
-		jd_emti.setVisible(true);
-		jd_emti.setSize(400,300);
-		jd_emti.add(jl_emti);
-		jl_emti.setVisible(true);
-		ArrayList<JLabel> list = new ArrayList<JLabel>();
-		for(int i=0;i<list.size();i++) {
-			jl_emti.setIcon(new ImageIcon(img_path+list.get(i)));
-			
-		}
-	}
-	
 	//회원정보 수정 다이얼로그창
-	public void UpdateInfo() {
-		jd_upd		= new JDialog(clientFrame, true);
-		jp_card		= new JPanel();
-		jp_cert		= new JPanel();
-		jp_upd		= new JPanel();
-		jl_unick  	= new JLabel("상태메시지 :");
-		jl_upw 		= new JLabel("비밀번호 :");
-		jl_uname 	= new JLabel("이름 :");
-		jl_ugender  = new JLabel("성별 :");
-		jl_uhp		= new JLabel("핸드폰번호 :");
-		jtf_cert 	= new JTextField(20);
-		jtf_unick	= new JTextField(20);
-		jtf_upw		= new JTextField(20);
-		jtf_uname 	= new JTextField(20);
-		jtf_uhp 	= new JTextField(20);
-		genderList  = new String[]{"남자","여자"};
-		jtf_ugender = new JComboBox<String>(genderList);
-		jbtn_cert	= new JButton("인증하기");
-		jbtn_upd	= new JButton("수정");
-		jbtn_back	= new JButton("뒤로가기");	
-		
-		jbtn_upd.addActionListener(this);
-		jd_upd.setTitle("회원정보수정");
-		jd_upd.setLayout(null);
-		jd_upd.setSize(350,400);
-		jd_upd.setBackground(Color.YELLOW);
-		jd_upd.add(jbtn_upd);
-		jd_upd.add(jbtn_back);
-		jd_upd.add(jl_unick);
-		jd_upd.add(jl_upw);
-		jd_upd.add(jl_uname);
-		jd_upd.add(jl_uhp);
-		jd_upd.add(jl_ugender);
-		jd_upd.add(jtf_unick);
-		jd_upd.add(jtf_upw);
-		jd_upd.add(jtf_uname);
-		jd_upd.add(jtf_ugender); 
-		jd_upd.add(jtf_uhp);
-		jd_upd.setBackground(new Color(126, 195, 237));
-		jl_unick.setBounds(30, 30, 80, 20);
-		jl_upw.setBounds(30, 70, 80, 20);
-		jl_uname.setBounds(30, 110, 80, 20);
-		jl_ugender.setBounds(30, 150, 80, 20);
-		jl_uhp.setBounds(30, 190, 80, 20);
-		jl_uhp.setBounds(30, 190, 80, 20);
-		jtf_unick.setBounds(120, 30, 180, 20);
-		jtf_upw.setBounds(120, 70, 180, 20);
-		jtf_uname.setBounds(120, 110, 180, 20);
-		jtf_ugender.setBounds(120, 150, 180, 20);
-		jtf_uhp.setBounds(120, 190, 180, 20);
-		jbtn_upd.setBounds(90, 250, 180, 30);
-		jbtn_back.setBounds(90, 280, 180, 30);
-		jd_upd.setVisible(true);
-	}
+//	public void UpdateInfo() {
+//		jd_upd		= new JDialog(clientFrame, true);
+//		jp_card		= new JPanel();
+//		jp_cert		= new JPanel();
+//		jp_upd		= new JPanel();
+//		jl_unick  	= new JLabel("상태메시지 :");
+//		jl_upw 		= new JLabel("비밀번호 :");
+//		jl_uname 	= new JLabel("이름 :");
+//		jl_ugender  = new JLabel("성별 :");
+//		jl_uhp		= new JLabel("핸드폰번호 :");
+//		jtf_cert 	= new JTextField(20);
+//		jtf_unick	= new JTextField(20);
+//		jtf_upw		= new JTextField(20);
+//		jtf_uname 	= new JTextField(20);
+//		jtf_uhp 	= new JTextField(20);
+//		genderList  = new String[]{"남자","여자"};
+//		jtf_ugender = new JComboBox<String>(genderList);
+//		jbtn_cert	= new JButton("인증하기");
+//		jbtn_upd	= new JButton("수정");
+//		jbtn_back	= new JButton("뒤로가기");	
+//		
+//		jbtn_upd.addActionListener(this);
+//		jd_upd.setTitle("회원정보수정");
+//		jd_upd.setLayout(null);
+//		jd_upd.setSize(350,400);
+//		jd_upd.setBackground(Color.YELLOW);
+//		jd_upd.add(jbtn_upd);
+//		jd_upd.add(jbtn_back);
+//		jd_upd.add(jl_unick);
+//		jd_upd.add(jl_upw);
+//		jd_upd.add(jl_uname);
+//		jd_upd.add(jl_uhp);
+//		jd_upd.add(jl_ugender);
+//		jd_upd.add(jtf_unick);
+//		jd_upd.add(jtf_upw);
+//		jd_upd.add(jtf_uname);
+//		jd_upd.add(jtf_ugender); 
+//		jd_upd.add(jtf_uhp);
+//		jd_upd.setBackground(new Color(126, 195, 237));
+//		jl_unick.setBounds(30, 30, 80, 20);
+//		jl_upw.setBounds(30, 70, 80, 20);
+//		jl_uname.setBounds(30, 110, 80, 20);
+//		jl_ugender.setBounds(30, 150, 80, 20);
+//		jl_uhp.setBounds(30, 190, 80, 20);
+//		jl_uhp.setBounds(30, 190, 80, 20);
+//		jtf_unick.setBounds(120, 30, 180, 20);
+//		jtf_upw.setBounds(120, 70, 180, 20);
+//		jtf_uname.setBounds(120, 110, 180, 20);
+//		jtf_ugender.setBounds(120, 150, 180, 20);
+//		jtf_uhp.setBounds(120, 190, 180, 20);
+//		jbtn_upd.setBounds(90, 250, 180, 30);
+//		jbtn_back.setBounds(90, 280, 180, 30);
+//		jd_upd.setVisible(true);
+//	}
 	
 	//버튼 액션부
 	@Override
@@ -250,36 +184,7 @@ public class SubMenu implements ActionListener{
 		// TODO Auto-generated method stub
 		int answer = 0;
 		Object obj = e.getSource();
-		String msg = jtf_South.getText();				
-		//addChatting
-		if(obj == jtf_South) {
-			
-			
-			
-			
-		} else if(obj == jbtn_jun) {
-			jtp_Center.setText(jtf_South.getText());
-			try {
-				//oos.writeObject(Protocol.MESSAGE+"|"+nickName+"|"+msg);
-				jtf_South.setText("");
-			} catch (Exception e2) {
-				// TODO: handle exception
-				e2.printStackTrace();//저장된 메세지 이력관리
-			}
-		}
-		if(obj == jbtn_emti) {
-			Emoticon();
-		}else if(obj == jbtn_inv) {
-			Invited();
-		}else if(obj == jbtn_exit) {
-			
-			
-			
-			
-			
-		}else if(obj == jbtn_close) {
-			jd_chat.dispose();
-		}
+		
 		//addFriends
 		if(e.getActionCommand().equals("검색")) {
 			System.out.println("검색실행");
@@ -306,19 +211,6 @@ public class SubMenu implements ActionListener{
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		//Emoticon
-		if(e.getActionCommand().equals("전송")) {
-			System.out.println("전송실행");
-		}
-		if(e.getActionCommand().equals("이모티콘")) {
-			System.out.println("이모티콘실행");
-			Emoticon();
-		}
-		//Invited
-		if(e.getActionCommand().equals("친구초대")) {
-			System.out.println("초대실행");
-			Invited();
-		}
 		if(e.getActionCommand().equals("확인")) {
 			System.out.println("확인실행");		
 		}
@@ -341,11 +233,9 @@ public class SubMenu implements ActionListener{
 		ClientFrame f = new ClientFrame();
 		f.initDisplay();
 		SubMenu ad = new SubMenu(f);
-		//ad.Emoticon();
-		//ad.addChatting();
-		ad.UpdateInfo();
+		//ad.UpdateInfo();
 		//ad.Profile();
-		
+		ad.Invited();
 		
 	}
 }

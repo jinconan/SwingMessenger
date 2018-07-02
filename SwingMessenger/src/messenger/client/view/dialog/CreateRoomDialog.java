@@ -1,4 +1,4 @@
-package messenger.client.view;
+package messenger.client.view.dialog;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class CreateRoom_display extends JDialog implements ActionListener{
+public class CreateRoomDialog extends JDialog implements ActionListener{
 	
 	private final JPanel               contentPanel        = new JPanel();
 	private       JTextField           jtf_title           = new JTextField();
@@ -27,12 +27,12 @@ public class CreateRoom_display extends JDialog implements ActionListener{
 	private       String[][]           data_friend_list    = new String[0][1];
 	private       String[][]           data_Room_add_list  = new String[0][1];
 	
-	private       DefaultTableModel    model_friend_list   = new DefaultTableModel(data_friend_list,Head_friend_list);
-	private       DefaultTableModel    model_Room_add_list = new DefaultTableModel(data_Room_add_list,Head_Room_add_list);
-	
+	private       DefaultTableModel    model_friend_list   = new DefaultTableModel(Head_friend_list,0);
+	private       DefaultTableModel    model_Room_add_list = new DefaultTableModel(Head_Room_add_list,0);
 	
 	private       JTable               friend_list         = new JTable(model_friend_list);
 	private       JTable               Room_add_list       = new JTable(model_Room_add_list);
+	
 	private       JLabel               lblNewLabel         = new JLabel("방만들기");
 	private       JLabel               lblNewLabel_1       = new JLabel("제목");
 	private       JButton              jbt_add             = new JButton("Add");
@@ -45,7 +45,7 @@ public class CreateRoom_display extends JDialog implements ActionListener{
 	private       Vector               list                = null;
 	private       Vector               V_Room_add_list     = new Vector();
 	
-	public CreateRoom_display() {
+	public CreateRoomDialog() {
 		init();
 	}
 	
@@ -147,7 +147,7 @@ public class CreateRoom_display extends JDialog implements ActionListener{
 		
 	}
 	public static void main(String[] args) {
-		new CreateRoom_display();
+		new CreateRoomDialog();
 	}
 
 	@Override

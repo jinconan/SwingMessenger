@@ -31,7 +31,8 @@ public class MemberVOCell extends AbstractCellEditor implements TableCellRendere
 	private void updateData(MemberVO mem, boolean isSelected, JTable table) {
 		this.mem = mem;
 		
-		jl_prof.setIcon(mem.getMem_profile().getIcon());
+		if(mem.getMem_profile() != null)
+			jl_prof.setIcon(mem.getMem_profile().getIcon());
 		jl_id.setText(mem.getMem_id());
 		jl_nick.setText(mem.getMem_nick());
 		

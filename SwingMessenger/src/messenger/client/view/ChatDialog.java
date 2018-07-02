@@ -1,5 +1,7 @@
 package messenger.client.view;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,75 +26,100 @@ import messenger._db.vo.RoomVO;
 import messenger.protocol.Message;
 
 public class ChatDialog extends JDialog implements ActionListener{
-	
-	JPanel				jp_chatF   = new JPanel();
-	JTextField 			jtf_chat   = new JTextField();
-	JTextPane 			jtp_chat   = new JTextPane();
-	JButton				jbtn_jun   = new JButton("전송");
-	JButton				jbtn_inv   = new JButton("친구초대");
-	JButton				jbtn_emti  = new JButton("이모티콘");
-	JButton				jbtn_exit  = new JButton("나가기");
-	JToolBar			jtb_chat   = new JToolBar();
-	
-	JScrollPane 		jsp_chatA  = new JScrollPane(jtp_chat);
-	JScrollPane 		jsp_chatF  = new JScrollPane(jtf_chat);
-	
 	ClientData			clientData;
 	RoomVO				room;
+
+	//채팅방
+	JTextField 			jtf_South  = new JTextField();
+	JTextPane 			jtp_Center = new JTextPane();
+	JPanel				jp_North   = new JPanel();
+	JPanel				jp_South   = new JPanel();
+	JToolBar			jtb_North  = new JToolBar();
+	JButton				jbtn_emti  = new JButton("이모티콘");
+	JButton				jbtn_inv   = new JButton("친구초대");
+	JButton				jbtn_exit  = new JButton("나가기");
+	JButton				jbtn_jun   = new JButton("전송");
+	JScrollPane 		jsp_North  = new JScrollPane(jtb_North);
+	JScrollPane 		jsp_Center = new JScrollPane(jtp_Center,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
+															   ,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	JScrollPane 		jsp_South  = new JScrollPane(jtf_South,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
+															  ,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	
+	//이모티콘 창
+	JDialog				jd_emoticon = new JDialog(this, false);
+	JPanel				jp_emoticon;
+	JScrollPane 		jsp_emoticon = new JScrollPane();
 	
 	public ChatDialog(ClientData clientData, RoomVO room) {
 		this.clientData = clientData;
 		this.room = room;
-		
-		this.setTitle(room.getRoom_title());
-		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
-		jbtn_inv.addActionListener(this);
-		jbtn_emti.addActionListener(this);
-		jbtn_jun.addActionListener(this);
-		jbtn_exit.addActionListener(this);
-		
 		this.setSize(360,550);
-		this.setVisible(false);
-		jsp_chatA.setVisible(true);
-		jsp_chatF.setVisible(true);
-		jtb_chat.setVisible(true);
-		this.add("North", jtb_chat);
-		this.add("Center",jsp_chatA);
-		this.add("South",jsp_chatF);
-		jtb_chat.setLayout(new GridLayout(1,4,10,10));
-		jtb_chat.add(jbtn_emti);
-		jtb_chat.add(jbtn_inv);
-		jtb_chat.add(jbtn_jun);
-		jtb_chat.add(jbtn_exit);
+		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 		
+		String title = (room != null) ? room.getRoom_no() + "번 방) " + room.getRoom_title() : "null";
+		
+		jbtn_emti.addActionListener(this);
+		jbtn_inv.addActionListener(this);
+		jbtn_exit.addActionListener(this);
+		jbtn_jun.addActionListener(this);
+		
+		jtb_North.setLayout(new GridLayout(1,3));
+		jtb_North.setBackground(new Color(126, 195, 237));
+		jtb_North.add(jbtn_emti);
+		jbtn_emti.setBackground(new Color(126, 195, 237));
+		jtb_North.add(jbtn_inv);
+		jbtn_inv.setBackground(new Color(126, 195, 237));
+		jtb_North.add(jbtn_exit);
+		jbtn_exit.setBackground(new Color(126, 195, 237));
+		
+		jp_South.setLayout(new BorderLayout());
+		jbtn_jun.setBackground(new Color(126, 195, 237));
+		jp_South.add("Center",jsp_South);
+		jp_South.add("East",jbtn_jun);
+		
+		this.add("North", jtb_North);
+		this.add("Center",jsp_Center);
+		this.add("South",jp_South);
+		this.setVisible(true);
+		
+		jp_emoticon = (clientData != null) ? clientData.getEmoticonPanel(jtf_South) : new JPanel();
+		jsp_emoticon = new JScrollPane(jp_emoticon, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		jd_emoticon.setLayout(new BorderLayout());
+		jd_emoticon.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+		jd_emoticon.setTitle(title);
+		jd_emoticon.setSize(360,550);
+		jd_emoticon.add("Center",jsp_emoticon);
+		jd_emoticon.setVisible(false);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("전송")) {
+		//이모티콘 다이얼로그 활성화.
+		if(e.getActionCommand().equals("이모티콘")) {
+			jd_emoticon.setVisible(true);
+		}
+
+		else if(e.getActionCommand().equals("친구초대")) {
+			System.out.println("초대실행");
+			//Invited();
+		}
+		
+		else if(e.getActionCommand().equals("나가기")) {
+			System.out.println("나가기");
+		}
+		
+		else if(e.getActionCommand().equals("전송")) {
 			ArrayList<ChatVO> request = new ArrayList<ChatVO>();
-			request.add(new ChatVO(0, room, jtf_chat.getText(), null, clientData.getMyData()));
+			request.add(new ChatVO(0, room, jtf_South.getText(), null, clientData.getMyData()));
 			Message<ChatVO> msg = new Message<ChatVO>(Message.CHAT_SEND, request, null);
 			try {
 				clientData.getOut().writeObject(msg);
 				clientData.getOut().flush();
-				jtf_chat.setText("");
+				jtf_South.setText("");
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
-		}
-		if(e.getActionCommand().equals("이모티콘")) {
-			new EmoticonDialog(clientData, this);
-		}
-		//Invited
-		if(e.getActionCommand().equals("친구초대")) {
-			System.out.println("초대실행");
-			//Invited();
-		}
-		if(e.getActionCommand().equals("나가기")) {
-		  
 		}
 	}
 	
@@ -103,7 +130,7 @@ public class ChatDialog extends JDialog implements ActionListener{
 	 */
 	public synchronized void append(String chat_content, Pattern pattern) {
 		try {
-			StyledDocument doc = jtp_chat.getStyledDocument();
+			StyledDocument doc = jtp_Center.getStyledDocument();
 			StringBuilder builder = new StringBuilder(chat_content);
 			Matcher m = pattern.matcher(builder);
 			
@@ -128,21 +155,21 @@ public class ChatDialog extends JDialog implements ActionListener{
 							//selectAll : JTextPane안에 포함된 모든 텍스트를 선택한다.
 							//getSelectionEnd : 선택된 텍스트에서 마지막 위치
 							//setSelectionStart : 텍스트 선택 영역을 옮김. 아래 코드는 마지막 부분으로 옮겨줌.
-							jtp_chat.selectAll();
-							jtp_chat.setSelectionStart(jtp_chat.getSelectionEnd());
+							jtp_Center.selectAll();
+							jtp_Center.setSelectionStart(jtp_Center.getSelectionEnd());
 						}
 					} catch(Exception e) {
 						e.printStackTrace();
 					}
 					//앞의 문자열을 출력한 다음에는 이모티콘을 출력해준다.
-					jtp_chat.insertComponent(label);
+					jtp_Center.insertComponent(label);
 					//기존 채팅내용에서 위에서 출력한 부분은 지워줘서 뒷 부분을 앞으로 땡겨준다.
 					builder.replace(0, idx+name.length(), "");
 					
 					//수정한 문자열로 Matcher를 새로 설정해준다.
 					m = pattern.matcher(builder);
-					jtp_chat.selectAll();
-					jtp_chat.setSelectionStart(jtp_chat.getSelectionEnd());
+					jtp_Center.selectAll();
+					jtp_Center.setSelectionStart(jtp_Center.getSelectionEnd());
 				}
 			}
 			//이모티콘 추출작업이 끝난후 남은 문자열을 뒤에 붙여준다.
@@ -151,11 +178,14 @@ public class ChatDialog extends JDialog implements ActionListener{
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
-			jtp_chat.selectAll();
-			jtp_chat.setSelectionStart(jtp_chat.getSelectionEnd());
+			jtp_Center.selectAll();
+			jtp_Center.setSelectionStart(jtp_Center.getSelectionEnd());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	public static void main(String[] args) {
+		ChatDialog c = new ChatDialog(null, null);
+	}
 }

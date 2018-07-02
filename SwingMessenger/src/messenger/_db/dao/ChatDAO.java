@@ -25,7 +25,7 @@ import messenger._db.vo.RoomVO;
  * @author Jin Lee
  */
 public class ChatDAO {
-	private DBConnection dbCon = new DBConnection();
+	private DBConnection dbCon = DBConnection.getInstance();
 	private final SimpleDateFormat chat_time_format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	
 	private ChatDAO() {}

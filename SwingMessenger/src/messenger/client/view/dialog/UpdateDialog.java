@@ -33,7 +33,7 @@ public class UpdateDialog extends JDialog implements ActionListener{
 	JPanel				jp_cert 	= new JPanel();
 	JPanel				jp_upd 		= new JPanel();
 	JLabel				jl_uid		= new JLabel("아이디 :");
-	JLabel 				jl_unick 	= new JLabel("닉네임 :");
+	JLabel 				jl_unick 	= new JLabel("상태메시지 :");
 	JLabel 				jl_upw 		= new JLabel("비밀번호 :");
 	JLabel 				jl_uname 	= new JLabel("이름 :");
 	JLabel 				jl_ugender 	= new JLabel("성별 :");

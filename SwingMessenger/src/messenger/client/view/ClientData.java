@@ -99,16 +99,7 @@ public class ClientData {
 	 * 이모티콘 서버에 연결하여 이모티콘을 받아오는 작업을 쓰레드를 사용하여 진행한다.
 	 */
 	public void getEmoticonFromServer() {
-		if(emoticonMap == null) {
-			Thread thread = new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					emoticonMap = new GetEmoticon().method();
-				}
-			});
-			thread.start();
-		}
+		emoticonMap = (emoticonMap == null) ? new GetEmoticon().method() : emoticonMap;
 	}
 
 	/**
@@ -245,7 +236,7 @@ public class ClientData {
 				result.add(jl);
 			}
 		}
-		
+		System.out.println("이모티콘맵: " + emoticonMap);
 		return result;
 	}
 

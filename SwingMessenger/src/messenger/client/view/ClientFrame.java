@@ -581,10 +581,10 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			} else if(e.getActionCommand().equals("로그인")) {
 				if(clientData.login(jtf_id.getText(), jtf_pw.getText())) {
 					//로그인 성공시 멤버서버에 연결하여 친구리스트가져오기, 채팅서버에 연결하여 방 리스트 가져오기, 이모티콘서버에 연결하여 이모티콘 받아오기 수행
-					clientData.initChat();
 					clientData.getEmoticonFromServer();
 					refreshMyTable(clientData.getMyData());
 					clientData.actionFriendList();
+					clientData.initChat();
 					card.show(jp_card,"친구목록");
 					jmb_menu.setVisible(true);
 				}

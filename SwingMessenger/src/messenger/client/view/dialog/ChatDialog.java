@@ -79,6 +79,7 @@ public class ChatDialog extends JDialog implements ActionListener{
 		jp_South.add("Center",jsp_South);
 		jp_South.add("East",jbtn_jun);
 		
+		jtp_Center.setEditable(false);
 		this.add("North", jtb_North);
 		this.add("Center",jsp_Center);
 		this.add("South",jp_South);
@@ -202,5 +203,6 @@ public class ChatDialog extends JDialog implements ActionListener{
 
 	public static void main(String[] args) {
 		ChatDialog c = new ChatDialog(null, null);
+		c.setVisible(true);
 	}
 }

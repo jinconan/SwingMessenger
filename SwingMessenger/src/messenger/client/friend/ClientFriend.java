@@ -96,17 +96,17 @@ public class ClientFriend extends Thread{
 				break;
 			
 			case Message.FRIEND_SEARCH://친구찾기
-				cfs = new ClientFriendSearch();
+				//cfs = new ClientFriendSearch();
 				cfs.setFriendSearch(res);//골라낸 List자료 넘김
 				break;
 				
 			case Message.FRIEND_INSERT://친구추가
-				cfa = new ClientFriendAdd();
+				//cfa = new ClientFriendAdd();
 				cfa.setFriendAdd(res);//골라낸 List자료 넘김
 				break;
 				
 			case Message.FRIEND_DELETE://친구삭제
-				cfd = new ClientFriendDelete();
+				//cfd = new ClientFriendDelete();
 				cfd.setFriendDelete(res);//골라낸 List자료 넘김
 				break;
 				

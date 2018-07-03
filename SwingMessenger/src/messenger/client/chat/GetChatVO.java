@@ -42,21 +42,22 @@ public class GetChatVO extends Thread {
 				switch (msg.getType()) {
 				case Message.CHAT_SEND:
 					// 받은 채팅을 화면에 출력
-					printChatContent(msg,clientData);
+					printChatContent(msg);
 					break;
 				case Message.CHATROOM_LOAD:
 					// 디폴트테이블모델 만들어서 addROw로 로우 추가하고 JTable에 부착하고 방 목록 새로고침.
-					getRoomList(msg, clientFrame);
+					getRoomList(msg);
 					break;
 				case Message.CHATROOM_INVITE:
 					//새로 참가한 방을 서버로부터 전달받아서 디폴트테이블모델에 추가.
-					AttendRoom attendRoom =new AttendRoom();
+					attendRoom(msg);
+//					AttendRoom attendRoom =new AttendRoom();
 					/*attendRoom.method(msg);
 					break;*/
 				case Message.CHATROOM_EXIT:
 					// 삭제된 놈을 서버로부터 전달받는데, 이것을 디폴트테이블모델에서 찾아서 제거.
 					// 방 리스트를 새로고침
-					exitRoom(msg);
+					getRoomList(msg);
 					break;
 				}
 			}
@@ -78,7 +79,7 @@ public class GetChatVO extends Thread {
 	 * @param msg 서버로부터 받은 메세지
 	 * @param clientData 클라이언트의 정보
 	 */
-	private void printChatContent(Message<ChatVO> msg, ClientData clientData) {
+	private void printChatContent(Message<ChatVO> msg) {
 		ArrayList<ChatVO> response = (ArrayList<ChatVO>) msg.getResponse();
 		ChatVO cVO = (response != null && response.size() > 0) ? response.get(0) : null;
 		if(cVO == null) 
@@ -99,7 +100,7 @@ public class GetChatVO extends Thread {
 	 * @param msg 서버로부터 받은 메세지
 	 * @param clientFrame 클라이언트의 정보
 	 */
-	public void getRoomList(Message<ChatVO> msg, ClientFrame clientFrame) {
+	public void getRoomList(Message<ChatVO> msg) {
 		ArrayList<ChatVO> response = (ArrayList<ChatVO>)msg.getResponse();
 		ArrayList<RoomVO> rVOList = new ArrayList<RoomVO>();
 		
@@ -115,16 +116,17 @@ public class GetChatVO extends Thread {
 		clientFrame.refreshRoomList(rVOList);
 	}
 	
-	/**
-	 * 퇴장 요청을 서버가 처리하고 응답 메시지를 보내주었을 때 클라이언트가 수행하는 메소드
-	 * @param msg 서버가 보낸 메세지
-	 */
-	public void exitRoom(Message<ChatVO> msg) {
-		ArrayList<ChatVO> response = (ArrayList<ChatVO>) msg.getResponse();
-		ChatVO cVO = (response != null) ? response.get(0) : null;
-		RoomVO rVO = (cVO != null) ? cVO.getRoomVO() : null;
-		if(rVO != null)
-			clientData.getRoomList();
+	
+	public void attendRoom(Message<ChatVO> msg) {
+		getRoomList(msg);
+		ArrayList<ChatVO> response = (ArrayList<ChatVO>)msg.getResponse();
+		ChatVO chatVO = (response != null) ? response.get(0) : null;
+		RoomVO roomVO = (chatVO != null) ? chatVO.getRoomVO() : null;
+		int room_no = (roomVO != null) ? roomVO.getRoom_no() : 0;
+		
+		ChatDialog cDialog = clientData.getChatDialog(room_no);
+		if(cDialog != null)
+			cDialog.setVisible(true);
 		
 	}
 }

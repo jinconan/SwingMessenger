@@ -145,7 +145,7 @@ public class ChatDAO {
 	 * 새 방을 생성할 시 room테이블에 insert를 수행하고 생성된 방 번호를 리턴하는 프로시저를 먼저 실행한다.
 	 * 그 후 공통적으로 선택된 멤버들을 원하는 방에 insert를 수행한다.
 	 * @param request : 방 안에 참여할 참가자 리스트(기존 방에 초대시에는 초대할 멤버만)
-	 * @param roomVO : 참여할 방(null인 경우 새로운 방 개설)
+	 * @param roomVO : 참여할 방(null인 경우 새로운 방 개설) -> 방 생성시 제목을 받아야하므로 null대신 방 번호가 0인 경우로 변경
 	 * @return 최종적으로 방에 참가한 인원을 ChatVO에 담아서 리스트로 리턴.
 	 */
 	public synchronized ArrayList<ChatVO> insertRoomMember(ArrayList<ChatVO> request, RoomVO roomVO) {
@@ -155,10 +155,13 @@ public class ChatDAO {
 		try (
 			Connection con = dbCon.getConnection();
 		){
-			//RoomVO가 없는 경우 새로운 방을 먼저 db에 추가한다.
-			if(roomVO == null) {
+			//roomVO가 없거나 방 번호가 없는 경우 새로운 방을 먼저 db에 추가한다.
+			if(roomVO == null || roomVO.getRoom_no() == 0) {
 				try (CallableStatement cstmt = con.prepareCall("{call proc_room_create(?,?)}");){
-					cstmt.setString(1, "제목없음");
+					String room_title = (roomVO == null) ? null : roomVO.getRoom_title();
+					if(room_title == null || room_title.trim()=="")
+						room_title="제목없음";
+					cstmt.setString(1, room_title);
 					cstmt.registerOutParameter(2, java.sql.Types.INTEGER);
 					cstmt.executeUpdate();
 					
@@ -176,6 +179,7 @@ public class ChatDAO {
 				PreparedStatement pstmt = con.prepareStatement(sql.toString())
 			) {
 				int result = 0;
+				roomVO = new RoomVO(room_no, null, null);
 				for(ChatVO chatVO : request) {
 					MemberVO memVO = chatVO.getMemVO();
 					if(memVO == null)
@@ -184,6 +188,7 @@ public class ChatDAO {
 					pstmt.setInt(2,  memVO.getMem_no());
 					result = pstmt.executeUpdate();
 					if(result != 0) {
+						chatVO.setRoomVO(roomVO);
 						out.add(chatVO);
 					}
 					pstmt.clearParameters();

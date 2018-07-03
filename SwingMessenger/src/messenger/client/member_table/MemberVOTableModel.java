@@ -26,7 +26,7 @@ public class MemberVOTableModel extends AbstractTableModel {
 	}
 	
 	public MemberVOTableModel(List<MemberVO> list, String columnName) {
-		this.list = Collections.synchronizedList(list);
+		this.list = list;
 		this.columnName = columnName;
 	}
 

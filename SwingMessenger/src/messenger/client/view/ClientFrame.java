@@ -512,6 +512,13 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			for(MemberVO mVO : mVOs)
 				friendTableModel.addRow(mVO);
 		}
+		/**
+		 * 친구 목록 테이블을 리턴
+		 * @return 친구목록 테이블
+		 */
+		public MemberVOTableModel getFriendTableModel() {
+			return friendTableModel;
+		}
 		
 		/**
 		 * 친구 한 명을 테이블모델에 추가한다.

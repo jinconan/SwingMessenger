@@ -35,7 +35,6 @@ public class ClientData {
 	private HashMap<String, JLabel> emoticonMap;
 	private HashMap<Integer, ChatDialog> chatDialogMap = new HashMap<Integer, ChatDialog>();
 	private ArrayList<MemberVO> friendList;
-//	private ArrayList<RoomVO> roomList;
 	private ObjectOutputStream out;
 	
 	public ClientFrame clientFrame;
@@ -205,9 +204,6 @@ public class ClientData {
 		
 	}
 	
-	public List<MemberVO> getFriendList() {
-		return friendList;
-	}
 	
 	/**
 	 * 채팅방에서 사용할 이모티콘 패널을 얻는다.

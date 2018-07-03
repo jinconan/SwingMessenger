@@ -337,7 +337,7 @@ public class MemberDAO {
 		//클래스파일의 기본 경로를 가져온다.
  		ClassLoader loader = this.getClass().getClassLoader();
  		
- 		//위에서 얻은 경로를 시작지점으로 하여 이모티콘이 담긴 폴더의 상대경로 얻기.
+ 		//위에서 얻은 경로를 시작지점으로 하여  상대경로 얻기.
  		String location = (isProfile == true) ? "messenger\\server\\images\\profile\\" : "messenger\\server\\images\\background\\";
  		
 		URL buildpath = loader.getResource(location);

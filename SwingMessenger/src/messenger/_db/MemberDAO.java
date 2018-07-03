@@ -162,7 +162,7 @@ public class MemberDAO {
 		){
 			//회원정보 수정 메소드
 			int i=1;
-			cstmt.setObject(i++, 8888);//회원번호
+			cstmt.setObject(i++, mvo.get(0).getMem_no());//회원번호
 			cstmt.setObject(i++, mvo.get(0).getMem_id());//ID
 			cstmt.setObject(i++, mvo.get(0).getMem_name());//이름
 			cstmt.setObject(i++, mvo.get(0).getMem_nick());//닉네임

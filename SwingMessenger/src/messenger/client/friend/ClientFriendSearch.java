@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import messenger._db.vo.MemberVO;
-import messenger.client.view.FriendPanel;
+import messenger.client.view.ClientFrame;
 import messenger.protocol.Message;
 
 /**********************************************************************
@@ -28,7 +28,7 @@ public class ClientFriendSearch{
 
 	/*선언부*/
 	String userId_f = null;		 //UI로부터받은 '찾고자하는 친구의 아이디'를 담을 변수
-	FriendPanel f_Panel = null;	 //화면에 담는 f_Panel 전역변수
+	ClientFrame frame = null;	 //화면에 담는 f_Panel 전역변수
 	
 	Message<MemberVO> mms = null;//Client-Server간 주고받을 메세지와
 	List<MemberVO> mli_f = null; //메시지에 담길 자료구조 List
@@ -48,9 +48,9 @@ public class ClientFriendSearch{
 	
 	//userId 전역변수 초기화 : 사용자가 찾고자하는 아이디의 입력값을 파라미터로 받음
 	//화면에 담는 f_Panel 전역변수 초기화 추가
-	public ClientFriendSearch(String userId_f,FriendPanel f_Panel) {
+	public ClientFriendSearch(String userId_f,ClientFrame frame) {
 		this.userId_f = userId_f;
-		this.f_Panel = f_Panel;
+		this.frame = frame;
 	}
 	
 	/*사용자정의메소드*/

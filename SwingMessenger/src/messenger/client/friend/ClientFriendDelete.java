@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import messenger._db.vo.MemberVO;
-import messenger.client.view.FriendPanel;
+import messenger.client.view.ClientFrame;
 import messenger.protocol.Message;
 
 /**********************************************************************
@@ -35,7 +35,7 @@ public class ClientFriendDelete {
 	int userNo = 0;				 //본인 회원번호
 	String userId	= null;		 //본인아이디
 	String friendId = null;		 //UI에서 조회한 검색결과로 추가하고자하는 친구아이디
-	FriendPanel f_Panel = null;	 //화면에 담는 f_Panel 전역변수
+	ClientFrame frame = null;	 //화면에 담는 f_Panel 전역변수
 	
 	Message<MemberVO> mms = null;//Client-Server간 주고받을 메세지와
 	List<MemberVO> mli = null;	 //메시지에 담길 자료구조 List
@@ -56,10 +56,10 @@ public class ClientFriendDelete {
 	
 	//userNo,friendId 전역변수 초기화
 	//화면에 담는 f_Panel 전역변수 초기화 추가
-	public ClientFriendDelete(String userId, String friendId,FriendPanel f_Panel) {
+	public ClientFriendDelete(String userId, String friendId,ClientFrame frame) {
 		this.userId   = userId;
 		this.friendId = friendId;
-		this.f_Panel = f_Panel;
+		this.frame = frame;
 	}
 	
 	/*사용자정의메소드*/

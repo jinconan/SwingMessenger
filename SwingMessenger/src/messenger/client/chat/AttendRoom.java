@@ -92,7 +92,7 @@ public class AttendRoom {
 		//방제목을 보낸다.
 		roomVO .setRoom_title(title);
 		//백터에 담아서 친구 목록을 보낸다
-        memberVO.setFriend_name(friend);
+//        memberVO.setFriend_name(friend);
 		
 		chatVO .setMemVO  (memberVO);
 		chatVO .setRoomVO (roomVO);

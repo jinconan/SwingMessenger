@@ -5,8 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import messenger._db.vo.MemberVO;
-import messenger.client.view.ClientData;
-import messenger.client.view.FriendPanel;
+import messenger.client.view.ClientFrame;
 import messenger.protocol.Message;
 
 /**********************************************************************
@@ -41,7 +40,7 @@ import messenger.protocol.Message;
 public class ClientFriendList extends Thread {
 
 	int userNo	= 0;
-	FriendPanel f_Panel = null;  //화면에 담는 f_Panel 전역변수
+	ClientFrame frame = null;  //화면에 담는 f_Panel 전역변수
 	
 	Message<MemberVO> mms = null;//Client-Server간 주고받을 메세지와
 	List<MemberVO> mli = null;	 //메시지에 담길 자료구조 List
@@ -60,9 +59,9 @@ public class ClientFriendList extends Thread {
 	
 	//userNo 전역변수 초기화
 	//화면에 담는 f_Panel 전역변수 초기화 추가
-	public ClientFriendList(int userNo,FriendPanel f_Panel) {
+	public ClientFriendList(int userNo,ClientFrame frame) {
 		this.userNo = userNo;
-		this.f_Panel = f_Panel;
+		this.frame = frame;
 	}
 
 	//본인회원번호를 서버로 전달하기
@@ -81,8 +80,7 @@ public class ClientFriendList extends Thread {
 	
 	//전달 받은 정보를 UI에 띄우기(run메소드에서 호출)
 	public void setFriendList(List<MemberVO> res) {
-		f_Panel.refreshFriendTable((ArrayList<MemberVO>) res);
-		
+		frame.refreshFriendTable((ArrayList<MemberVO>) res);
 		//System.out.println(res);//테스트용 출력문
 		
 		//List에 담긴 MemberVO의 데이터를 dtm에 담기

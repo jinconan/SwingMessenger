@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -18,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class CreateRoomDialog extends JDialog implements ActionListener{
 	
+	private		  JFrame			   clientFrame;
 	private final JPanel               contentPanel        = new JPanel();
 	private       JTextField           jtf_title           = new JTextField();
 	
@@ -47,7 +49,8 @@ public class CreateRoomDialog extends JDialog implements ActionListener{
 	private       Vector               list                = null;
 	private       Vector               V_Room_add_list     = new Vector();
 	
-	public CreateRoomDialog() {
+	public CreateRoomDialog(JFrame clientFrame) {
+		this.clientFrame = clientFrame;
 		init();
 	}
 	
@@ -149,7 +152,7 @@ public class CreateRoomDialog extends JDialog implements ActionListener{
 		
 	}
 	public static void main(String[] args) {
-		new CreateRoomDialog();
+		new CreateRoomDialog(null);
 	}
 
 	@Override

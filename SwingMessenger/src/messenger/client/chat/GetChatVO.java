@@ -117,7 +117,7 @@ public class GetChatVO extends Thread {
 		}
 		
 		//RoomVo의 리스트를 가지고 방 목록을 새로고침한다..
-		clientFrame.getRoomPanel().refreshRoomList(rVOList);
+		clientFrame.refreshRoomList(rVOList);
 	}
 	
 	public void exitRoom(Message<ChatVO> msg, ClientFrame clientFrame) {

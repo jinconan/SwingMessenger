@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,10 +22,10 @@ import messenger._db.vo.RoomVO;
 import messenger.client.Emoticon.GetEmoticon;
 import messenger.client.chat.GetChatVO;
 import messenger.client.friend.ClientFriendAdd;
+import messenger.client.friend.ClientFriendDelete;
 import messenger.client.friend.ClientFriendList;
 import messenger.client.friend.ClientFriendSearch;
 import messenger.client.view.dialog.ChatDialog;
-import messenger.client.friend.ClientFriendDelete;
 import messenger.protocol.Message;
 import messenger.protocol.Port;
 import messenger.protocol.Server;
@@ -36,8 +37,6 @@ public class ClientData {
 	private ArrayList<MemberVO> friendList;
 //	private ArrayList<RoomVO> roomList;
 	private ObjectOutputStream out;
-	
-	private FriendPanel f_Panel;//private로 쓰인 이유?? 
 	
 	public ClientFrame clientFrame;
 	
@@ -52,7 +51,7 @@ public class ClientData {
 	//actionPerformed에서 친구전체조회를 실행하도록 호출할 메소드
 	public void actionFriendList() {
 //		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
-		ClientFriendList cfl = new ClientFriendList(myData.getMem_no(),clientFrame.jp_List);
+		ClientFriendList cfl = new ClientFriendList(myData.getMem_no(),clientFrame);
 		cfl.getFriendList();
 	}
 	/******************************************
@@ -61,7 +60,7 @@ public class ClientData {
 	 ******************************************/
 	public void actionFriendSearch(String FriendId) {
 //		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
-		ClientFriendSearch cfc = new ClientFriendSearch(FriendId,clientFrame.jp_List);
+		ClientFriendSearch cfc = new ClientFriendSearch(FriendId,clientFrame);
 		cfc.getFriendSearch();
 	}
 	/******************************************
@@ -70,7 +69,7 @@ public class ClientData {
 	 ******************************************/
 	public void actionAddFriend(String FriendId) {
 //		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
-		ClientFriendAdd cfa = new ClientFriendAdd(myData.getMem_id(),FriendId,clientFrame.jp_List);
+		ClientFriendAdd cfa = new ClientFriendAdd(myData.getMem_id(),FriendId,clientFrame);
 		cfa.getFriendAdd();
 	}
 	/******************************************
@@ -79,7 +78,7 @@ public class ClientData {
 	 ******************************************/
 	public void actionDeleteFriend(String FriendId) {
 //		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
-		ClientFriendDelete cfd = new ClientFriendDelete(myData.getMem_id(),FriendId,clientFrame.jp_List);
+		ClientFriendDelete cfd = new ClientFriendDelete(myData.getMem_id(),FriendId,clientFrame);
 		cfd.getFriendDelete();
 	}
 //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -199,6 +198,10 @@ public class ClientData {
 		
 	}
 	
+	public List<MemberVO> getFriendList() {
+		return friendList;
+	}
+	
 	/**
 	 * 채팅방에서 사용할 이모티콘 패널을 얻는다.
 	 * @param jtf : 채팅방 안에 있는 텍스트필드.
@@ -207,23 +210,26 @@ public class ClientData {
 	public JPanel getEmoticonPanel(JTextField jtf) {
 		JPanel result = new JPanel(new GridLayout(6,6));
 		//이모티콘 해쉬맵에서 이모티콘을 가져와서 일일히 패널에 추가한다.
-		for(String s : emoticonMap.keySet()) {
-			JLabel jl = getEmoticon(s);
-			
-			//각각의 이모티콘은 클릭했을때 jtf에 이름을 출력하도록 한다.
-			jl.addMouseListener(new MouseAdapter() {
+		if(emoticonMap != null) {
+			for(String s : emoticonMap.keySet()) {
+				JLabel jl = getEmoticon(s);
 				
-			@Override
-				public void mouseClicked(MouseEvent e) {
-					if(jtf !=null) {
-						StringBuilder builder = new StringBuilder(jtf.getText());
-						builder.append(jl.getText());
-						jtf.setText(builder.toString());
-					}
-				}	
-			});
-			result.add(jl);
+				//각각의 이모티콘은 클릭했을때 jtf에 이름을 출력하도록 한다.
+				jl.addMouseListener(new MouseAdapter() {
+					
+				@Override
+					public void mouseClicked(MouseEvent e) {
+						if(jtf !=null) {
+							StringBuilder builder = new StringBuilder(jtf.getText());
+							builder.append(jl.getText());
+							jtf.setText(builder.toString());
+						}
+					}	
+				});
+				result.add(jl);
+			}
 		}
+		
 		return result;
 	}
 

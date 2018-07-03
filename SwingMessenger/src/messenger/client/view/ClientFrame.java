@@ -142,7 +142,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		JPopupMenu popup 	   = new JPopupMenu();
 		JMenuItem  jmi_popfile = new JMenuItem("프로필보기");
 		JMenuItem  jmi_popchat = new JMenuItem("대화하기");
-		JMenuItem  jmi_popdel  = new JMenuItem("삭제하기");
+		//JMenuItem  jmi_popdel  = new JMenuItem("삭제하기");
 		
 		// 임시 이미지 소스
 		String noname = ".//src//messenger//client//images//";
@@ -322,8 +322,8 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			jmb_menu.setLayout(new GridLayout(1, 5));
 			jmb_menu.add(jmi_fri);
 			jmb_menu.add(jmi_chat);
-			jmb_menu.add(jmi_calender);
-			jmb_menu.add(jmi_news);
+//			jmb_menu.add(jmi_calender);
+//			jmb_menu.add(jmi_news);
 			jmb_menu.add(jm_add);
 			jm_add.add(jmi_addfri);
 			jm_add.add(jmi_addchat);
@@ -334,11 +334,8 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			// 목록창
 			jp_list.setVisible(true);
 			jp_list.setBackground(Color.YELLOW);
-//			jp_List.setLayout(new GridLayout(5, 1));
-//			jp_List.add(jl_no, "내정보");
 			jl_no.setIcon(new ImageIcon(noname + "알수없음2.png"));
 			jl_no.setText("내이름");
-//			jp_List.add(jp_fri, "친구정보");
 			jp_my.add(jl_my);
 			jp_fri.add(jl_fri);
 			jp_my.setBackground(Color.CYAN);
@@ -473,7 +470,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			//마우스 팝업 레이아웃
 			popup = new JPopupMenu();
 			popup.add(jmi_popfile);
-			popup.add(jmi_popdel);
+//			popup.add(jmi_popdel);
 			popup.add(jmi_popchat);
 			friendTable.add(popup);
 			//팝업마우스 액션리스너
@@ -488,7 +485,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 				   }
 				  });
 			jmi_popfile.addActionListener(this);
-			jmi_popdel.addActionListener(this);
+//			jmi_popdel.addActionListener(this);
 			jmi_popchat.addActionListener(this);
 			
 		}///////////// end initDisplay
@@ -603,7 +600,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			// 회원가입 이벤트
 			if(e.getSource()==jbtn_bok) {
 				//System.out.println(jtf_id.getText());
-				//jb.Gumsa();
+				jb.Gumsa();
 			}
 			if(e.getSource()==jmi_get) {
 				System.out.println("가입버튼");
@@ -656,37 +653,8 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			} else if(e.getActionCommand().equals("삭제하기")) {
 				
 			}
+		}
 			
-			//대화창 이벤트
-//			int row = jt_room.getSelectedRow();
-//			int room_no = Integer.parseInt((String)jt_room.getValueAt(row, 0));
-//			ChatDialog dialog = clientData.getChatDialog(room_no);
-//			if(dialog != null) {
-//				System.out.println("방 만들기");
-//				ArrayList<ChatVO> request = new ArrayList<ChatVO>();
-//				ChatVO chatVO = new ChatVO(0, null, null, null, this.clientData.getMyData());
-//				request.add(chatVO);
-//				MemberVO mem = new MemberVO();
-//				mem.setMem_no(35);
-//				chatVO = new ChatVO(0,null,null,null,mem);
-//				request.add(chatVO);
-//				Message<ChatVO> msg = new Message<ChatVO>(Message.CHATROOM_INVITE,request,null);
-//				
-//				try {
-//					this.clientData.getOut().writeObject(msg);
-//					this.clientData.getOut().flush();
-//					System.out.println("보냄");
-//				} catch (Exception e2) {
-//					e2.printStackTrace();
-//				}
-//			}
-
-		//버튼이벤트성공->액션이벤트->card.show
-		}///////////// end actionPerformed
-
-//		public JPanel getRoomPanel() {
-//			return jp_chat;
-//		}
 
 
 		@Override

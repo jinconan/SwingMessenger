@@ -40,6 +40,7 @@ import messenger.client.member_table.MemberVOTable;
 import messenger.client.member_table.MemberVOTableModel;
 import messenger.client.view.dialog.ChatDialog;
 import messenger.client.view.dialog.CreateRoomDialog;
+import messenger.client.view.dialog.ProfileDialog;
 import messenger.client.view.dialog.SearchDialog;
 import messenger.client.view.dialog.UpdateDialog;
 /*2018-07-03 수정자 김재현 
@@ -78,7 +79,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		JPasswordField jtf_gpw_re	= new JPasswordField(20);
 		JTextField  jtf_gname 	= new JTextField(20);
 		JTextField  jtf_ghp 	= new JTextField(20);
-		String[] 	genderList  = {"남자","여자"};
+		String[] 	genderList  = {"남","여"};
 		JComboBox   jtf_ggender = new JComboBox(genderList);
 		JMenuItem	jmi_get		= new JMenuItem("   회     원     가     입");
 		JMenuItem	jmi_back	= new JMenuItem("   뒤     로     가     기");
@@ -103,8 +104,6 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		JPanel 		jp_talk 	= new JPanel();
 		JPanel 		jp_news 	= new JPanel();
 		JPanel 		jp_calender = new JPanel();
-		JPanel 		jp_my 		= new JPanel();
-		JPanel 		jp_fri 		= new JPanel();
 		JLabel 		jl_no 		= new JLabel();
 		JLabel 		jl_my 		= new JLabel("내정보");
 		JTextField  jtf_my 		= new JTextField();
@@ -116,6 +115,8 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		
 		//친구목록 패널
 		JPanel 		jp_List 	= new JPanel();
+		JPanel 		jp_my 		= new JPanel();
+		JPanel 		jp_fri 		= new JPanel();
 		private MemberVOTableModel myTableModel 	= new MemberVOTableModel("나");
 		private MemberVOTableModel friendTableModel = new MemberVOTableModel("친구 리스트");
 		private MemberVOTable	   myTable 			= new MemberVOTable();
@@ -172,8 +173,6 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			jp_card.add(jp_gaip,"가입창");
 			jp_card.add(jp_List, "친구목록");
 			jp_card.add(jp_chat, "대화목록");
-			jp_card.add(jp_news, "뉴스");
-			jp_card.add(jp_calender, "캘린더");
 			//프레임
 			this.setTitle("보노보노톡");
 			this.setSize(380, 550);
@@ -476,18 +475,22 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			popup.add(jmi_popfile);
 			popup.add(jmi_popdel);
 			popup.add(jmi_popchat);
-			jp_fri.add(popup);
+			friendTable.add(popup);
 			//팝업마우스 액션리스너
-			jp_fri.addMouseListener(new MouseAdapter() {
+			friendTable.addMouseListener(new MouseAdapter() {
 				   @Override
 				   public void mousePressed(MouseEvent e) {
 				    // 오른쪽 버튼 클릭 시 ...
 				    if(e.getModifiers() == MouseEvent.BUTTON3_MASK) {
 				      System.out.println("반응");
-				     popup.show(jp_fri, e.getX(), e.getY());
+				     popup.show(friendTable, e.getX(), e.getY());
 				    }
 				   }
 				  });
+			jmi_popfile.addActionListener(this);
+			jmi_popdel.addActionListener(this);
+			jmi_popchat.addActionListener(this);
+			
 		}///////////// end initDisplay
 		
 	//친구목록 패널창 관련 메소드//////////////
@@ -552,15 +555,17 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		
 		//성별 박스
 		public String getGender() {
-			if("남자".equals(jtf_ggender.getSelectedItem())) return "1";
+			if("남".equals(jtf_ggender.getSelectedItem())) return "1";
 			else return "2";
 		}
 		public void setGender(String gender) {
-		if("남자".equals(gender)) jtf_ggender.setSelectedItem("남자");
-		else jtf_ggender.setSelectedItem("여자");
+		if("남".equals(gender)) jtf_ggender.setSelectedItem("남");
+		else jtf_ggender.setSelectedItem("여");
 		}////////////// end Gender
 
-			
+		public ClientData getClientData() {
+			return clientData;
+		}
 		
 	//메인메소드
 	public static void main(String[] args) {
@@ -641,6 +646,15 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 				jmb_menu.setVisible(false);
 			} else if (e.getActionCommand().equals("종료")) {
 				System.exit(0);
+			}
+			
+			//마우스 팝업 이벤트
+			if(e.getActionCommand().equals("프로필보기")) {
+				ProfileDialog pd;
+			} else if(e.getActionCommand().equals("대화하기")) {
+				
+			} else if(e.getActionCommand().equals("삭제하기")) {
+				
 			}
 			
 			//대화창 이벤트

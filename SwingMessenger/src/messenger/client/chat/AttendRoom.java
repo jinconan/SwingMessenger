@@ -71,7 +71,7 @@ public class AttendRoom {
 	}
 	
 	//방을 만드는 메소드 제목과 벡터로 담은 친구들이 넘어온다.~~ 
-	public void Room_Create(String title,Vector friend) {
+	public void Room_Create(String title,ArrayList friend) {
 		
 		//불러온 방과 비교를 해서 방이 존재하는지 없는지 비교한다.
 		for(ChatVO msg:Chat_message.getResponse()) {
@@ -92,8 +92,9 @@ public class AttendRoom {
 		//방제목을 보낸다.
 		roomVO .setRoom_title(title);
 		//백터에 담아서 친구 목록을 보낸다
-        memberVO.setFriend_name(friend);
+     
 		
+		chatVO_list.addAll(friend);
 		chatVO .setMemVO  (memberVO);
 		chatVO .setRoomVO (roomVO);
 		Chat_message.setRequest(chatVO_list);

@@ -208,7 +208,7 @@ public class MemberDAO {
 		ArrayList<MemberVO> list = new ArrayList<MemberVO>();
 		// proc_friend_selectall
 		StringBuilder sql = new StringBuilder("SELECT ");
-		sql.append("mem_no, mem_id, mem_name, mem_nick FROM member ");
+		sql.append("mem_no, mem_id, mem_name, mem_nick, mem_gender, mem_hp, mem_profile, mem_background FROM member ");
 		sql.append("WHERE mem_no IN (SELECT fri_no FROM friend ");
 		sql.append("WHERE mem_no = ?)");
 
@@ -221,11 +221,27 @@ public class MemberDAO {
 				ResultSet rs = pstmt.executeQuery();
 			){
 				while (rs.next()) {
-					int mem_no = rs.getInt("mem_no");
-					String mem_id = rs.getString("mem_id");
-					String mem_name = rs.getString("mem_name");
-					String mem_nick = rs.getString("mem_nick");
-					MemberVO memVO = new MemberVO(mem_no, mem_id, mem_name, mem_nick, null, null, null, null, null);
+					int    mem_no			= rs.getInt("mem_no");
+					String mem_id			= rs.getString("mem_id");
+					String mem_name			= rs.getString("mem_name");
+					String mem_nick			= rs.getString("mem_nick");
+					String mem_gender		= rs.getString("mem_gender");
+					String mem_hp 			= rs.getString("mem_hp");
+					String mem_profile		= rs.getString("mem_profile");
+					String mem_background	= rs.getString("mem_background");
+					
+					String path = "src\\messenger\\server\\images\\";
+					ImageIcon icon		= new ImageIcon(path+"profile\\"+mem_profile);
+					if(icon.getIconWidth() == -1) {
+						icon			= new ImageIcon(path+"profile\\profile_0.png");
+					}
+					JLabel jl_prof		= new JLabel(icon);
+					icon				= new ImageIcon(path+"background\\"+mem_background);
+					if(icon.getIconWidth() == -1) {
+						icon			= new ImageIcon(path+"background\\background_0.jpg");
+					}
+					JLabel jl_back		= new JLabel(icon);
+					MemberVO memVO = new MemberVO(mem_no, mem_id, mem_name, mem_nick, mem_gender, null, mem_hp, jl_prof, jl_back);
 					
 					System.out.println(mem_no + ", " + mem_name + ", " + mem_nick);
 					list.add(memVO);// 친구 번호, 친구아이디, 친구이름, 친구닉네임만 담음.

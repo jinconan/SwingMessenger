@@ -90,8 +90,6 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		JMenuBar  jmb_menu 		= new JMenuBar();
 		JMenuItem jmi_fri 		= new JMenuItem("친구목록");
 		JMenuItem jmi_chat 		= new JMenuItem("대화목록");
-		JMenuItem jmi_news 		= new JMenuItem("뉴스");
-		JMenuItem jmi_calender  = new JMenuItem("캘린더");
 		JMenu 	  jm_add 		= new JMenu("메뉴");
 		JMenuItem jmi_addfri 	= new JMenuItem("새로운 친구");
 		JMenuItem jmi_addchat   = new JMenuItem("새로운 채팅");
@@ -142,7 +140,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		JPopupMenu popup 	   = new JPopupMenu();
 		JMenuItem  jmi_popfile = new JMenuItem("프로필보기");
 		JMenuItem  jmi_popchat = new JMenuItem("대화하기");
-		JMenuItem  jmi_popdel  = new JMenuItem("삭제하기");
+		//JMenuItem  jmi_popdel  = new JMenuItem("삭제하기");
 		
 		// 임시 이미지 소스
 		String noname = ".//src//messenger//client//images//";
@@ -158,8 +156,6 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			jbtn_bok.addActionListener(this);
 			jmi_fri.addActionListener(this);
 			jmi_chat.addActionListener(this);
-			jmi_news.addActionListener(this);
-			jmi_calender.addActionListener(this);
 			jmi_addfri.addActionListener(this);
 			jmi_addchat.addActionListener(this);
 			jmi_upd.addActionListener(this);
@@ -322,8 +318,8 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			jmb_menu.setLayout(new GridLayout(1, 5));
 			jmb_menu.add(jmi_fri);
 			jmb_menu.add(jmi_chat);
-			jmb_menu.add(jmi_calender);
-			jmb_menu.add(jmi_news);
+			//jmb_menu.add(jmi_calender);
+			//jmb_menu.add(jmi_news);
 			jmb_menu.add(jm_add);
 			jm_add.add(jmi_addfri);
 			jm_add.add(jmi_addchat);
@@ -334,11 +330,8 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			// 목록창
 			jp_list.setVisible(true);
 			jp_list.setBackground(Color.YELLOW);
-//			jp_List.setLayout(new GridLayout(5, 1));
-//			jp_List.add(jl_no, "내정보");
 			jl_no.setIcon(new ImageIcon(noname + "알수없음2.png"));
 			jl_no.setText("내이름");
-//			jp_List.add(jp_fri, "친구정보");
 			jp_my.add(jl_my);
 			jp_fri.add(jl_fri);
 			jp_my.setBackground(Color.CYAN);
@@ -473,7 +466,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			//마우스 팝업 레이아웃
 			popup = new JPopupMenu();
 			popup.add(jmi_popfile);
-			popup.add(jmi_popdel);
+//			popup.add(jmi_popdel);
 			popup.add(jmi_popchat);
 			friendTable.add(popup);
 			//팝업마우스 액션리스너
@@ -488,7 +481,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 				   }
 				  });
 			jmi_popfile.addActionListener(this);
-			jmi_popdel.addActionListener(this);
+//			jmi_popdel.addActionListener(this);
 			jmi_popchat.addActionListener(this);
 			
 		}///////////// end initDisplay
@@ -627,13 +620,6 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			} else if (e.getActionCommand().equals("대화목록")) {
 				System.out.println("대화목록");
 				card.show(jp_card, "대화목록");
-			} else if (e.getActionCommand().equals("뉴스")) {
-				System.out.println("뉴스");
-				card.show(jp_card, "뉴스");
-			} else if (e.getActionCommand().equals("캘린더")) {
-				System.out.println("캘린더");
-				card.show(jp_card, "캘린더");
-			}
 			// 메뉴바 이벤트
 			if (e.getActionCommand().equals("새로운 친구")) {
 				new SearchDialog(this);
@@ -653,9 +639,9 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 				ProfileDialog pd;
 			} else if(e.getActionCommand().equals("대화하기")) {
 				
-			} else if(e.getActionCommand().equals("삭제하기")) {
-				
 			}
+			}
+				
 			
 			//대화창 이벤트
 //			int row = jt_room.getSelectedRow();

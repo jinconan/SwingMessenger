@@ -88,6 +88,7 @@ public class SubMenu implements ActionListener{
 	
 	//프로필창 다이얼로그
 	public void Profile() {
+		
 		jd_profile.setSize(350,500);
 		jd_profile.setVisible(true);
 		jd_profile.setTitle("프로필");

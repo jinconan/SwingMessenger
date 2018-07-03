@@ -13,7 +13,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -24,9 +26,19 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import messenger._db.vo.ChatVO;
+import messenger._db.vo.MemberVO;
+import messenger._db.vo.RoomVO;
+import messenger.client.member_table.MemberVOTable;
+import messenger.client.member_table.MemberVOTableModel;
+import messenger.protocol.Message;
 
 public class ClientFrame extends JFrame implements ActionListener, FocusListener{
 		Joongbok jb = new Joongbok(this);
@@ -37,8 +49,8 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		JPanel 		jp_card		= new JPanel();
 		JPanel 		jp_login 	= new JPanel();
 		JLabel		jp_img 		= new JLabel();
-		JTextField 	jtf_id   	= new JTextField();
-		JTextField 	jtf_pw 		= new JTextField();
+		JTextField 	jtf_id   	= new JTextField(20);
+		JPasswordField jtf_pw	= new JPasswordField(20);
 		JButton 	jbtn_log 	= new JButton("로그인");
 		JButton 	jbtn_gaip 	= new JButton("회원가입");
 		JButton 	jbtn_exit 	= new JButton("나가기");
@@ -56,7 +68,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		JLabel 		jl_ghp		= new JLabel("핸드폰번호 :");
 		JLabel		jta_gerror	= new JLabel();
 		JTextField  jtf_gid		= new JTextField(20);
-		JTextField  jtf_gpw		= new JTextField(20);
+		JPasswordField jtf_gpw	= new JPasswordField(20);
 		JTextField  jtf_gpw_re	= new JTextField(20);
 		JTextField  jtf_gname 	= new JTextField(20);
 		JTextField  jtf_ghp 	= new JTextField(20);
@@ -100,6 +112,27 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		JLabel 		jl_calender = new JLabel("캘린더");
 		JScrollPane jsp_list 	= new JScrollPane(jp_card);
 		
+		//친구목록 패널
+		private MemberVOTableModel myTableModel 	= new MemberVOTableModel("나");
+		private MemberVOTableModel friendTableModel = new MemberVOTableModel("친구 리스트");
+		private MemberVOTable	   myTable 			= new MemberVOTable();
+		private MemberVOTable 	   friendTable 		= new MemberVOTable();		
+		private JScrollPane 	   jsp_friendTable  = new JScrollPane(friendTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
+																	 	 , JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		//대화방목록 패널
+		private JButton				jb_newRoom 	= new JButton("방 만들기");
+		private DefaultTableModel 	dtm  		= new DefaultTableModel(new String[] {"번호", "제목"}, 0) {
+													//방 목록 수정
+												 	@Override
+												 	public boolean isCellEditable(int row, int column) {
+												 		// TODO Auto-generated method stub
+												 		return false;
+												 	}
+				 								};
+		private JTable				jt_room 	= new JTable(dtm);
+		private JScrollPane 		jsp_room 	= new JScrollPane(jt_room, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
+																		 , JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
+		
 		//마우스 팝업 메뉴
 		JPopupMenu popup 	   = new JPopupMenu();
 		JMenuItem  jmi_popfile = new JMenuItem("프로필보기");
@@ -141,7 +174,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			this.setVisible(true);
 			this.add(jp_card, BorderLayout.CENTER);
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+			char c = '*';
 		//로그인창패널
 			//로그인창
 			jp_login.add(jp_img);
@@ -167,6 +200,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			jta_error.setVisible(false);
 			jtf_pw.setBounds(60, 290, 250, 30);
 			jtf_pw.setVisible(true);
+			jtf_pw.setEchoChar(c);
 			jtf_pw.setText("비밀번호");
 			jbtn_log.setBounds(60, 340, 250, 30);
 			jbtn_log.setVisible(true);
@@ -226,6 +260,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			jtf_gid.setVisible(true);
 			jtf_gpw.setBounds(120, 150, 200, 20);
 			jtf_gpw.setVisible(true);
+			jtf_gpw.setEchoChar(c);
 			jtf_gpw_re.setBounds(120, 190, 200, 20);
 			jtf_gpw_re.setVisible(true);
 			jtf_gname.setBounds(120, 230, 200, 20);
@@ -411,7 +446,103 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 				  });
 		}///////////// end initDisplay
 		
+	//친구목록 패널창
+		//친구목록패널 레이아웃
+		public void FriendPanel(ClientData clientData) {
+			this.clientData = clientData;
 			
+			
+			jp_list.setLayout(new BorderLayout());
+			myTable.setModel(myTableModel);
+			friendTable.setModel(friendTableModel);
+			this.add("North", myTable);
+			this.add("Center", jsp_friendTable);
+		}
+		/**
+		 * 내 정보를 보여주는 테이블을 갱신한다.
+		 * @param mVO : 내 정보
+		 */
+		//내정보 테이블 새로고침
+		public synchronized void refreshMyTable(MemberVO mVO) {
+			if(myTableModel.getRowCount() > 0)
+				myTableModel.removeRow(0);
+			myTableModel.addRow(mVO);
+		}
+		/**
+		 * 친구 목록 테이블을 갱신한다.
+		 * @param mVOs : 친구 리스트
+		 */
+		//친구정보 테이블 새로고침
+		public synchronized void refreshFriendTable(ArrayList<MemberVO> mVOs) {
+			while(friendTableModel.getRowCount() > 0)
+				friendTableModel.removeRow(0);
+			for(MemberVO mVO : mVOs)
+				friendTableModel.addRow(mVO);
+		}
+		
+		/**
+		 * 친구 한 명을 테이블모델에 추가한다.
+		 * @param mVO
+		 */
+		//친구 목록에 추가하기
+		public synchronized void addFriendRow(MemberVO mVO) {
+			friendTableModel.addRow(mVO);
+		}
+		
+		/**
+		 * 테이블 모델에서 친구 한 명을 제거한다.
+		 * @param mVO
+		 */
+		//친구 목록에서 제거하기
+		public synchronized void removeFriendRow(MemberVO mVO) {
+			for(int i=0;i<friendTableModel.getRowCount();i++) {
+				MemberVO f_mVO = friendTableModel.getValueAt(i, 0);
+				if(f_mVO.getMem_no() == mVO.getMem_no()) {
+					friendTableModel.removeRow(i);
+					return;
+				}
+			}
+		}
+		
+		
+	//대화방 목록 패널창
+		//대화방 패널 레이아웃
+		public void RoomPanel(ClientData clientData) {
+			jb_newRoom.addActionListener(this);
+			this.clientData = clientData;
+			this.add("North", jb_newRoom);
+			this.add("Center", jsp_room);
+			this.setLayout(new BorderLayout());
+			jt_room.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
+			//방 목록에서 방을 클릭했을때 채팅방 다이얼로그를 화면에 띄운다.
+			jt_room.addMouseListener(new MouseAdapter() {
+				
+				//대화방 클릭시 이벤트
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if(e.getClickCount() == 2) { //방을 우클릭했을 때 - 우클릭 대신 좋은거 찾을 필요가 있음.
+						
+						int row = jt_room.getSelectedRow();
+						int room_no = Integer.parseInt((String)jt_room.getValueAt(row, 0));
+						ChatDialog dialog = clientData.getChatDialog(room_no);
+						if(dialog != null) 
+							dialog.setVisible(true);
+					}
+				}
+			});
+			
+		}
+		//대화방 목록 새로고침
+		public void refreshRoomList(ArrayList<RoomVO> rVOList) {
+			clientData.refreshRoomList(rVOList);
+			
+			dtm.setRowCount(0);
+			for(RoomVO rVO : rVOList) {
+				dtm.addRow(new String[] {Integer.toString(rVO.getRoom_no()), rVO.getRoom_title()});
+			}
+		}
+			
+		
 		//성별 박스
 		public String getGender() {
 			if("남자".equals(jtf_ggender.getSelectedItem())) return "1";
@@ -422,13 +553,15 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		else jtf_ggender.setSelectedItem("여자");
 		}////////////// end Gender
 
-		//메인메소드
-		public static void main(String[] args) {
-			// TODO Auto-generated method stub
-			ClientFrame ui = new ClientFrame();
-			ui.initDisplay();
-		}////////////// end main
+			
 		
+	//메인메소드
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		ClientFrame ui = new ClientFrame();
+		//ui.initDisplay();
+	}////////////// end main
+	
 		
 		//버튼 액션부
 		@Override
@@ -463,7 +596,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			}
 			if(e.getSource()==jmi_get) {
 				System.out.println("가입버튼");
-				/*if(jb.answer == 1) {
+				if(jb.answer == 1) {
 					System.out.println("가입성공");
 				}
 				else {
@@ -472,7 +605,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 				if(jtf_gpw.getText()!=jtf_gpw_re.getText()) {
 					JOptionPane.showMessageDialog(jp_gaip, "비밀번호가 같지 않습니다.", "Error", JOptionPane.ERROR_MESSAGE);		
 				} else {return;}
-				*/
+				
 			} else if(e.getSource()==jmi_back) {
 				card.show(jp_card,"로그인창"); 
 			}
@@ -502,6 +635,30 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 				jmb_menu.setVisible(false);
 			} else if (e.getActionCommand().equals("종료")) {
 				System.exit(0);
+			}
+			
+			//대화창 이벤트
+			int row = jt_room.getSelectedRow();
+			int room_no = Integer.parseInt((String)jt_room.getValueAt(row, 0));
+			ChatDialog dialog = clientData.getChatDialog(room_no);
+			if(dialog != null) {
+				System.out.println("방 만들기");
+				ArrayList<ChatVO> request = new ArrayList<ChatVO>();
+				ChatVO chatVO = new ChatVO(0, null, null, null, this.clientData.getMyData());
+				request.add(chatVO);
+				MemberVO mem = new MemberVO();
+				mem.setMem_no(35);
+				chatVO = new ChatVO(0,null,null,null,mem);
+				request.add(chatVO);
+				Message<ChatVO> msg = new Message<ChatVO>(Message.CHATROOM_INVITE,request,null);
+				
+				try {
+					this.clientData.getOut().writeObject(msg);
+					this.clientData.getOut().flush();
+					System.out.println("보냄");
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
 			}
 
 		//버튼이벤트성공->액션이벤트->card.show

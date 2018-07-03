@@ -1,6 +1,5 @@
 package messenger._db.dao;
 
-import java.awt.Font;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -9,19 +8,15 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 import messenger._db.DBConnection;
-import messenger._db.vo.ChatVO;
 import messenger._db.vo.MemberVO;
 import messenger.protocol.Message;
-import messenger.server.chat.ChatServerThreadList;
 
 /**
  * DB의 member테이블에 대해서 SELECT문을 수행하는 Class
@@ -32,7 +27,7 @@ import messenger.server.chat.ChatServerThreadList;
  *
  */
 public class MemberDAO {
-	private DBConnection dbCon = new DBConnection();
+	private DBConnection dbCon = DBConnection.getInstance();
 	
 	private static class LazyHolder {
 		private static final MemberDAO INSTANCE = new MemberDAO();
@@ -209,6 +204,120 @@ public class MemberDAO {
 	}
 	
 	
+	public synchronized ArrayList<MemberVO> FriendSelectALL(ArrayList<MemberVO> fo) {
+		ArrayList<MemberVO> list = new ArrayList<MemberVO>();
+		// proc_friend_selectall
+		StringBuilder sql = new StringBuilder("SELECT ");
+		sql.append("mem_no, mem_id, mem_name, mem_nick FROM member ");
+		sql.append("WHERE mem_no IN (SELECT fri_no FROM friend ");
+		sql.append("WHERE mem_no = ?)");
+
+		try (
+			Connection con = dbCon.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql.toString());	
+		){
+			pstmt.setInt(1,fo.get(0).getMem_no());
+			try (
+				ResultSet rs = pstmt.executeQuery();
+			){
+				while (rs.next()) {
+					int mem_no = rs.getInt("mem_no");
+					String mem_id = rs.getString("mem_id");
+					String mem_name = rs.getString("mem_name");
+					String mem_nick = rs.getString("mem_nick");
+					MemberVO memVO = new MemberVO(mem_no, mem_id, mem_name, mem_nick, null, null, null, null, null);
+					
+					System.out.println(mem_no + ", " + mem_name + ", " + mem_nick);
+					list.add(memVO);// 친구 번호, 친구아이디, 친구이름, 친구닉네임만 담음.
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		// 리턴부분은 아웃풋 스트림으로 보내서 서버가 받은 뒤, 서버가 인스턴스 인풋으로 받고
+		// 서버에서 아웃풋으로 클라이언트에게 오브젝트된 결과를 보냄.
+		// 그 오브젝트 타입은 MemberVO타입으로 주는게 맞겠지..?
+		return list;
+
+	}
+	
+	public synchronized String FriendInsert(ArrayList<MemberVO> fo, int option) {
+		String out_msg = null;
+		try (
+			Connection con = dbCon.getConnection();
+			CallableStatement cstmt = con.prepareCall("{call proc_friend_option(?,?,?,?)}");
+		){
+			// 들어오는 오브젝트를 받아서 String으로 변환해서 데이터베이스에 입력 요청.
+			//////////////////////////////////////////////////////////
+			// 0 : 사용자ID
+			// 1 : 친구ID
+			// 2 : 기능(insert)
+			//////////////////////////////////////////////////////////
+			cstmt.setObject(1, fo.get(0).getMem_id());// 유저 ID
+			cstmt.setObject(2, fo.get(1).getMem_id());// 친구 ID
+			cstmt.setInt(3, option);
+			
+			cstmt.registerOutParameter(4, java.sql.Types.VARCHAR);
+			cstmt.executeUpdate();
+			out_msg = cstmt.getString(4);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return out_msg;
+	}
+	
+	public synchronized String FriendDelete(ArrayList<MemberVO> fo, int option) {
+		String out_msg = null;
+		try (
+			Connection con = dbCon.getConnection();
+			CallableStatement cstmt = con.prepareCall("{call proc_friend_option(?,?,?,?)}");
+		){
+			cstmt.setObject(1, fo.get(0).getMem_id());// ID
+			cstmt.setObject(2, fo.get(1).getMem_id());// 친구ID
+			cstmt.setInt(3, option);
+			cstmt.registerOutParameter(4, java.sql.Types.VARCHAR);
+			cstmt.executeUpdate();
+			out_msg = cstmt.getString(4);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return out_msg;
+	}
+	
+	public synchronized ArrayList<MemberVO> FriendSearch(ArrayList<MemberVO> fo) {
+		ArrayList<MemberVO> list = new ArrayList<MemberVO>();
+		StringBuilder sql = new StringBuilder("SELECT ");
+		
+		sql.append("mem_id, mem_name, mem_nick FROM member ");
+		sql.append("WHERE mem_id = ?");
+		try (
+			Connection con = dbCon.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql.toString());
+		){
+			pstmt.setString(1, fo.get(0).getMem_id());
+			
+			try(
+				ResultSet rs = pstmt.executeQuery();
+			) {
+				while (rs.next()) {
+					String mem_id = rs.getString("mem_id");
+					String mem_name = rs.getString("mem_name");
+					String mem_nick = rs.getString("mem_nick");
+					MemberVO memVO = new MemberVO(0, mem_id, mem_name, mem_nick, null, null, null, null, null);
+					list.add(memVO);// 친구 번호, 친구아이디, 친구이름, 친구닉네임만 담음.
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 	
 	private  JLabel getImageLabel(String url, boolean isProfile) {
 		JLabel jl = null;

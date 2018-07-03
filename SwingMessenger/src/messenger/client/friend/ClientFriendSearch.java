@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import messenger._db.vo.MemberVO;
+import messenger.client.view.FriendPanel;
 import messenger.protocol.Message;
 
 /**********************************************************************
@@ -27,8 +28,10 @@ public class ClientFriendSearch{
 
 	/*선언부*/
 	String userId_f = null;		 //UI로부터받은 '찾고자하는 친구의 아이디'를 담을 변수
+	FriendPanel f_Panel = null;	 //화면에 담는 f_Panel 전역변수
+	
 	Message<MemberVO> mms = null;//Client-Server간 주고받을 메세지와
-	List<MemberVO> mli_f = null;	 //메시지에 담길 자료구조 List
+	List<MemberVO> mli_f = null; //메시지에 담길 자료구조 List
 	MemberVO mvo_f = null;		 //List에 담겨질 클래스자료 MemberVO
 	ClientFriend cf = null;		 //친구관련 작업을 수행할 Thread가 위치한 클래스
 	
@@ -38,10 +41,16 @@ public class ClientFriendSearch{
 	//디펄트 생성자
 	public ClientFriendSearch() {}
 	
-	//userId 전역변수 초기화 /생성자
-	//사용자가 찾고자하는 아이디의 입력값을 파라미터로 받음
+	//userId 전역변수 초기화 : 사용자가 찾고자하는 아이디의 입력값을 파라미터로 받음
 	public ClientFriendSearch(String userId_f) {
 		this.userId_f = userId_f;
+	}
+	
+	//userId 전역변수 초기화 : 사용자가 찾고자하는 아이디의 입력값을 파라미터로 받음
+	//화면에 담는 f_Panel 전역변수 초기화 추가
+	public ClientFriendSearch(String userId_f,FriendPanel f_Panel) {
+		this.userId_f = userId_f;
+		this.f_Panel = f_Panel;
 	}
 	
 	/*사용자정의메소드*/
@@ -59,7 +68,7 @@ public class ClientFriendSearch{
 		mms.setType(Message.FRIEND_SEARCH);//이 메시지의 프로토콜 지정
 		
 		//Thread클래스로 보내서 실행
-		cf = new ClientFriend(mms);
+		cf = new ClientFriend(mms, this);
 	}
 
 	public void setFriendSearch(List<MemberVO> res) {

@@ -12,7 +12,7 @@ import messenger._db.DBConnection;
 import messenger._db.vo.MemberVO;
 
 public class FriendMenu {
-	private DBConnection dbCon = new DBConnection();
+	private DBConnection dbCon = DBConnection.getInstance();
 	Connection con = null;
 	CallableStatement cstmt = null;
 	PreparedStatement pstmt = null;

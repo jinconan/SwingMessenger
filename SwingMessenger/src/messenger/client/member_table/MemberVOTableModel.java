@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 
 import messenger._db.vo.MemberVO;
 
@@ -33,10 +33,13 @@ public class MemberVOTableModel extends AbstractTableModel {
 	
 	public void addRow(MemberVO mem) {
 		list.add(mem);
+		fireTableChanged(new TableModelEvent(this));
 	}
 	
 	public MemberVO removeRow(int row) {
-		return list.remove(row);
+		MemberVO result =  list.remove(row); 
+		fireTableChanged(new TableModelEvent(this));
+		return result;
 	}
 	
 	@Override

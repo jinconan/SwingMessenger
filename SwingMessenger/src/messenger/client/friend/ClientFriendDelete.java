@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import messenger._db.vo.MemberVO;
+import messenger.client.view.FriendPanel;
 import messenger.protocol.Message;
 
 /**********************************************************************
@@ -22,25 +23,43 @@ import messenger.protocol.Message;
  * 
  * cf. UI구성 후 서버로부터 받은 값을 올리는 것을 구현하도록 할 예정(06/29 프로젝트시간 중...희망사항)
  * 
+ * @Author2 이정렬 [18/07/02]
+ * [수정사항]
+ * 1. 친구추가 및 삭제 프로시저의 input값은 본인회원아이디와 친구회원아이디 이므로,
+ * 	userNo(int)를 userId(String)으로 변경함 ( 서버테스트 완료 ) 
+ * 
  **********************************************************************/
 public class ClientFriendDelete {
 
 	/*선언부*/
-	int userNo = 0;				 //
+	int userNo = 0;				 //본인 회원번호
+	String userId	= null;		 //본인아이디
 	String friendId = null;		 //UI에서 조회한 검색결과로 추가하고자하는 친구아이디
+	FriendPanel f_Panel = null;	 //화면에 담는 f_Panel 전역변수
+	
 	Message<MemberVO> mms = null;//Client-Server간 주고받을 메세지와
 	List<MemberVO> mli = null;	 //메시지에 담길 자료구조 List
 	MemberVO mvo = null;		 //List에 담겨질 클래스자료 MemberVO
+	MemberVO mvo_f = null;		 //친구꺼
 	ClientFriend cf = null;		 //친구관련 작업을 수행할 Thread가 위치한 클래스
 	
 	Vector<MemberVO> vec = null;;//서버로부터 받은 메시지를 순서대로 담을 변수
 	/*생성자*/
 	//디펄트 생성자
 	public ClientFriendDelete() {}
+	
 	//userNo,friendId 전역변수 초기화
-	public ClientFriendDelete(int userNo, String friendId) {
-		this.userNo   = userNo;
+	public ClientFriendDelete(String userId, String friendId) {
+		this.userId   = userId;
 		this.friendId = friendId;
+	}
+	
+	//userNo,friendId 전역변수 초기화
+	//화면에 담는 f_Panel 전역변수 초기화 추가
+	public ClientFriendDelete(String userId, String friendId,FriendPanel f_Panel) {
+		this.userId   = userId;
+		this.friendId = friendId;
+		this.f_Panel = f_Panel;
 	}
 	
 	/*사용자정의메소드*/
@@ -50,16 +69,18 @@ public class ClientFriendDelete {
 		mms = new Message<MemberVO>();
 		mli = new ArrayList<MemberVO>();
 		mvo = new MemberVO();
+		mvo_f = new MemberVO();
 		
 		//담기
-		mvo.setMem_no(userNo);
-		mvo.setMem_id(friendId);
-		mli.add(mvo);
+		mvo.setMem_id(userId);//본인아이디담음
+		mvo_f.setMem_id(friendId);//친구아이디담음
+		mli.add(mvo);//회원번호를 ArrayList에 담음
+		mli.add(mvo_f);//친구아이디를ArrayList에 담음
 		mms.setRequest(mli);//보낼 데이터를 메시지로 묶음
 		mms.setType(Message.FRIEND_DELETE);//이 메시지의 프로토콜 지정
 		
 		//Thread클래스로 보내서 실행
-		cf = new ClientFriend(mms);//메시지를 넘겨서 start()호출
+		cf = new ClientFriend(mms, this);//메시지를 넘겨서 start()호출
 	}
 	
 	//서버로부터 받은 메시지에 대해 판단하기
@@ -73,6 +94,8 @@ public class ClientFriendDelete {
 			case 0://비어있어요
 			/*	UI측에 안내용 팝업창을 띄웁니다.(이 UI는 mainmenu창)
 				"친구삭제에 실패했습니다. 같은 문제가 반복될 경우 관리자에게 문의해주세요."*/
+				System.out.println("List<MemberVO> res 는 비어있습니다.");//테스트용 출력문
+				System.out.println("0이 들어있나요?"+res.contains(0));//테스트용 출력문
 				//Insert Here
 				break;
 				
@@ -82,6 +105,9 @@ public class ClientFriendDelete {
 				라는 팝업창과 함께 친구목록을 갱신한다*/
 				//도전과제.. 갱신된 목록에서 방금 추가된 회원이 선택되도록 커서?를 위치하여 보여주는건 어떨지?
 				//Insert Here..
+				System.out.println("List<MemberVO> res 는 차있는거같은데...");//테스트용 출력문
+				System.out.println("1이 들어있나요?"+res.contains(1));//테스트용 출력문
+				System.out.println(res);//테스트용 출력문
 				
 				renewFriendList();//화면을 갱신해줌
 				break;

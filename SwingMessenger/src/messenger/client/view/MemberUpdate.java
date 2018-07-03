@@ -23,7 +23,7 @@ public class MemberUpdate<T> {
 		
 		try {
 			
-			socket = new Socket(Server.IP,Port.LOGIN);
+			socket = new Socket(Server.IP,Port.MEMBER);
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			message = new Message<MemberVO>();
 			request = new ArrayList<MemberVO>();

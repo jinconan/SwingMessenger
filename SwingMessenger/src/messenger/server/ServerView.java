@@ -1,4 +1,4 @@
-package messenger.server.view;
+package messenger.server;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -28,19 +28,18 @@ public class ServerView extends JFrame {
 	//서버 소켓
 	private MemberServer memberServer;
 	private ChatServer	chatServer;
-	private	FriendServer friendServer;
 	private EmoticonServer emoticonServer;
 	
 	private JPanel contentPane;
-	private JScrollPane jsp_loginlog;
+	private JScrollPane jsp_memberlog;
 	private JScrollPane jsp_chatlog;
-	private JScrollPane jsp_friendlog;
-	private JTextArea jta_loginlog;
+	private JScrollPane jsp_emoticonlog;
+	private JTextArea jta_memberlog;
 	private JTextArea jta_chatlog;
-	private JTextArea jta_friendlog;
-	private JLabel jlb_loginlog;
+	private JTextArea jta_emoticonlog;
+	private JLabel jlb_memberlog;
 	private JLabel jlb_chatlog;
-	private JLabel jlb_friendlog;
+	private JLabel jlb_emoticonlog;
 	
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -81,22 +80,17 @@ public class ServerView extends JFrame {
 		contentPane.add(jp_north, BorderLayout.NORTH);
 		jp_north.setLayout(new GridLayout(1, 4, 0, 0));
 		
-		jlb_loginlog = new JLabel("\uB85C\uADF8\uC778 \uB85C\uADF8");
-		jp_north.add(jlb_loginlog);
-		jlb_loginlog.setHorizontalAlignment(SwingConstants.CENTER);
+		jlb_memberlog = new JLabel("\uB85C\uADF8\uC778 \uB85C\uADF8");
+		jp_north.add(jlb_memberlog);
+		jlb_memberlog.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		jlb_chatlog = new JLabel("\uCC44\uD305 \uB85C\uADF8");
 
 		jp_north.add(jlb_chatlog);
 		jlb_chatlog.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		jlb_friendlog = new JLabel("\uCE5C\uAD6C \uB85C\uADF8");
-		jp_north.add(jlb_friendlog);
-		jlb_friendlog.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		
-		
-		JLabel jlb_emoticonlog = new JLabel("\uC774\uBAA8\uD2F0\uCF58 \uB85C\uADF8");
+		jlb_emoticonlog = new JLabel("\uC774\uBAA8\uD2F0\uCF58 \uB85C\uADF8");
 		jp_north.add(jlb_emoticonlog);
 		jlb_emoticonlog.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -104,14 +98,14 @@ public class ServerView extends JFrame {
 		contentPane.add(jp_center, BorderLayout.CENTER);
 		jp_center.setLayout(new GridLayout(1, 4, 0, 0));
 		
-		jsp_loginlog = new JScrollPane();
-		jp_center.add(jsp_loginlog);
-		jsp_loginlog.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		jsp_memberlog = new JScrollPane();
+		jp_center.add(jsp_memberlog);
+		jsp_memberlog.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		jta_loginlog = new JTextArea();
-		jta_loginlog.setEditable(false);
-		jta_loginlog.setLineWrap(true);
-		jsp_loginlog.setViewportView(jta_loginlog);
+		jta_memberlog = new JTextArea();
+		jta_memberlog.setEditable(false);
+		jta_memberlog.setLineWrap(true);
+		jsp_memberlog.setViewportView(jta_memberlog);
 		
 		JPanel jp_chat = new JPanel();
 		jp_center.add(jp_chat);
@@ -126,21 +120,11 @@ public class ServerView extends JFrame {
 		jta_chatlog.setLineWrap(true);
 		jsp_chatlog.setViewportView(jta_chatlog);
 		
-		
-		jsp_friendlog = new JScrollPane();
-		jp_center.add(jsp_friendlog);
-		jsp_friendlog.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		
-		jta_friendlog = new JTextArea();
-		jta_friendlog.setEditable(false);
-		jta_friendlog.setLineWrap(true);
-		jsp_friendlog.setViewportView(jta_friendlog);
-		
-		JScrollPane jsp_emoticonlog = new JScrollPane();
+		jsp_emoticonlog = new JScrollPane();
 		jp_center.add(jsp_emoticonlog);
 		jsp_emoticonlog.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		JTextArea jta_emoticonlog = new JTextArea();
+		jta_emoticonlog = new JTextArea();
 		jta_emoticonlog.setLineWrap(true);
 		jta_emoticonlog.setEditable(false);
 		jsp_emoticonlog.setViewportView(jta_emoticonlog);
@@ -155,9 +139,6 @@ public class ServerView extends JFrame {
 		JButton jbtn_chat = new JButton("\uC2DC\uC791");
 		jp_south.add(jbtn_chat);
 		
-		JButton jbtn_friend = new JButton("\uC2DC\uC791");
-		jp_south.add(jbtn_friend);
-		
 		JButton jbtn_emoticon = new JButton("\uC2DC\uC791");
 		jp_south.add(jbtn_emoticon);
 		jbtn_emoticon.addActionListener(new ActionListener() {
@@ -167,18 +148,6 @@ public class ServerView extends JFrame {
 					protected Object doInBackground() throws Exception {
 						emoticonServer = new EmoticonServer(jta_emoticonlog);
 						emoticonServer.run();
-						return null;
-					}
-				}.execute();
-			}
-		});
-		jbtn_friend.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new SwingWorker<Object, Object>() {
-					@Override
-					protected Object doInBackground() throws Exception {
-						friendServer = new FriendServer(jta_friendlog);
-						friendServer.run();
 						return null;
 					}
 				}.execute();
@@ -201,7 +170,7 @@ public class ServerView extends JFrame {
 				new SwingWorker<Object, Object>() {
 					@Override
 					protected Object doInBackground() throws Exception {
-						memberServer = new MemberServer(jta_loginlog);
+						memberServer = new MemberServer(jta_memberlog);
 						memberServer.run();
 						return null;
 					}
@@ -213,15 +182,11 @@ public class ServerView extends JFrame {
 
 	
 	public JTextArea getJta_loginlog() {
-		return jta_loginlog;
+		return jta_memberlog;
 	}
 
 	public JTextArea getJta_chatlog() {
 		return jta_chatlog;
 	}
 
-	public JTextArea getJta_friendlog() {
-		return jta_friendlog;
-	}
-	
 }

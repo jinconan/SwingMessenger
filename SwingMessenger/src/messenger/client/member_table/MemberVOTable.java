@@ -2,6 +2,8 @@ package messenger.client.member_table;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
 import messenger._db.vo.MemberVO;
 

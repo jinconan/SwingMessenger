@@ -42,8 +42,25 @@ public class ClientFriend extends Thread{
 	ClientFriendDelete	cfd = null;
 
 	//친구관련 메소드는 모두 이것으로 실행
-	public ClientFriend(Message<MemberVO> mms) {
+	public ClientFriend(Message<MemberVO> mms, Object obj) {
 		this.mms = mms;
+		
+		if(obj instanceof ClientFriendSearch) {
+			cfs = (ClientFriendSearch) obj;
+		}
+		else if(obj instanceof ClientFriendList) {
+			cfl = (ClientFriendList)obj;
+		}
+		else if(obj instanceof ClientFriendAdd) {
+			cfa = (ClientFriendAdd)obj;
+		}
+		else if(obj instanceof ClientFriendDelete) {
+			cfd =(ClientFriendDelete) obj;
+		}
+		else {
+			throw new ClassCastException();
+		}
+		
 		this.start();
 	}
 
@@ -51,7 +68,7 @@ public class ClientFriend extends Thread{
 	@Override
 	public void run() {
 		try {//소켓을 생성하고, 소켓을 통한 듣기와 말하기 창구 생성
-			flsc = new Socket(IP, Port.FRIEND);
+			flsc = new Socket(IP, Port.MEMBER);
 			oos  = new ObjectOutputStream(flsc.getOutputStream());
 
 		//do {
@@ -59,7 +76,7 @@ public class ClientFriend extends Thread{
 			//친구전체조회 : 서버로 본인회원번호를 보내고 친구목록 요청하기
 			//친구찾기 : 서버로 대상회원아이디를 보내고 친구자료 요청하기
 			oos.writeObject(mms);
-
+			
 			//듣기
 			ois = new ObjectInputStream(flsc.getInputStream());
 			//들은 내용을 확인하고 메시지프로토콜로 담아냄
@@ -68,13 +85,13 @@ public class ClientFriend extends Thread{
 			List<MemberVO> res = mms.getResponse();
 				//메시지데이터의 부분을 얻어내야하는 경우
 				//MemberVO memVO = res.get(0);
-
+			
 			//들은 내용의 메시지타입에 따라 개별처리과정
 			switch (mms.getType()) {
 			
 			case Message.FRIEND_ALL://친구전체조회
 				//화면에 띄우는 메소드호출
-				cfl = new ClientFriendList();
+//				cfl = new ClientFriendList();
 				cfl.setFriendList(res);//골라낸 List자료 넘김
 				break;
 			

@@ -4,6 +4,7 @@ public class test {
 
 	public static void main(String[] args) {
 		int	   testUserNo	= 25;
+		String testUserId	= "test3"; //테스트용 아이디 추가
 		String testFriendId = "weback";
 		
 		//친구목록 전체조회 테스트완료
@@ -14,13 +15,15 @@ public class test {
 		//ClientFriendSearch cfc = new ClientFriendSearch(testFriendId);
 		//cfc.getFriendSearch();
 		
-		//친구한명 추가테스트
-		//에러발생 java.io.EOFException
-		ClientFriendAdd cfa = new ClientFriendAdd(testUserNo,testFriendId);
-		cfa.getAddFriend();
+		//친구한명 추가테스트 완료
+		//ClientFriendAdd cfa = new ClientFriendAdd(testUserId,testFriendId);
+		//cfa.getFriendAdd();
 		
-		//추가테스트 후 실행가능
-		//ClientFriendDelete cfd = new ClientFriendDelete(testUserNo,testFriendId);
+		//친구한명 삭제테스트 완료
+		//ClientFriendDelete cfd = new ClientFriendDelete(testUserId,testFriendId);
 		//cfd.getFriendDelete();
+		
+		//친구관련 4가지 기능 서버측과 테스트완료 [18/07/02]
+		
 	}
 }

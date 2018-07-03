@@ -555,7 +555,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 				delay=1;
 				
 			}
-			
+		
 			
 		}
 
@@ -566,12 +566,11 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		
 			int Vs = 0;
 			    Vs = e.getKeyCode();
-			
+			  
 			if(delay==1) {
 				switch(Vs) {
 				case 19: case 49: case 50: case 51: case 52: case 53: case 54: case 55: case 56: case 57:
-				case 45: case 248: case 61: case 91: case 93: case 59: case 222: case 44: case 46:
-				case 47: case 107: case 111: case 106: case 109: case 110: 
+				case 45: case 248: case 61:  
 					try {
 						jtf_id.setText(jtf_id.getText().substring(0, jtf_id.getText().length()-1));
 						jtf_gid.setText(jtf_gid.getText().substring(0, jtf_gid.getText().length()-1));
@@ -584,7 +583,20 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 					break;
 				}
 			}
+			    switch(Vs) {
+			    case 44: case 46: case 47: case 59: case 222: case 91: case 93:
+			    case 107: case 111: case 106: case 109: case 110: 
+			    	try {
+						jtf_id.setText(jtf_id.getText().substring(0, jtf_id.getText().length()-1));
+						jtf_gid.setText(jtf_gid.getText().substring(0, jtf_gid.getText().length()-1));
+					} catch (StringIndexOutOfBoundsException e2) {
+						// TODO: handle exception
 			
+					}
+				JOptionPane.showMessageDialog(this, "특수문자를 입력하였습니다.", "에러", JOptionPane.CLOSED_OPTION);
+				delay=0;
+					break;
+			    }
 		}
 
 

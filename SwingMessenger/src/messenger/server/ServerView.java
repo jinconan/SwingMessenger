@@ -1,34 +1,38 @@
 package messenger.server;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
+
+import messenger._db.vo.MemberVO;
 import messenger.server.chat.ChatServer;
 import messenger.server.emoticon.EmoticonServer;
-import messenger.server.friend.FriendServer;
 import messenger.server.login.MemberServer;
-
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingWorker;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.GridLayout;
-import java.awt.BorderLayout;
-import javax.swing.JTable;
 
 public class ServerView extends JFrame {
 	//서버 소켓
 	private MemberServer memberServer;
 	private ChatServer	chatServer;
 	private EmoticonServer emoticonServer;
+	
+	private Map<Integer, MemberVO> loginMap = new HashMap<Integer, MemberVO>();
 	
 	private JPanel contentPane;
 	private JScrollPane jsp_memberlog;
@@ -158,7 +162,7 @@ public class ServerView extends JFrame {
 				new SwingWorker<Object, Object>() {
 					@Override
 					protected Object doInBackground() throws Exception {
-						chatServer = new ChatServer(jta_chatlog);
+						chatServer = new ChatServer(jta_chatlog,loginMap);
 						chatServer.run();
 						return null;
 					}
@@ -170,7 +174,7 @@ public class ServerView extends JFrame {
 				new SwingWorker<Object, Object>() {
 					@Override
 					protected Object doInBackground() throws Exception {
-						memberServer = new MemberServer(jta_memberlog);
+						memberServer = new MemberServer(jta_memberlog, loginMap);
 						memberServer.run();
 						return null;
 					}

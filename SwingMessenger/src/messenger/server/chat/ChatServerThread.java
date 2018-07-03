@@ -7,11 +7,11 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JTextArea;
 
@@ -30,18 +30,19 @@ public class ChatServerThread implements Runnable{
 	private 			Socket 				socket;
 	private 			JTextArea 			jta_log;
 	private				ChatServerThreadList threadList;
+	private				Map<Integer,MemberVO> loginMap;
 	
 	private 			ObjectInputStream 	in 		= null;
 	private 			ObjectOutputStream 	out 	= null;
 	private				InetAddress			inetAddr= null;
 	private				MemberVO			memVO;
-	
-	public ChatServerThread(JTextArea jta_chatlog, Socket socket, ChatServerThreadList threadList) {
+	public ChatServerThread(JTextArea jta_chatlog, Socket socket, ChatServerThreadList threadList, Map<Integer,MemberVO> loginMap) {
 		try {
 			this.jta_log = jta_chatlog;
 			this.socket = socket;
 			this.inetAddr = socket.getInetAddress(); 
 			this.threadList = threadList;
+			this.loginMap = loginMap;
 			//쓰레드 생성되면 전체 쓰레드 리스트에 추가한다.
 			threadList.addTotalList(this);
 	
@@ -114,6 +115,7 @@ public class ChatServerThread implements Runnable{
 			in = null;
 			//전체 쓰레드 리스트, 방 별 쓰레드 리스트에서 이 쓰레드를 제거한다.
 			threadList.removeThread(this); 
+			loginMap.remove(memVO.getMem_no());
 			if(jta_log != null)
 				jta_log.append(inetAddr.toString() + " 나감\n");
 		}

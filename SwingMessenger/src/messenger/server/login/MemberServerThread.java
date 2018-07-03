@@ -8,10 +8,10 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.swing.JTextArea;
 
-import messenger._db.dao.FriendMenu;
 import messenger._db.dao.MemberDAO;
 import messenger._db.vo.MemberVO;
 import messenger.protocol.Message;
@@ -25,10 +25,12 @@ import messenger.protocol.Message;
 public class MemberServerThread implements Runnable {
 	private Socket socket;
 	private JTextArea jta_log;
-
-	public MemberServerThread(JTextArea jta_log, Socket socket) {
+	private Map<Integer, MemberVO> loginMap;
+	
+	public MemberServerThread(JTextArea jta_log, Socket socket, Map<Integer, MemberVO> loginMap) {
 		this.jta_log = jta_log;
 		this.socket = socket;
+		this.loginMap = loginMap;
 	}
 
 	@Override
@@ -118,8 +120,10 @@ public class MemberServerThread implements Runnable {
 
 		if(memberVO != null) {
 			//여기에 이미 접속 중인지도 따지는 부분 추가.
-			response.add(memberVO);
-		
+			if(loginMap.containsKey(memberVO.getMem_no()) == false) {
+				response.add(memberVO);
+				loginMap.put(memberVO.getMem_no(), memberVO);
+			}
 		}
 		msg.setResponse(response);
 		try {

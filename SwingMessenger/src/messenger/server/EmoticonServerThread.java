@@ -1,4 +1,4 @@
-package messenger.server.emoticon;
+package messenger.server;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -20,10 +20,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
-import messenger._db.dao.MemberDAO;
+import messenger._db.MemberDAO;
 import messenger._db.vo.MemberVO;
 import messenger.protocol.Message;
-import messenger.server.ServerView;
 
 public class EmoticonServerThread implements Runnable{
 	private Socket 		socket;

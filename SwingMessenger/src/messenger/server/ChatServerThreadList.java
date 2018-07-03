@@ -1,4 +1,4 @@
-package messenger.server.chat;
+package messenger.server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import messenger._db.dao.ChatDAO;
+import messenger._db.ChatDAO;
 import messenger._db.vo.ChatVO;
 import messenger._db.vo.MemberVO;
 import messenger._db.vo.RoomVO;

@@ -1,4 +1,4 @@
-package messenger._db.dao;
+package messenger._db;
 
 import java.io.File;
 import java.net.URI;
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import messenger._db.DBConnection;
 import messenger._db.vo.MemberVO;
 import messenger.protocol.Message;
 

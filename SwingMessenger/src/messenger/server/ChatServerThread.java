@@ -1,4 +1,4 @@
-package messenger.server.chat;
+package messenger.server;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -15,7 +15,7 @@ import java.util.Map;
 
 import javax.swing.JTextArea;
 
-import messenger._db.dao.ChatDAO;
+import messenger._db.ChatDAO;
 import messenger._db.vo.ChatVO;
 import messenger._db.vo.MemberVO;
 import messenger._db.vo.RoomVO;

@@ -1,4 +1,4 @@
-package messenger._db.dao;
+package messenger._db;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import messenger._db.DBConnection;
 import messenger._db.vo.ChatVO;
 import messenger._db.vo.MemberVO;
 import messenger._db.vo.RoomVO;

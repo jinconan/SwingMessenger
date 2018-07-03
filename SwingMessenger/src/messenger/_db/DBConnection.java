@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import messenger._db.dao.ChatDAO;
-
 /*
  * 이 클래스는 공통적으로 필요한 코드를 추가하는 클래스임.
  * 단독으로 실행되는 클래스가 아님.

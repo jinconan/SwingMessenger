@@ -22,9 +22,6 @@ import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 
 import messenger._db.vo.MemberVO;
-import messenger.server.chat.ChatServer;
-import messenger.server.emoticon.EmoticonServer;
-import messenger.server.login.MemberServer;
 
 public class ServerView extends JFrame {
 	//서버 소켓

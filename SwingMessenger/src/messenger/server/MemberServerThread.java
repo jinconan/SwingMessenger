@@ -1,4 +1,4 @@
-package messenger.server.login;
+package messenger.server;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 import javax.swing.JTextArea;
 
-import messenger._db.dao.MemberDAO;
+import messenger._db.MemberDAO;
 import messenger._db.vo.MemberVO;
 import messenger.protocol.Message;
 

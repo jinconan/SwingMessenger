@@ -1,4 +1,4 @@
-package messenger.server.emoticon;
+package messenger.server;
 
 import java.net.ServerSocket;
 import java.net.Socket;

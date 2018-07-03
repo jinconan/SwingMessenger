@@ -9,8 +9,8 @@ import java.sql.DriverManager;
 import javax.swing.JTextArea;
 
 import messenger.protocol.Port;
+import messenger.server.ServerView;
 import messenger.server.chat.ChatServerThread;
-import messenger.server.view.ServerView;
 
 /*********************************************
  * 친구서버 데이터베이스 연결관리 커넥션이 이루어지는것을 확인

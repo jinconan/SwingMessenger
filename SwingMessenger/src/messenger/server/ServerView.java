@@ -1,4 +1,4 @@
-package messenger.server.view;
+package messenger.server;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;

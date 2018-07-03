@@ -23,7 +23,7 @@ import javax.swing.SwingConstants;
 import messenger._db.dao.MemberDAO;
 import messenger._db.vo.MemberVO;
 import messenger.protocol.Message;
-import messenger.server.view.ServerView;
+import messenger.server.ServerView;
 
 public class EmoticonServerThread implements Runnable{
 	private Socket 		socket;

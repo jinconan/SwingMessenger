@@ -155,7 +155,7 @@ public class MemberDAO {
 		String sysmsg = "";
 		try (
 			Connection con = dbCon.getConnection();
-			CallableStatement cstmt = con.prepareCall("{call proc_member_option(?,?,?,?,?,?,?,?,?,?,?)}"); 
+			CallableStatement cstmt = con.prepareCall("{call proc_member_option(?,?,?,?,?,?,?,?,?,?)}"); 
 		){
 			//회원정보 수정 메소드
 			

@@ -11,6 +11,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -33,7 +34,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import messenger._db.vo.ChatVO;
 import messenger._db.vo.MemberVO;
 import messenger._db.vo.RoomVO;
 import messenger.client.member_table.MemberVOTable;
@@ -42,9 +42,11 @@ import messenger.client.view.dialog.ChatDialog;
 import messenger.client.view.dialog.CreateRoomDialog;
 import messenger.client.view.dialog.SearchDialog;
 import messenger.client.view.dialog.UpdateDialog;
-import messenger.protocol.Message;
-
-public class ClientFrame extends JFrame implements ActionListener, FocusListener{
+/*2018-07-03 수정자 김재현 
+ *1. 패스워드 1 2 3 4 글자 그대로 보이는거 수정 
+ *2. 특수 문자 입력 제한
+ */
+public class ClientFrame extends JFrame implements ActionListener, FocusListener, KeyListener{
 		Joongbok jb = new Joongbok(this);
 		ClientData clientData = new ClientData(this);
 	//선언부
@@ -61,7 +63,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		JMenuItem	jmi_gaip	= new JMenuItem("회원가입");
 		JMenuItem	jmi_system	= new JMenuItem("나가기");
 		JLabel		jta_error	= new JLabel();
-		
+		int         delay       = 0;
 		//가입창 패널
 		JPanel 		jp_gaip		= new JPanel();
 		JLabel 		jl_gid  	= new JLabel("아이디 :");
@@ -72,8 +74,8 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		JLabel 		jl_ghp		= new JLabel("핸드폰번호 :");
 		JLabel		jta_gerror	= new JLabel();
 		JTextField  jtf_gid		= new JTextField(20);
-		JPasswordField jtf_gpw	= new JPasswordField(20);
-		JTextField  jtf_gpw_re	= new JTextField(20);
+		JPasswordField jtf_gpw		= new JPasswordField(20);
+		JPasswordField jtf_gpw_re	= new JPasswordField(20);
 		JTextField  jtf_gname 	= new JTextField(20);
 		JTextField  jtf_ghp 	= new JTextField(20);
 		String[] 	genderList  = {"남자","여자"};
@@ -98,7 +100,6 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		
 		// 상태창
 		JPanel 		jp_list		= new JPanel();
-
 		JPanel 		jp_talk 	= new JPanel();
 		JPanel 		jp_news 	= new JPanel();
 		JPanel 		jp_calender = new JPanel();
@@ -163,6 +164,8 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			jmi_upd.addActionListener(this);
 			jmi_logout.addActionListener(this);
 			jmi_exit.addActionListener(this);
+			jtf_id.addKeyListener(this);
+			jtf_gid.addKeyListener(this);
 			//카드 패널
 			jp_card.setLayout(card);
 			jp_card.add(jp_login,"로그인창");
@@ -353,7 +356,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			
 		//금지문자열 메소드
 			//로그인창
-			jtf_id.addKeyListener(new KeyAdapter() {
+			/*jtf_id.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent e) {
 					// TODO Auto-generated method stub
@@ -409,9 +412,9 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 					}///////////// end switch
 				}///////////// end keyPressed
 			});/////////// end addKeyListener
-			
+*/			
 			//가입창
-			jtf_gid.addKeyListener(new KeyAdapter() {
+/*			jtf_gid.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent e) {
 					// TODO Auto-generated method stub
@@ -467,7 +470,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 					}///////////// end switch
 				}///////////// end keyPressed
 			});/////////// end addKeyListener
-			
+*/			
 			//마우스 팝업 레이아웃
 			popup = new JPopupMenu();
 			popup.add(jmi_popfile);
@@ -696,6 +699,45 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 				if(jtf_pw.getText().length() == 0)
 					jtf_pw.setText("비밀번호");
 			}
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode()==16) {
+				delay=1;
+			}
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			int Vs = 0;
+		    Vs = e.getKeyCode();
+		
+		if(delay==1) {
+			switch(Vs) {
+			case 19: case 49: case 50: case 51: case 52: case 53: case 54: case 55: case 56: case 57:
+			case 45: case 248: case 61: case 91: case 93: case 59: case 222: case 44: case 46:
+			case 47: case 107: case 111: case 106: case 109: case 110: 
+				try {
+					jtf_id.setText(jtf_id.getText().substring(0, jtf_id.getText().length()-1));
+					jtf_gid.setText(jtf_gid.getText().substring(0, jtf_gid.getText().length()-1));
+				} catch (StringIndexOutOfBoundsException e2) {
+					// TODO: handle exception
+		
+				}
+			JOptionPane.showMessageDialog(this, "특수문자를 입력하였습니다.", "에러", JOptionPane.CLOSED_OPTION);
+			delay=0;
+				break;
+			}
+		}
+			
+		}
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 }
 

@@ -42,14 +42,10 @@ public class GetChatVO extends Thread {
 				switch (msg.getType()) {
 				case Message.CHAT_SEND:
 					// 받은 채팅을 화면에 출력
-//					PrintChatContent printChatContent = new PrintChatContent();
-//					printChatContent.method(msg,clientData);
 					printChatContent(msg,clientData);
 					break;
 				case Message.CHATROOM_LOAD:
 					// 디폴트테이블모델 만들어서 addROw로 로우 추가하고 JTable에 부착하고 방 목록 새로고침.
-//					GetRoomList getRoomList = new GetRoomList();
-//					getRoomList.method(msg, clientFrame);
 					getRoomList(msg, clientFrame);
 					break;
 				case Message.CHATROOM_INVITE:
@@ -60,8 +56,7 @@ public class GetChatVO extends Thread {
 				case Message.CHATROOM_EXIT:
 					// 삭제된 놈을 서버로부터 전달받는데, 이것을 디폴트테이블모델에서 찾아서 제거.
 					// 방 리스트를 새로고침
-					ExitRoom exitRoom = new ExitRoom();
-					exitRoom.method(msg);
+					exitRoom(msg);
 					break;
 				}
 			}
@@ -120,7 +115,16 @@ public class GetChatVO extends Thread {
 		clientFrame.refreshRoomList(rVOList);
 	}
 	
-	public void exitRoom(Message<ChatVO> msg, ClientFrame clientFrame) {
+	/**
+	 * 퇴장 요청을 서버가 처리하고 응답 메시지를 보내주었을 때 클라이언트가 수행하는 메소드
+	 * @param msg 서버가 보낸 메세지
+	 */
+	public void exitRoom(Message<ChatVO> msg) {
 		ArrayList<ChatVO> response = (ArrayList<ChatVO>) msg.getResponse();
+		ChatVO cVO = (response != null) ? response.get(0) : null;
+		RoomVO rVO = (cVO != null) ? cVO.getRoomVO() : null;
+		if(rVO != null)
+			clientData.getRoomList();
+		
 	}
 }

@@ -141,6 +141,22 @@ public class ClientData {
 	}
 
 	/**
+	 * 서버에 방 리스트를 요청하는 메소드
+	 */
+	public void getRoomList() {
+		ArrayList<ChatVO> request = new ArrayList<ChatVO>();
+		ChatVO chatVO = new ChatVO(0, null, null, null, myData);
+		request.add(chatVO);
+		Message<ChatVO> msg = new Message<ChatVO>(Message.CHATROOM_LOAD, request, null);
+		try {
+			out.writeObject(msg);
+			out.flush();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * 멤버서버에 연결하여 로그인을 요청한다.
 	 * @param mem_id : 아이디
 	 * @param mem_pw : 비밀번호

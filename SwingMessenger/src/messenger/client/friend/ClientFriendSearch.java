@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import messenger._db.vo.MemberVO;
 import messenger.client.view.ClientFrame;
+import messenger.client.view.dialog.SearchDialog;
 import messenger.protocol.Message;
 
 /**********************************************************************
@@ -28,7 +29,8 @@ public class ClientFriendSearch{
 
 	/*선언부*/
 	String userId_f = null;		 //UI로부터받은 '찾고자하는 친구의 아이디'를 담을 변수
-	ClientFrame frame = null;	 //화면에 담는 f_Panel 전역변수
+	//	ClientFrame frame = null;	 //[주석처리]화면에 담는 f_Panel 전역변수
+	SearchDialog searchDialog = null; //JDialog로 처리
 	
 	Message<MemberVO> mms = null;//Client-Server간 주고받을 메세지와
 	List<MemberVO> mli_f = null; //메시지에 담길 자료구조 List
@@ -48,9 +50,10 @@ public class ClientFriendSearch{
 	
 	//userId 전역변수 초기화 : 사용자가 찾고자하는 아이디의 입력값을 파라미터로 받음
 	//화면에 담는 f_Panel 전역변수 초기화 추가
-	public ClientFriendSearch(String userId_f,ClientFrame frame) {
+	public ClientFriendSearch(String userId_f,ClientFrame frame, SearchDialog searchDialog) {
 		this.userId_f = userId_f;
-		this.frame = frame;
+		//this.frame = frame;
+		this.searchDialog = searchDialog;
 	}
 	
 	/*사용자정의메소드*/
@@ -74,13 +77,18 @@ public class ClientFriendSearch{
 	public void setFriendSearch(List<MemberVO> res) {
 		System.out.println(res);//테스트용 출력문
 		
+		String[][]	datas	= new String[res.size()][3];
 		//List에 담긴 MemberVO의 데이터를 dtm에 담기
-		vec = new Vector<MemberVO>();
+		//vec = new Vector<MemberVO>();
 		for(int i=0;i<res.size();i++) {
-			vec.add(res.get(i));//골라진 List자료는 회원1명에 대한 로우(row)자료가 순서대로 담겨져있음. 그러므로 벡터에 바로 담음
-		
-			//Insert Here-친구찾기 UI에 자료담기(UI협의 후 완성할 예정)
+			//골라진 List자료는 회원1명에 대한 로우(row)자료가 순서대로 담겨져있음. 그러므로 벡터에 바로 담음
+			//vec.add(res.get(i));
+			datas[i][0]=res.get(i).getMem_id(); 
+			datas[i][1]=res.get(i).getMem_name(); 
+			datas[i][2]=res.get(i).getMem_nick(); 
 		}
+		//Insert Here-친구찾기 UI에 자료담기
+		searchDialog.setDialog(datas);
 	}
 
 	

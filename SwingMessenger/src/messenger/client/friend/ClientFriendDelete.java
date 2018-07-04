@@ -90,12 +90,12 @@ public class ClientFriendDelete {
 	/*	서버로부터 받은 메시지의 첫번째 자리에 들어있는 값은
 		INSERT프로시저에 대한 결과값 1과0에 대한 서버측의 응답(response)가 담겨있으므로
 		이 값이 비어있으면 0, 비어있지않으면 1로 하여 판단한다. */
+		
 		switch(res.get(0)==null?0:1) {
 			case 0://비어있어요
 			/*	UI측에 안내용 팝업창을 띄웁니다.(이 UI는 mainmenu창)
 				"친구삭제에 실패했습니다. 같은 문제가 반복될 경우 관리자에게 문의해주세요."*/
 				System.out.println("List<MemberVO> res 는 비어있습니다.");//테스트용 출력문
-				System.out.println("0이 들어있나요?"+res.contains(0));//테스트용 출력문
 				//Insert Here
 				break;
 				
@@ -106,7 +106,6 @@ public class ClientFriendDelete {
 				//도전과제.. 갱신된 목록에서 방금 추가된 회원이 선택되도록 커서?를 위치하여 보여주는건 어떨지?
 				//Insert Here..
 				System.out.println("List<MemberVO> res 는 차있는거같은데...");//테스트용 출력문
-				System.out.println("1이 들어있나요?"+res.contains(1));//테스트용 출력문
 				System.out.println(res);//테스트용 출력문
 				
 				renewFriendList();//화면을 갱신해줌
@@ -117,7 +116,7 @@ public class ClientFriendDelete {
 	//친구추가 완료후 리스트를 갱신해주는 메소드
 	public void renewFriendList() {
 		//회원리스트전체를 다시검색한다
-		ClientFriendList cfl = new ClientFriendList(userNo);
+		ClientFriendList cfl = new ClientFriendList(userNo, frame);
 		cfl.getFriendList();
 	}//////end of renewFriendList()
 }//////////end of class

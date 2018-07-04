@@ -10,8 +10,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -26,6 +26,7 @@ import messenger.client.friend.ClientFriendDelete;
 import messenger.client.friend.ClientFriendList;
 import messenger.client.friend.ClientFriendSearch;
 import messenger.client.view.dialog.ChatDialog;
+import messenger.client.view.dialog.SearchDialog;
 import messenger.protocol.Message;
 import messenger.protocol.Port;
 import messenger.protocol.Server;
@@ -38,6 +39,7 @@ public class ClientData {
 	private ObjectOutputStream out;
 	
 	public ClientFrame clientFrame;
+	public SearchDialog SearchDialog;
 	
 //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 	/***************************************************************************************
@@ -59,7 +61,7 @@ public class ClientData {
 	 ******************************************/
 	public void actionFriendSearch(String FriendId) {
 //		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
-		ClientFriendSearch cfc = new ClientFriendSearch(FriendId,clientFrame);
+		ClientFriendSearch cfc = new ClientFriendSearch(FriendId,clientFrame, SearchDialog);
 		cfc.getFriendSearch();
 	}
 	/******************************************
@@ -204,7 +206,6 @@ public class ClientData {
 		
 	}
 	
-	
 	/**
 	 * 채팅방에서 사용할 이모티콘 패널을 얻는다.
 	 * @param jtf : 채팅방 안에 있는 텍스트필드.
@@ -215,7 +216,8 @@ public class ClientData {
 		//이모티콘 해쉬맵에서 이모티콘을 가져와서 일일히 패널에 추가한다.
 		if(emoticonMap != null) {
 			for(String s : emoticonMap.keySet()) {
-				JLabel jl = getEmoticon(s);
+				ImageIcon icon = (ImageIcon)getEmoticon(s).getIcon();
+				JLabel jl = new JLabel(icon);
 				
 				//각각의 이모티콘은 클릭했을때 jtf에 이름을 출력하도록 한다.
 				jl.addMouseListener(new MouseAdapter() {
@@ -232,7 +234,6 @@ public class ClientData {
 				result.add(jl);
 			}
 		}
-		System.out.println("이모티콘맵: " + emoticonMap);
 		return result;
 	}
 
@@ -276,7 +277,6 @@ public class ClientData {
 			}
 		}
 	}
-	
-	
+
 	
 }

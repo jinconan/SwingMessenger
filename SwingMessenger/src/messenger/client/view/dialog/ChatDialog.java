@@ -59,7 +59,7 @@ public class ChatDialog extends JDialog implements ActionListener{
 		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 		
 		String title = (room != null) ? room.getRoom_no() + "번 방) " + room.getRoom_title() : "null";
-		
+		this.setTitle(title);
 		jbtn_emti.addActionListener(this);
 		jbtn_inv.addActionListener(this);
 		jbtn_exit.addActionListener(this);
@@ -166,7 +166,7 @@ public class ChatDialog extends JDialog implements ActionListener{
 						//그러므로 먼저 앞의 문자열을 먼저 화면에 출력해준다.
 						if(idx > 0) {
 							//builder.substring(0,idx-1) : 이모티콘 앞까지의 부분 문자열.
-							doc.insertString(doc.getLength(), builder.substring(0, idx-1), null);
+							doc.insertString(doc.getLength(), builder.substring(0, idx), null);
 							
 							//selectAll : JTextPane안에 포함된 모든 텍스트를 선택한다.
 							//getSelectionEnd : 선택된 텍스트에서 마지막 위치

@@ -51,13 +51,11 @@ public class GetChatVO extends Thread {
 				case Message.CHATROOM_INVITE:
 					//새로 참가한 방을 서버로부터 전달받아서 디폴트테이블모델에 추가.
 					attendRoom(msg);
-//					AttendRoom attendRoom =new AttendRoom();
-					/*attendRoom.method(msg);
-					break;*/
+					break;
 				case Message.CHATROOM_EXIT:
 					// 삭제된 놈을 서버로부터 전달받는데, 이것을 디폴트테이블모델에서 찾아서 제거.
 					// 방 리스트를 새로고침
-					getRoomList(msg);
+					exitRoom(msg);
 					break;
 				}
 			}
@@ -118,7 +116,7 @@ public class GetChatVO extends Thread {
 	
 	
 	public void attendRoom(Message<ChatVO> msg) {
-		getRoomList(msg);
+		//참가한 방의 다이얼로그를 화면에 띄우고 방 리스트 갱신 메시지 전송
 		ArrayList<ChatVO> response = (ArrayList<ChatVO>)msg.getResponse();
 		ChatVO chatVO = (response != null) ? response.get(0) : null;
 		RoomVO roomVO = (chatVO != null) ? chatVO.getRoomVO() : null;
@@ -128,5 +126,10 @@ public class GetChatVO extends Thread {
 		if(cDialog != null)
 			cDialog.setVisible(true);
 		
+		clientData.getRoomList();
+	}
+
+	public void exitRoom(Message<ChatVO> msg) {
+		clientData.getRoomList();
 	}
 }

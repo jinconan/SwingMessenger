@@ -1,5 +1,6 @@
 package messenger.client.view;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -216,8 +217,12 @@ public class ClientData {
 		//이모티콘 해쉬맵에서 이모티콘을 가져와서 일일히 패널에 추가한다.
 		if(emoticonMap != null) {
 			for(String s : emoticonMap.keySet()) {
-				ImageIcon icon = (ImageIcon)getEmoticon(s).getIcon();
+				JLabel loadedEmoticon = getEmoticon(s);
+				ImageIcon icon = (ImageIcon)loadedEmoticon.getIcon();
+				String emo_name = loadedEmoticon.getText();
 				JLabel jl = new JLabel(icon);
+				jl.setText(emo_name);
+				jl.setFont(new Font("굴림", Font.BOLD,0));
 				
 				//각각의 이모티콘은 클릭했을때 jtf에 이름을 출력하도록 한다.
 				jl.addMouseListener(new MouseAdapter() {

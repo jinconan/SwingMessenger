@@ -15,7 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import messenger._db.vo.MemberVO;
-import messenger.protocol.Message;
+import messenger._protocol.Message;
 
 /**
  * DB의 member테이블에 대해서 SELECT문을 수행하는 Class

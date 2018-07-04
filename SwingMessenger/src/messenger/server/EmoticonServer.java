@@ -5,7 +5,7 @@ import java.net.Socket;
 
 import javax.swing.JTextArea;
 
-import messenger.protocol.Port;
+import messenger._protocol.Port;
 
 public class EmoticonServer {
 	private JTextArea jta_log;

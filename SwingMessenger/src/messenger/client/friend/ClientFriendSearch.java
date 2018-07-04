@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Vector;
 
 import messenger._db.vo.MemberVO;
+import messenger._protocol.Message;
 import messenger.client.view.ClientFrame;
 import messenger.client.view.dialog.SearchDialog;
-import messenger.protocol.Message;
 
 /**********************************************************************
  * [클러이언트]친구검색하기

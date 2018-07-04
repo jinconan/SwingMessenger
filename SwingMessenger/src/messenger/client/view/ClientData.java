@@ -22,6 +22,9 @@ import javax.swing.JTextField;
 import messenger._db.vo.ChatVO;
 import messenger._db.vo.MemberVO;
 import messenger._db.vo.RoomVO;
+import messenger._protocol.Message;
+import messenger._protocol.Port;
+import messenger._protocol.Server;
 import messenger.client.Emoticon.GetEmoticon;
 import messenger.client.chat.GetChatVO;
 import messenger.client.friend.ClientFriendAdd;
@@ -30,9 +33,6 @@ import messenger.client.friend.ClientFriendList;
 import messenger.client.friend.ClientFriendSearch;
 import messenger.client.view.dialog.ChatDialog;
 import messenger.client.view.dialog.SearchDialog;
-import messenger.protocol.Message;
-import messenger.protocol.Port;
-import messenger.protocol.Server;
 
 public class ClientData {
 	private MemberVO myData;

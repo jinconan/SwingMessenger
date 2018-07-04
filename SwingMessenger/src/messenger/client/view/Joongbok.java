@@ -9,9 +9,9 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import messenger._db.vo.MemberVO;
-import messenger.protocol.Message;
-import messenger.protocol.Port;
-import messenger.protocol.Server;
+import messenger._protocol.Message;
+import messenger._protocol.Port;
+import messenger._protocol.Server;
 
 public class Joongbok {
 	ClientFrame cf = null;

@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import messenger._db.vo.MemberVO;
-import messenger.protocol.Message;
-import messenger.protocol.Port;
+import messenger._protocol.Message;
+import messenger._protocol.Port;
 
 public class ClientJoin {
 

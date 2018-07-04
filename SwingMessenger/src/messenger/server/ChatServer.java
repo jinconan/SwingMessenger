@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.swing.JTextArea;
 
 import messenger._db.vo.MemberVO;
-import messenger.protocol.Port;
+import messenger._protocol.Port;
 
 /**
  * 채팅서버. 클라이언트의 접속을 accept하며 쓰레드를 인스턴스화하는 클래스

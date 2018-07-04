@@ -19,10 +19,10 @@ import javax.swing.border.EmptyBorder;
 import messenger._db.vo.ChatVO;
 import messenger._db.vo.MemberVO;
 import messenger._db.vo.RoomVO;
+import messenger._protocol.Message;
 import messenger.client.member_table.MemberVOTable;
 import messenger.client.member_table.MemberVOTableModel;
 import messenger.client.view.ClientFrame;
-import messenger.protocol.Message;
 
 public class CreateRoomDialog extends JDialog implements ActionListener{
 	
@@ -39,7 +39,6 @@ public class CreateRoomDialog extends JDialog implements ActionListener{
 	private       JScrollPane          Jsc_friend_list     = new JScrollPane(friend_list);
 	private       JScrollPane          Jsc_Room_add_list   = new JScrollPane(Room_add_list);
 	
-	private       JLabel               lblNewLabel         = new JLabel("방만들기");
 	private       JLabel               lblNewLabel_1       = new JLabel("제목");
 
 	private       JPanel               buttonPane          = new JPanel();
@@ -47,9 +46,6 @@ public class CreateRoomDialog extends JDialog implements ActionListener{
 	private       JButton              jbt_del             = new JButton("Del");
 	private       JButton              jbt_ok              = new JButton("OK");
 	private       JButton              jbt_Cancel          = new JButton("Cancel");
-	
-//	private       Vector               list                = null;
-//	private       Vector               V_Room_add_list     = new Vector();
 	
 	public CreateRoomDialog(ClientFrame clientFrame) {
 		super(clientFrame,true);
@@ -59,12 +55,10 @@ public class CreateRoomDialog extends JDialog implements ActionListener{
 	}
 	
 	public void event() {
-		
 		jbt_add   .addActionListener(this);
 		jbt_del   .addActionListener(this);
 		jbt_ok    .addActionListener(this);
 		jbt_Cancel.addActionListener(this);
-		
 	}
 	
 	public void init() {
@@ -79,8 +73,6 @@ public class CreateRoomDialog extends JDialog implements ActionListener{
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		
-		lblNewLabel      .setBounds(12, 10, 57, 15);
 		lblNewLabel_1    .setBounds(12, 33, 57, 15);
 		jtf_title        .setBounds(72, 30, 146, 21);
 		jbt_add          .setBounds(405, 88, 64, 23);
@@ -88,13 +80,7 @@ public class CreateRoomDialog extends JDialog implements ActionListener{
 		Jsc_friend_list  .setBounds(12, 73, 380, 320);
 		Jsc_Room_add_list.setBounds(482, 73, 380, 320);
 		
-		
-		
 		jtf_title.setColumns(10);
-//		Jsc_friend_list.setViewportView(friend_list);
-//		Jsc_Room_add_list.setViewportView(Room_add_list);
-		
-		contentPanel.add(lblNewLabel);
 		contentPanel.add(lblNewLabel_1);
 		contentPanel.add(jtf_title);
 		contentPanel.add(jbt_add);

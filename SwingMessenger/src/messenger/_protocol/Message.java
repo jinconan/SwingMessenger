@@ -1,4 +1,4 @@
-package messenger.protocol;
+package messenger._protocol;
 
 
 import java.io.Serializable;

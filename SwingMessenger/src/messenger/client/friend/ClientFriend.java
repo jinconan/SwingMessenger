@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import messenger._db.vo.MemberVO;
-import messenger.protocol.Message;
-import messenger.protocol.Port;
-import messenger.protocol.Server;
+import messenger._protocol.Message;
+import messenger._protocol.Port;
+import messenger._protocol.Server;
 
 /**********************************************************************
  * [클러이언트]친구리스트 불러오기

@@ -12,9 +12,9 @@ import java.util.HashMap;
 
 import javax.swing.JLabel;
 
-import messenger.protocol.Message;
-import messenger.protocol.Port;
-import messenger.protocol.Server;
+import messenger._protocol.Message;
+import messenger._protocol.Port;
+import messenger._protocol.Server;
 
 public class GetEmoticon {
 	// 회원이 로그인에 성공해서 서버에 접속하는 순간 이모티콘을 불러오면됨

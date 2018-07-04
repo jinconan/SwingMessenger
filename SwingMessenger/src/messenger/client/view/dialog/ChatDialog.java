@@ -24,8 +24,8 @@ import javax.swing.text.StyledDocument;
 
 import messenger._db.vo.ChatVO;
 import messenger._db.vo.RoomVO;
+import messenger._protocol.Message;
 import messenger.client.view.ClientData;
-import messenger.protocol.Message;
 
 public class ChatDialog extends JDialog implements ActionListener{
 	ClientData			clientData;

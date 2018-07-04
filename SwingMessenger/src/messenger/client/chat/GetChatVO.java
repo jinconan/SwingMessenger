@@ -11,10 +11,10 @@ import java.util.regex.Pattern;
 import messenger._db.vo.ChatVO;
 import messenger._db.vo.MemberVO;
 import messenger._db.vo.RoomVO;
+import messenger._protocol.Message;
 import messenger.client.view.ClientData;
 import messenger.client.view.ClientFrame;
 import messenger.client.view.dialog.ChatDialog;
-import messenger.protocol.Message;
 
 public class GetChatVO extends Thread {
 	private Socket 				socket;

@@ -14,7 +14,7 @@ import javax.swing.JTextArea;
 
 import messenger._db.MemberDAO;
 import messenger._db.vo.MemberVO;
-import messenger.protocol.Message;
+import messenger._protocol.Message;
 
 /*******************************
  * 2018.06.20 쓰레드 클래스 코딩 스탑. - 아직 제대로 이해하지 못했기 때문에 이대로 코딩 할 경우 위험부담이 큼. -

@@ -18,10 +18,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import messenger._db.vo.MemberVO;
+import messenger._protocol.Message;
+import messenger._protocol.Port;
+import messenger._protocol.Server;
 import messenger.client.view.ClientFrame;
-import messenger.protocol.Message;
-import messenger.protocol.Port;
-import messenger.protocol.Server;
 
 public class UpdateDialog extends JDialog implements ActionListener{
 //////////¼±¾ðºÎ

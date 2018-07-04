@@ -1,4 +1,4 @@
-package messenger.protocol;
+package messenger._protocol;
 
 /**
  * 각 서버에 대한 포트번호를 담은 클래스

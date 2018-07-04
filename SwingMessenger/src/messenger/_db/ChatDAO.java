@@ -156,23 +156,20 @@ public class ChatDAO {
 			Connection con = dbCon.getConnection();
 		){
 			//roomVO가 없거나 방 번호가 없는 경우 새로운 방을 먼저 db에 추가한다.
-			if(roomVO == null || roomVO.getRoom_no() == 0) {
-				try (CallableStatement cstmt = con.prepareCall("{call proc_room_create(?,?)}");){
-					String room_title = (roomVO == null) ? null : roomVO.getRoom_title();
-					if(room_title == null || room_title.trim()=="")
-						room_title="제목없음";
-					cstmt.setString(1, room_title);
-					cstmt.registerOutParameter(2, java.sql.Types.INTEGER);
-					cstmt.executeUpdate();
-					
-					room_no = cstmt.getInt(2);
-				}catch(Exception e) {
-					e.printStackTrace();
-					return out;
-				}
+			try (CallableStatement cstmt = con.prepareCall("{call proc_room_create(?,?)}");){
+				String room_title = (roomVO == null) ? null : roomVO.getRoom_title();
+				if(room_title == null || room_title.trim()=="")
+					room_title="제목없음";
+				cstmt.setString(1, room_title);
+				cstmt.registerOutParameter(2, java.sql.Types.INTEGER);
+				cstmt.executeUpdate();
+				
+				room_no = cstmt.getInt(2);
+			}catch(Exception e) {
+				e.printStackTrace();
+				return out;
 			}
-			else
-				room_no = roomVO.getRoom_no();
+
 			//방 안에 멤버를 추가.
 			sql = new StringBuilder("INSERT INTO room_member(room_seq, room_no, mem_no) VALUES(seq_room_member.nextval, ?, ?)");
 			try (
@@ -201,22 +198,5 @@ public class ChatDAO {
 		}
 		return out;
 	}
-	
-	public static void main(String[] args) {
-		ChatDAO dao = new ChatDAO();
-		ArrayList<ChatVO> request = new ArrayList<ChatVO>();
-		RoomVO roomVO = null;
-		
-		MemberVO mem = new MemberVO();
-		mem.setMem_no(25);
-		request.add(new ChatVO(0, null, null, null, mem));
-		mem = new MemberVO();
-		mem.setMem_no(26);
-		request.add(new ChatVO(0, null, null, null, mem));
-		ArrayList<ChatVO> out= dao.insertRoomMember(request, roomVO);
-		
-		for(ChatVO c : out) {
-			System.out.println(c.getMemVO().getMem_no());
-		}
-	}
+
 }

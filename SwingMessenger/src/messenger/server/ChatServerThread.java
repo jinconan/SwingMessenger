@@ -19,7 +19,7 @@ import messenger._db.ChatDAO;
 import messenger._db.vo.ChatVO;
 import messenger._db.vo.MemberVO;
 import messenger._db.vo.RoomVO;
-import messenger.protocol.Message;
+import messenger._protocol.Message;
 
 /**
  * 채팅서버에서 생성되는 쓰레드.
@@ -234,7 +234,7 @@ public class ChatServerThread implements Runnable{
 	}
 	
 	/**
-	 * 클라이언트의 방 개설 또는 기존 방에 친구 추가 요청을 처리함.
+	 * 클라이언트의 방 개설 요청을 처리함.
 	 * @param msg
 	 */
 	private void sendInviteResponse(Message<ChatVO> msg) {
@@ -242,8 +242,7 @@ public class ChatServerThread implements Runnable{
 		ArrayList<ChatVO> response = new ArrayList<ChatVO>();
 		ArrayList<ChatVO> request = (ArrayList<ChatVO>)msg.getRequest();
 
-		//첫 멤버를 조회하여 RoomVO가 있으면 기존 방에 초대, 없으면 새로운 방 생성.
-		//방 개설의 경우에는 첫 멤버는 방 개설 주도자가된다.
+		//첫 멤버는 방 개설 주도자가된다.
 		ChatVO chatVO = (request.size() > 0) ? request.get(0) : null;
 		if(chatVO == null) {
 			//참가자가 없는 경우에는 방 개설을 실패한다(response가 null).

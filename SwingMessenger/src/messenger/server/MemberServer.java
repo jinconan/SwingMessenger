@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.swing.JTextArea;
 
 import messenger._db.vo.MemberVO;
-import messenger.protocol.Port;
+import messenger._protocol.Port;
 
 /*********************************************
  * 친구서버 데이터베이스 연결관리 커넥션이 이루어지는것을 확인

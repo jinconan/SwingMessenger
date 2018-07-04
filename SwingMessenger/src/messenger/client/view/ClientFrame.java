@@ -514,7 +514,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		
 	//대화방 목록 패널창 관련 메소드//////////////
 		//대화방 목록 새로고침
-		public void refreshRoomList(ArrayList<RoomVO> rVOList) {
+		public synchronized void refreshRoomList(ArrayList<RoomVO> rVOList) {
 			clientData.refreshRoomList(rVOList);
 			
 			dtm.setRowCount(0);

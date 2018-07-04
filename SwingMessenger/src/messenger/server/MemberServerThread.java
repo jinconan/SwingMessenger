@@ -140,7 +140,7 @@ public class MemberServerThread implements Runnable {
 		ArrayList<MemberVO> request = (ArrayList<MemberVO>)msg.getRequest();
 		String result = dao.MemberInsert(request, Message.MEMBER_JOIN);
 		
-		if(result.equals("") != false) {
+		if(result.equals("") == false) {
 			ArrayList<MemberVO> response = new ArrayList<MemberVO>();
 			response.add(request.get(0));
 			msg.setResponse(response);

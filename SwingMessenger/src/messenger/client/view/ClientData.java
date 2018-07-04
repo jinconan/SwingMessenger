@@ -11,6 +11,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -216,7 +218,10 @@ public class ClientData {
 		JPanel result = new JPanel(new GridLayout(6,6));
 		//이모티콘 해쉬맵에서 이모티콘을 가져와서 일일히 패널에 추가한다.
 		if(emoticonMap != null) {
-			for(String s : emoticonMap.keySet()) {
+			Set<String> keySet = emoticonMap.keySet();
+			Iterator<String> iter = keySet.iterator();
+			while(iter.hasNext()) {
+				String s = iter.next();
 				JLabel loadedEmoticon = getEmoticon(s);
 				ImageIcon icon = (ImageIcon)loadedEmoticon.getIcon();
 				String emo_name = loadedEmoticon.getText();
@@ -257,10 +262,12 @@ public class ClientData {
 	 * 2. 리스트에 새로 추가된 방의 경우에는 채팅방 다이얼로그를 인스턴스화하여 해쉬맵에 추가한다.
 	 * @param roomList : 서버로 부터 받은 방(RoomVO) 리스트
 	 */
-	public synchronized void refreshRoomList(ArrayList<RoomVO> roomList) {
-		
+	public void refreshRoomList(ArrayList<RoomVO> roomList) {
+		Set<Integer> keySet = chatDialogMap.keySet();
+		Iterator<Integer> iter = keySet.iterator();
 		//새로 받아온 방 리스트에 기존 방이 존재하지 않으면 해쉬맵에서 제거한다.
-		for(int room_no : chatDialogMap.keySet()) {
+		while(iter.hasNext()) {
+			int room_no = iter.next();
 			boolean hasRoom = false;
 			for(RoomVO rVO : roomList) {
 				if(room_no == rVO.getRoom_no()) {

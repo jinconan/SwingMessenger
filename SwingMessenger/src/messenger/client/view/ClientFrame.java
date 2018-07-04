@@ -125,7 +125,6 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 																	 	 , JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		//대화방목록 패널
 		JPanel 		jp_chat 	= new JPanel();
-		private JButton				jb_newRoom 	= new JButton("방 만들기");
 		private DefaultTableModel 	dtm  		= new DefaultTableModel(new String[] {"번호", "제목"}, 0) {
 													//방 목록 수정
 												 	@Override
@@ -299,9 +298,6 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 					}
 				}
 			});
-			
-			jb_newRoom.addActionListener(this);
-			jp_chat.add("North", jb_newRoom);
 			jp_chat.add("Center", jsp_room);
 			////방 목록 패널 생성 끝////////////////////////////////
 			
@@ -625,6 +621,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 				card.show(jp_card,"로그인창"); 
 			}
 			
+			
 			// 메인화면 이벤트
 			if (e.getActionCommand().equals("친구목록")) {
 				card.show(jp_card, "친구목록");
@@ -637,7 +634,8 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			} else if (e.getActionCommand().equals("캘린더")) {
 				System.out.println("캘린더");
 				card.show(jp_card, "캘린더");
-			}
+			} 
+			
 			// 메뉴바 이벤트
 			if (e.getActionCommand().equals("새로운 친구")) {
 				new SearchDialog(this);

@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ import messenger._db.vo.RoomVO;
 import messenger._protocol.Message;
 import messenger.client.view.ClientData;
 
-public class ChatDialog extends JDialog implements ActionListener{
+public class ChatDialog extends JDialog implements ActionListener, KeyListener{
 	ClientData			clientData;
 	RoomVO				room;
 
@@ -38,7 +40,6 @@ public class ChatDialog extends JDialog implements ActionListener{
 	JPanel				jp_South   = new JPanel();
 	JToolBar			jtb_North  = new JToolBar();
 	JButton				jbtn_emti  = new JButton("이모티콘");
-	JButton				jbtn_inv   = new JButton("친구초대");
 	JButton				jbtn_exit  = new JButton("나가기");
 	JButton				jbtn_jun   = new JButton("전송");
 	JScrollPane 		jsp_North  = new JScrollPane(jtb_North);
@@ -61,16 +62,13 @@ public class ChatDialog extends JDialog implements ActionListener{
 		String title = (room != null) ? room.getRoom_no() + "번 방) " + room.getRoom_title() : "null";
 		this.setTitle(title);
 		jbtn_emti.addActionListener(this);
-		jbtn_inv.addActionListener(this);
 		jbtn_exit.addActionListener(this);
 		jbtn_jun.addActionListener(this);
-		
+		jtf_South.addKeyListener(this);
 		jtb_North.setLayout(new GridLayout(1,3));
 		jtb_North.setBackground(new Color(126, 195, 237));
 		jtb_North.add(jbtn_emti);
 		jbtn_emti.setBackground(new Color(126, 195, 237));
-		jtb_North.add(jbtn_inv);
-		jbtn_inv.setBackground(new Color(126, 195, 237));
 		jtb_North.add(jbtn_exit);
 		jbtn_exit.setBackground(new Color(126, 195, 237));
 		
@@ -101,11 +99,6 @@ public class ChatDialog extends JDialog implements ActionListener{
 		if(e.getActionCommand().equals("이모티콘")) {
 			jd_emoticon.setVisible(true);
 		}
-
-		else if(e.getActionCommand().equals("친구초대")) {
-			System.out.println("초대실행");
-			//Invited();
-		}
 		
 		else if(e.getActionCommand().equals("나가기")) {
 			ArrayList<ChatVO> request = new ArrayList<ChatVO>();
@@ -125,17 +118,18 @@ public class ChatDialog extends JDialog implements ActionListener{
 		}
 		
 		else if(e.getActionCommand().equals("전송")) {
-			ArrayList<ChatVO> request = new ArrayList<ChatVO>();
-			request.add(new ChatVO(0, room, jtf_South.getText(), null, clientData.getMyData()));
-			Message<ChatVO> msg = new Message<ChatVO>(Message.CHAT_SEND, request, null);
-			try {
-				clientData.getOut().writeObject(msg);
-				clientData.getOut().flush();
-				jtf_South.setText("");
-			} catch (IOException e1) {
-				e1.printStackTrace();
+			if(jtf_South.getText().length() > 0) {
+				ArrayList<ChatVO> request = new ArrayList<ChatVO>();
+				request.add(new ChatVO(0, room, jtf_South.getText(), null, clientData.getMyData()));
+				Message<ChatVO> msg = new Message<ChatVO>(Message.CHAT_SEND, request, null);
+				try {
+					clientData.getOut().writeObject(msg);
+					clientData.getOut().flush();
+					jtf_South.setText("");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
-			
 		}
 	}
 	
@@ -201,8 +195,30 @@ public class ChatDialog extends JDialog implements ActionListener{
 		}
 	}
 
-	public static void main(String[] args) {
-		ChatDialog c = new ChatDialog(null, null);
-		c.setVisible(true);
+	@Override
+	public void keyTyped(KeyEvent e) {
+		if(e.getKeyChar() =='\n') {
+			if(jtf_South.getText().length() > 0) {
+				ArrayList<ChatVO> request = new ArrayList<ChatVO>();
+				request.add(new ChatVO(0, room, jtf_South.getText(), null, clientData.getMyData()));
+				Message<ChatVO> msg = new Message<ChatVO>(Message.CHAT_SEND, request, null);
+				try {
+					clientData.getOut().writeObject(msg);
+					clientData.getOut().flush();
+					jtf_South.setText("");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+		
 	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {}
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
+
+	
 }

@@ -10,8 +10,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -214,7 +214,8 @@ public class ClientData {
 		//이모티콘 해쉬맵에서 이모티콘을 가져와서 일일히 패널에 추가한다.
 		if(emoticonMap != null) {
 			for(String s : emoticonMap.keySet()) {
-				JLabel jl = getEmoticon(s);
+				ImageIcon icon = (ImageIcon)getEmoticon(s).getIcon();
+				JLabel jl = new JLabel(icon);
 				
 				//각각의 이모티콘은 클릭했을때 jtf에 이름을 출력하도록 한다.
 				jl.addMouseListener(new MouseAdapter() {

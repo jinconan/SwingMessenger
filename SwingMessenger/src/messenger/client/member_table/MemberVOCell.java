@@ -1,7 +1,9 @@
 package messenger.client.member_table;
 
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JLabel;
@@ -22,10 +24,13 @@ public class MemberVOCell extends AbstractCellEditor implements TableCellRendere
 	private JLabel jl_nick = new JLabel();
 	
 	public MemberVOCell() {
-		jp_mem.setLayout(new FlowLayout(FlowLayout.LEADING));
+		jl_id.setOpaque(true);
+		jl_id.setBackground(Color.yellow);
+		jp_mem.setLayout(new GridLayout(1,3));
 		jp_mem.add(jl_prof);
 		jp_mem.add(jl_id);
 		jp_mem.add(jl_nick);
+		
 	}
 	
 	private void updateData(MemberVO mem, boolean isSelected, JTable table) {
@@ -45,7 +50,6 @@ public class MemberVOCell extends AbstractCellEditor implements TableCellRendere
 
 	@Override
 	public Object getCellEditorValue() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

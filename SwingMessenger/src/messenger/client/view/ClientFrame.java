@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -140,8 +139,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		//마우스 팝업 메뉴
 		JPopupMenu popup 	   = new JPopupMenu();
 		JMenuItem  jmi_popfile = new JMenuItem("프로필보기");
-		JMenuItem  jmi_popchat = new JMenuItem("대화하기");
-		//JMenuItem  jmi_popdel  = new JMenuItem("삭제하기");
+		JMenuItem  jmi_popdel  = new JMenuItem("삭제하기");
 		
 		// 임시 이미지 소스
 		String noname = ".//src//messenger//client//images//";
@@ -284,7 +282,6 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			jt_room.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
 			//방 목록에서 방을 클릭했을때 채팅방 다이얼로그를 화면에 띄운다.
 			jt_room.addMouseListener(new MouseAdapter() {
-				
 				//대화방 클릭시 이벤트
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -466,23 +463,20 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			//마우스 팝업 레이아웃
 			popup = new JPopupMenu();
 			popup.add(jmi_popfile);
-//			popup.add(jmi_popdel);
-			popup.add(jmi_popchat);
+			popup.add(jmi_popdel);
 			friendTable.add(popup);
 			//팝업마우스 액션리스너
 			friendTable.addMouseListener(new MouseAdapter() {
-				   @Override
-				   public void mousePressed(MouseEvent e) {
-				    // 오른쪽 버튼 클릭 시 ...
-				    if(e.getModifiers() == MouseEvent.BUTTON3_MASK) {
-				      System.out.println("반응");
-				     popup.show(friendTable, e.getX(), e.getY());
-				    }
-				   }
-				  });
+				@Override
+				public void mousePressed(MouseEvent e) {
+					// 오른쪽 버튼 클릭 시 ...
+					if(e.getModifiers() == MouseEvent.BUTTON3_MASK) {
+					    popup.show(friendTable, e.getX(), e.getY());
+					}
+				}
+			});
 			jmi_popfile.addActionListener(this);
-//			jmi_popdel.addActionListener(this);
-			jmi_popchat.addActionListener(this);
+			jmi_popdel.addActionListener(this);
 			
 		}///////////// end initDisplay
 		
@@ -652,11 +646,17 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			
 			//마우스 팝업 이벤트
 			if(e.getActionCommand().equals("프로필보기")) {
-				ProfileDialog pd;
-			} else if(e.getActionCommand().equals("대화하기")) {
-				
+				int row = friendTable.getSelectedRow();
+				if(row == -1)
+					return;
+				MemberVO memVO = friendTableModel.getValueAt(row, 0);
+				new ProfileDialog(memVO);
 			} else if(e.getActionCommand().equals("삭제하기")) {
-				
+				int row = friendTable.getSelectedRow();
+				if(row == -1)
+					return;
+				MemberVO memVO = friendTableModel.getValueAt(row, 0);
+				System.out.println("삭제하기. row : " + row);
 			}
 		}
 			

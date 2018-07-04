@@ -139,9 +139,10 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		
 		//마우스 팝업 메뉴
 		JPopupMenu popup 	   = new JPopupMenu();
-		JMenuItem  jmi_popfile = new JMenuItem("프로필보기");
+		JMenuItem  jmi_popprof = new JMenuItem("프로필보기");
 		JMenuItem  jmi_popdel  = new JMenuItem("삭제하기");
-		
+		JMenuItem  jmi_popfile = new JMenuItem("파일첨부");
+		JMenuItem  jmi_popcall = new JMenuItem("통화하기");
 		// 임시 이미지 소스
 		String noname = ".//src//messenger//client//images//";
 		
@@ -312,6 +313,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		// 메인화면
 			this.add("North", jmb_menu);
 			jmb_menu.setVisible(false);
+			jmb_menu.setBackground(new Color(126, 195, 237));
 			// 사이드 메뉴바
 			jmb_menu.setLayout(new GridLayout(1, 5));
 			jmb_menu.add(jmi_fri);
@@ -322,23 +324,24 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			jm_add.add(jmi_addfri);
 			jm_add.add(jmi_addchat);
 			jm_add.add(jmi_upd);
-			jm_add.add(jmi_logout);
 			jm_add.add(jmi_exit);
+			jm_add.setBackground(new Color(126, 195, 237));
+			jmi_fri.setBackground(new Color(126, 195, 237));
+			jmi_chat.setBackground(new Color(126, 195, 237));
+			jmi_addfri.setBackground(new Color(126, 195, 237));
+			jmi_addchat.setBackground(new Color(126, 195, 237));
+			jmi_upd.setBackground(new Color(126, 195, 237));
+			jmi_exit.setBackground(new Color(126, 195, 237));
 			
 			// 목록창
 			jp_list.setVisible(true);
-			jp_list.setBackground(Color.YELLOW);
+			jp_list.setBackground(new Color(126, 195, 237));
 			jl_no.setIcon(new ImageIcon(noname + "알수없음2.png"));
 			jl_no.setText("내이름");
 			jp_my.add(jl_my);
 			jp_fri.add(jl_fri);
 			jp_my.setBackground(Color.CYAN);
 			jp_fri.setBackground(Color.PINK);
-			jp_chat.setBackground(Color.orange);
-			jp_news.setBackground(Color.green);
-			jp_calender.setBackground(Color.yellow);
-
-			
 			
 			//포커스 리스너 추가(로그인 창 - 아이디, 비밀번호)
 			jtf_id.addFocusListener(this);
@@ -463,8 +466,10 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 */			
 			//마우스 팝업 레이아웃
 			popup = new JPopupMenu();
-			popup.add(jmi_popfile);
+			popup.add(jmi_popprof);
 			popup.add(jmi_popdel);
+			popup.add(jmi_popfile);
+			popup.add(jmi_popcall);
 			friendTable.add(popup);
 			//팝업마우스 액션리스너
 			friendTable.addMouseListener(new MouseAdapter() {
@@ -476,8 +481,10 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 					}
 				}
 			});
-			jmi_popfile.addActionListener(this);
+			jmi_popprof.addActionListener(this);
 			jmi_popdel.addActionListener(this);
+			jmi_popcall.addActionListener(this);
+			jmi_popfile.addActionListener(this);
 			
 		}///////////// end initDisplay
 		
@@ -551,8 +558,6 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		public void actionPerformed(ActionEvent e) {
 			//로그인창 이벤트
 			if(e.getSource()==jmi_gaip) {
-				//System.out.println(jp_card);
-				//card.next(jp_card);
 				card.show(jp_card,"가입창");
 			} else if(e.getActionCommand().equals("로그인")) {
 				if(clientData.login(jtf_id.getText(), jtf_pw.getText())) {
@@ -575,26 +580,33 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			// 회원가입 이벤트
 			//중복검사
 			if(e.getSource()==jbtn_bok) {
-				System.out.println(jtf_id.getText());
 				answer = jb.Gumsa();
 			}
 			if(e.getSource()==jmi_get) {
 				System.out.println("가입버튼");
-				if(jb.answer == 1) {
-					System.out.println("가입성공");
-				}
-				else if(answer == 0){
+				if(jb.answer != 1){
 					JOptionPane.showMessageDialog(jp_gaip, "아이디를 중복검사를 해주세요.", "Error", JOptionPane.ERROR_MESSAGE);
-					return;
+				}else if(jb.answer == 1) {
+					if(!jtf_gpw.getText().equals(jtf_gpw_re.getText())) {
+						JOptionPane.showMessageDialog(jp_gaip, "비밀번호가 같지 않습니다.", "Error", JOptionPane.ERROR_MESSAGE);
+					}else {
+						ClientJoin cj = new ClientJoin();
+						cj.setID(jtf_gid.getText());
+						cj.setPW(jtf_gpw.getText());
+						cj.setName(jtf_gname.getText());
+						cj.setGender((String)jtf_ggender.getSelectedItem());
+						cj.setHP(jtf_ghp.getText());
+						cj.result =	cj.Join(cj);
+						System.out.println("액션리스너 cj.result"+cj.result);
+						if(cj.result == 1) {
+							System.out.println("가입성공");
+							JOptionPane.showMessageDialog(jp_gaip, "가입되었습니다.", "가입성공", JOptionPane.DEFAULT_OPTION);
+						}
+						else {
+							JOptionPane.showMessageDialog(jp_gaip, "가입에 실패하였습니다.", "가입실패", JOptionPane.DEFAULT_OPTION);
+						}
+					}	
 				}
-				else if(answer==3){
-					JOptionPane.showMessageDialog(jp_gaip, "아이디를 중복검사를 해주세요.", "Error", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				if(!jtf_gpw.getText().equals(jtf_gpw_re.getText())) {
-					JOptionPane.showMessageDialog(jp_gaip, "비밀번호가 같지 않습니다.", "Error", JOptionPane.ERROR_MESSAGE);		
-				} else {return;}
-				
 			} else if(e.getSource()==jmi_back) {
 				card.show(jp_card,"로그인창"); 
 			}

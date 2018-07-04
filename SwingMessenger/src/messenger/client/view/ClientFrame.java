@@ -49,6 +49,7 @@ import messenger.client.view.dialog.UpdateDialog;
 public class ClientFrame extends JFrame implements ActionListener, FocusListener, KeyListener{
 		Joongbok jb = new Joongbok(this);
 		ClientData clientData = new ClientData(this);
+		int answer = 0;
 	//선언부
 		//로그인 패널
 		CardLayout 	card		= new CardLayout();
@@ -596,18 +597,23 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			
 			// 회원가입 이벤트
 			if(e.getSource()==jbtn_bok) {
-				//System.out.println(jtf_id.getText());
-				jb.Gumsa();
+				System.out.println(jtf_id.getText());
+				answer = jb.Gumsa();
 			}
 			if(e.getSource()==jmi_get) {
 				System.out.println("가입버튼");
 				if(jb.answer == 1) {
 					System.out.println("가입성공");
 				}
-				else {
+				else if(answer == 0){
 					JOptionPane.showMessageDialog(jp_gaip, "아이디를 중복검사를 해주세요.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
 				}
-				if(jtf_gpw.getText()!=jtf_gpw_re.getText()) {
+				else if(answer==3){
+					JOptionPane.showMessageDialog(jp_gaip, "아이디를 중복검사를 해주세요.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				if(!jtf_gpw.getText().equals(jtf_gpw_re.getText())) {
 					JOptionPane.showMessageDialog(jp_gaip, "비밀번호가 같지 않습니다.", "Error", JOptionPane.ERROR_MESSAGE);		
 				} else {return;}
 				

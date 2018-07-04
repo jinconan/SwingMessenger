@@ -23,6 +23,11 @@ import messenger.protocol.Server;
  *   ▶▶▶서버가 상시가동되고 있고, 단방향 요청+단방향 응답이기 때문에, do-while문으로 반복할 필요가 없음
  * 2. List타입 변수 res에 <MemberVO>타입으로 확정지어주어서 타입에러 잡음
  * 
+ * @author2 이진...18/07/03
+ * [체크사항] ~<Dialog Package등>
+ * 1. 서버로 부터온 메시지를 실행할 때 마다 새로운 다이얼로그창을 만들어 실행하므로,
+ * 	실행되어있던 다이얼로그창에 정보를 입력하기 위해서 다이얼로그창 객체의 주소번지를 그대로 받아와서 실행할 필요가 있다.
+ * 
  **********************************************************************/
 
 public class ClientFriend extends Thread{
@@ -91,7 +96,7 @@ public class ClientFriend extends Thread{
 			
 			case Message.FRIEND_ALL://친구전체조회
 				//화면에 띄우는 메소드호출
-//				cfl = new ClientFriendList();
+				//cfl = new ClientFriendList();
 				cfl.setFriendList(res);//골라낸 List자료 넘김
 				break;
 			

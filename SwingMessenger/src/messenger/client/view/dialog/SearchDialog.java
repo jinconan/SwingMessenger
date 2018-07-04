@@ -53,6 +53,10 @@ public class SearchDialog extends JDialog implements ActionListener, KeyListener
 		this.setVisible(true);
 	}
 
+	public void setDialog(String[][] datas) {
+		dtm.setRowCount(0);
+		dtm.addRow(datas);
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -60,7 +64,7 @@ public class SearchDialog extends JDialog implements ActionListener, KeyListener
 		
 		if(e.getActionCommand().equals("검색")) {
 			String id = jtf_shfri.getText();
-			ClientFriendSearch cfs = new ClientFriendSearch(id, clientFrame);
+			ClientFriendSearch cfs = new ClientFriendSearch(id, clientFrame, this);
 			cfs.getFriendSearch();
 //			try {
 //				// 검색 요청 클라이언트

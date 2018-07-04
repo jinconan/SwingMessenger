@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -26,6 +27,7 @@ import messenger.client.friend.ClientFriendDelete;
 import messenger.client.friend.ClientFriendList;
 import messenger.client.friend.ClientFriendSearch;
 import messenger.client.view.dialog.ChatDialog;
+import messenger.client.view.dialog.SearchDialog;
 import messenger.protocol.Message;
 import messenger.protocol.Port;
 import messenger.protocol.Server;
@@ -38,6 +40,7 @@ public class ClientData {
 	private ObjectOutputStream out;
 	
 	public ClientFrame clientFrame;
+	public SearchDialog SearchDialog;
 	
 //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 	/***************************************************************************************
@@ -59,7 +62,7 @@ public class ClientData {
 	 ******************************************/
 	public void actionFriendSearch(String FriendId) {
 //		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
-		ClientFriendSearch cfc = new ClientFriendSearch(FriendId,clientFrame);
+		ClientFriendSearch cfc = new ClientFriendSearch(FriendId,clientFrame,SearchDialog);
 		cfc.getFriendSearch();
 	}
 	/******************************************

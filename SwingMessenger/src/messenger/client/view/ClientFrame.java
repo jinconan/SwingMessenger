@@ -349,6 +349,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			for(RoomVO rVO : rVOList) {
 				dtm_room.addRow(new String[] {Integer.toString(rVO.getRoom_no()), rVO.getRoom_title()});
 			}
+			
 		}
 	//대화방 목록 패널창 관련 메소드 끝/////////////		
 		

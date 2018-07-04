@@ -266,6 +266,7 @@ public class ClientData {
 		Set<Integer> keySet = chatDialogMap.keySet();
 		Iterator<Integer> iter = keySet.iterator();
 		//새로 받아온 방 리스트에 기존 방이 존재하지 않으면 해쉬맵에서 제거한다.
+
 		while(iter.hasNext()) {
 			int room_no = iter.next();
 			boolean hasRoom = false;
@@ -276,7 +277,8 @@ public class ClientData {
 				}
 			}
 			if(hasRoom == false) {
-				ChatDialog dialog = chatDialogMap.remove(room_no);
+				ChatDialog dialog = chatDialogMap.get(room_no);
+				iter.remove();
 				dialog.dispose();
 			}
 		}

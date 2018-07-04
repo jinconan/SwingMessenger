@@ -110,8 +110,8 @@ public class MemberDAO {
 			cstmt.setObject(4, mvo.get(0).getMem_gender());//성별
 			cstmt.setObject(5, mvo.get(0).getMem_pw());//패스워드
 			cstmt.setObject(6, mvo.get(0).getMem_hp());//폰번호
-			cstmt.setObject(7, mvo.get(0).getMem_profile());//프사
-			cstmt.setObject(8, mvo.get(0).getMem_background());//배경사
+			cstmt.setObject(7, null);//프사
+			cstmt.setObject(8, null);//배경사
 			cstmt.setObject(9, Message.MEMBER_JOIN);//옵션번호
 			cstmt.registerOutParameter(10, java.sql.Types.VARCHAR);//처리메세지
 			cstmt.executeUpdate();

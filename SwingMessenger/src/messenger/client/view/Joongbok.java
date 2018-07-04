@@ -51,12 +51,12 @@ public class Joongbok {
 				try {
 					if (message.getResponse() == null) {
 						System.out.println("아이디 사용불가능"+ cf.jtf_gid.getText());
-						JOptionPane.showInputDialog(cf.jtf_gid, "이미 사용중인 아이디입니다.", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(cf.jtf_gid, "이미 사용중인 아이디입니다.", "Error", JOptionPane.ERROR_MESSAGE);
  						answer=3;
  					}else {
  						answer=1;
  						System.out.println("아이디 사용가능"+ cf.jtf_gid.getText());
- 						if (cf.jtf_gid.getText() == message.getResponse().get(0).getMem_id()) {
+ 						if (cf.jtf_gid.getText().equals(message.getResponse().get(0).getMem_id())) {
 							answer = JOptionPane.showConfirmDialog(cf.jtf_gid, "이 아이디를 사용하시겠습니까?", "사용가능한 아이디입니다.",
 									JOptionPane.YES_NO_OPTION);
 							if (answer == JOptionPane.YES_OPTION) {

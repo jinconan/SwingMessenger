@@ -565,6 +565,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 					jmb_menu.setVisible(true);
 				}
 				else {
+					//로그인 실패시 메세지 다이얼로그를 띄운다.
 					JOptionPane.showMessageDialog(null, "에러", "로그인 실패", JOptionPane.ERROR_MESSAGE);
 				}
 			} else if(e.getActionCommand().equals("나가기")) {
@@ -572,6 +573,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			}
 			
 			// 회원가입 이벤트
+			//중복검사
 			if(e.getSource()==jbtn_bok) {
 				System.out.println(jtf_id.getText());
 				answer = jb.Gumsa();

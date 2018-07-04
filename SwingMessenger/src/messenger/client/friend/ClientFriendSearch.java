@@ -29,7 +29,7 @@ public class ClientFriendSearch{
 
 	/*선언부*/
 	String userId_f = null;		 //UI로부터받은 '찾고자하는 친구의 아이디'를 담을 변수
-//	ClientFrame frame = null;	 //[주석처리]화면에 담는 f_Panel 전역변수
+	ClientFrame frame = null;	 //[주석처리]화면에 담는 f_Panel 전역변수
 	SearchDialog searchDialog = null; //JDialog로 처리
 	
 	
@@ -53,7 +53,7 @@ public class ClientFriendSearch{
 	//화면에 담는 f_Panel 전역변수 초기화 추가
 	public ClientFriendSearch(String userId_f,ClientFrame frame, SearchDialog searchDialog) {
 		this.userId_f = userId_f;
-		//this.frame = frame;
+		this.frame = frame;
 		this.searchDialog = searchDialog;
 	}
 	
@@ -86,6 +86,8 @@ public class ClientFriendSearch{
 			datas[i][0]=res.get(i).getMem_id(); 
 			datas[i][1]=res.get(i).getMem_name(); 
 			datas[i][2]=res.get(i).getMem_nick(); 
+			
+			System.out.println(datas[i][0]);
 		}
 		//Insert Here-친구찾기 UI에 자료담기
 		searchDialog.setDialog(datas);

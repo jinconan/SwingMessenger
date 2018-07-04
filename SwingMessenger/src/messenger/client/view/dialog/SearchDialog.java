@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Vector;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
@@ -17,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import messenger.client.friend.ClientFriendAdd;
 import messenger.client.friend.ClientFriendSearch;
 import messenger.client.view.ClientFrame;
+import oracle.net.aso.e;
 
 public class SearchDialog extends JDialog implements ActionListener, KeyListener{
 	ClientFrame clientFrame;
@@ -55,7 +57,15 @@ public class SearchDialog extends JDialog implements ActionListener, KeyListener
 
 	public void setDialog(String[][] datas) {
 		dtm.setRowCount(0);
-		dtm.addRow(datas);
+//		dtm.addRow(datas);
+		
+		for(int i=0;i<datas.length;i++) {
+			Vector<String> v = new Vector();
+			v.add(datas[i][0]);
+			v.add(datas[i][1]);
+			v.add(datas[i][2]);
+			dtm.addRow(v);
+		}
 	}
 	
 	@Override

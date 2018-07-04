@@ -20,6 +20,9 @@ public class ProfileDialog extends JDialog {
 	private JLabel jlb_id;
 	private JLabel jlb_profile;
 	private JLabel jlb_nick;
+	private JLabel jlb_name;
+	private JLabel jlb_gender;
+	private JLabel jlb_hp;
 
 	/**
 	 * Launch the application.
@@ -29,17 +32,20 @@ public class ProfileDialog extends JDialog {
 	 * Create the frame.
 	 */
 	public ProfileDialog(MemberVO memVO) {
+		this.setTitle("ÇÁ·ÎÇÊ");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(0, 0, 350, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
 		
+		
 		setContentPane(contentPane);
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 334, 451);
 		contentPane.add(panel);
+		panel.setBackground(new Color(126, 195, 237));
 		panel.setLayout(null);
 		
 		jlb_nick = new JLabel(memVO.getMem_nick());
@@ -64,6 +70,21 @@ public class ProfileDialog extends JDialog {
 		jlb_background.setBackground(Color.RED);
 		jlb_background.setBounds(0, 0, 334, 260);
 		panel.add(jlb_background);
+		
+		jlb_name = new JLabel(memVO.getMem_name());
+		jlb_name.setHorizontalAlignment(SwingConstants.CENTER);
+		jlb_name.setBounds(0, 320, 334, 40);
+		panel.add(jlb_name);
+		
+		jlb_gender = new JLabel(memVO.getMem_gender());
+		jlb_gender.setHorizontalAlignment(SwingConstants.CENTER);
+		jlb_gender.setBounds(0, 360, 334, 40);
+		panel.add(jlb_gender);
+		
+		jlb_hp = new JLabel(memVO.getMem_hp());
+		jlb_hp.setHorizontalAlignment(SwingConstants.CENTER);
+		jlb_hp.setBounds(0, 400, 334, 40);
+		panel.add(jlb_hp);
 		
 		this.setVisible(true);
 	}

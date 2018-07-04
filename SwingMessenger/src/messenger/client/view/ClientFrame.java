@@ -617,7 +617,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 				else {
 					JOptionPane.showMessageDialog(jp_gaip, "아이디를 중복검사를 해주세요.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
-				if(jtf_gpw.getText()!=jtf_gpw_re.getText()) {
+				if(!jtf_gpw.getText().equals(jtf_gpw_re.getText())) {
 					JOptionPane.showMessageDialog(jp_gaip, "비밀번호가 같지 않습니다.", "Error", JOptionPane.ERROR_MESSAGE);		
 				} else {return;}
 				

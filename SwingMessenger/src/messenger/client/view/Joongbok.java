@@ -46,24 +46,26 @@ public class Joongbok {
 				oos.writeObject(message);
 				ois = new ObjectInputStream(socket.getInputStream());
 				message = (Message<MemberVO>) ois.readObject();
-				System.out.println(cf.jtf_gid.getText());
+				System.out.println("아이디 송신"+ cf.jtf_gid.getText());
 
 				try {
 					if (message.getResponse() == null) {
+						System.out.println("아이디 사용불가능"+ cf.jtf_gid.getText());
 						JOptionPane.showInputDialog(cf.jtf_gid, "이미 사용중인 아이디입니다.", "Error", JOptionPane.ERROR_MESSAGE);
  						answer=3;
- 					}else if(message.getResponse()!=null){
+ 					}else {
  						answer=1;
- 						/*if (cf.jtf_gid.getText() == message.getResponse().get(0).getMem_id()) {
+ 						System.out.println("아이디 사용가능"+ cf.jtf_gid.getText());
+ 						if (cf.jtf_gid.getText() == message.getResponse().get(0).getMem_id()) {
 							answer = JOptionPane.showConfirmDialog(cf.jtf_gid, "이 아이디를 사용하시겠습니까?", "사용가능한 아이디입니다.",
 									JOptionPane.YES_NO_OPTION);
 							if (answer == JOptionPane.YES_OPTION) {
-								answer = 0;
+								answer = 1;
 							} else if (answer == JOptionPane.NO_OPTION) {
 								cf.jtf_gid.setText("");
 							}
 							System.out.println(answer);
-						}*/
+						}
 					}
 					
 				} catch (NullPointerException e) {

@@ -3,6 +3,7 @@ package messenger.client.view;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -112,6 +113,9 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		JLabel 		jl_news 	= new JLabel("뉴스");
 		JLabel 		jl_calender = new JLabel("캘린더");
 		JScrollPane jsp_list 	= new JScrollPane(jp_card);
+		
+		//이스터에그 다이얼로그창
+		
 		
 		//친구목록 패널
 		JPanel 		jp_List 	= new JPanel();
@@ -655,6 +659,16 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 				String f_id = f_memVO.getMem_id();
 				System.out.println("삭제하기. 친구 아이디 : " + f_id);
 				clientData.actionDeleteFriend(f_id);
+			}
+			else if(e.getActionCommand().equals("통화하기")) {
+				JOptionPane.showMessageDialog(null, "그냥... 카톡쓰세요 왜 이걸써요...", "Easter Egg", 1);
+				System.out.println("그냥.. 카톡쓰세요...");
+				
+			}
+			else if(e.getActionCommand().equals("파일첨부")) {
+				JOptionPane.showMessageDialog(null, "그냥... 카톡쓰세요 왜 이걸써요...", "Easter Egg", 1);
+				System.out.println("그냥.. 카톡쓰세요...");
+				
 			}
 		}
 			

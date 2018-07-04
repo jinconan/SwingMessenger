@@ -59,7 +59,7 @@ public class ChatDialog extends JDialog implements ActionListener{
 		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 		
 		String title = (room != null) ? room.getRoom_no() + "¹ø ¹æ) " + room.getRoom_title() : "null";
-		
+		this.setTitle(title);
 		jbtn_emti.addActionListener(this);
 		jbtn_inv.addActionListener(this);
 		jbtn_exit.addActionListener(this);

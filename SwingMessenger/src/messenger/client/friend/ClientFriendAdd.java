@@ -114,7 +114,7 @@ public class ClientFriendAdd {
 	//친구추가 완료후 리스트를 갱신해주는 메소드
 	public void renewFriendList() {
 		//회원리스트전체를 다시검색한다
-		ClientFriendList cfl = new ClientFriendList(userNo);
+		ClientFriendList cfl = new ClientFriendList(userNo, frame);
 		cfl.getFriendList();
 	}//////end of renewFriendList()
 }//////////end of class

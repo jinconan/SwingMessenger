@@ -510,30 +510,6 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		public MemberVOTableModel getFriendTableModel() {
 			return friendTableModel;
 		}
-		
-		/**
-		 * 친구 한 명을 테이블모델에 추가한다.
-		 * @param mVO
-		 */
-		//친구 목록에 추가하기
-		public synchronized void addFriendRow(MemberVO mVO) {
-			friendTableModel.addRow(mVO);
-		}
-		
-		/**
-		 * 테이블 모델에서 친구 한 명을 제거한다.
-		 * @param mVO
-		 */
-		//친구 목록에서 제거하기
-		public synchronized void removeFriendRow(MemberVO mVO) {
-			for(int i=0;i<friendTableModel.getRowCount();i++) {
-				MemberVO f_mVO = friendTableModel.getValueAt(i, 0);
-				if(f_mVO.getMem_no() == mVO.getMem_no()) {
-					friendTableModel.removeRow(i);
-					return;
-				}
-			}
-		}
 	//친구목록 패널창 관련 메소드 끝//////////////
 		
 	//대화방 목록 패널창 관련 메소드//////////////
@@ -661,8 +637,10 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 				int row = friendTable.getSelectedRow();
 				if(row == -1)
 					return;
-				MemberVO memVO = friendTableModel.getValueAt(row, 0);
-				System.out.println("삭제하기. row : " + row);
+				MemberVO f_memVO = friendTableModel.getValueAt(row, 0);
+				String f_id = f_memVO.getMem_id();
+				System.out.println("삭제하기. 친구 아이디 : " + f_id);
+				clientData.actionDeleteFriend(f_id);
 			}
 		}
 			

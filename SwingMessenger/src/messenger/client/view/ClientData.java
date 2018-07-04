@@ -204,7 +204,6 @@ public class ClientData {
 		
 	}
 	
-	
 	/**
 	 * 채팅방에서 사용할 이모티콘 패널을 얻는다.
 	 * @param jtf : 채팅방 안에 있는 텍스트필드.
@@ -232,7 +231,6 @@ public class ClientData {
 				result.add(jl);
 			}
 		}
-		System.out.println("이모티콘맵: " + emoticonMap);
 		return result;
 	}
 
@@ -276,7 +274,6 @@ public class ClientData {
 			}
 		}
 	}
-	
-	
+
 	
 }

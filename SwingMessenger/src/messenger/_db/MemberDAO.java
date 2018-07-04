@@ -158,7 +158,6 @@ public class MemberDAO {
 			CallableStatement cstmt = con.prepareCall("{call proc_member_option(?,?,?,?,?,?,?,?,?,?)}"); 
 		){
 			//회원정보 수정 메소드
-			
 			cstmt.setObject(1, mvo.get(0).getMem_id());//ID
 			cstmt.setObject(2, mvo.get(0).getMem_name());//이름
 			cstmt.setObject(3, mvo.get(0).getMem_nick());//닉네임
@@ -218,29 +217,18 @@ public class MemberDAO {
 				ResultSet rs = pstmt.executeQuery();
 			){
 				while (rs.next()) {
-					int    mem_no			= rs.getInt("mem_no");
-					String mem_id			= rs.getString("mem_id");
-					String mem_name			= rs.getString("mem_name");
-					String mem_nick			= rs.getString("mem_nick");
-					String mem_gender		= rs.getString("mem_gender");
-					String mem_hp 			= rs.getString("mem_hp");
-					String mem_profile		= rs.getString("mem_profile");
-					String mem_background	= rs.getString("mem_background");
+					int    mem_no				= rs.getInt("mem_no");
+					String mem_id				= rs.getString("mem_id");
+					String mem_name				= rs.getString("mem_name");
+					String mem_nick				= rs.getString("mem_nick");
+					String mem_gender			= rs.getString("mem_gender");
+					String mem_hp 				= rs.getString("mem_hp");
+					String mem_profile_url		= rs.getString("mem_profile");
+					String mem_background_url	= rs.getString("mem_background");
+					JLabel jl_profile			= getImageLabel(mem_profile_url, true);
+					JLabel jl_background		= getImageLabel(mem_background_url, false);
 					
-					String path = "src\\messenger\\server\\images\\";
-					ImageIcon icon		= new ImageIcon(path+"profile\\"+mem_profile);
-					if(icon.getIconWidth() == -1) {
-						icon			= new ImageIcon(path+"profile\\profile_0.png");
-					}
-					JLabel jl_prof		= new JLabel(icon);
-					icon				= new ImageIcon(path+"background\\"+mem_background);
-					if(icon.getIconWidth() == -1) {
-						icon			= new ImageIcon(path+"background\\background_0.jpg");
-					}
-					JLabel jl_back		= new JLabel(icon);
-					MemberVO memVO = new MemberVO(mem_no, mem_id, mem_name, mem_nick, mem_gender, null, mem_hp, jl_prof, jl_back);
-					
-					System.out.println(mem_no + ", " + mem_name + ", " + mem_nick);
+					MemberVO memVO = new MemberVO(mem_no, mem_id, mem_name, mem_nick, mem_gender, null, mem_hp, jl_profile, jl_background);
 					list.add(memVO);// 친구 번호, 친구아이디, 친구이름, 친구닉네임만 담음.
 				}
 			} catch(Exception e) {
@@ -332,33 +320,28 @@ public class MemberDAO {
 		return list;
 	}
 	
+	/**
+	 * 클래스패스를 상대경로로 하여 이미지를 찾아서 JLabel로 리턴하는 메소드
+	 * @param url 이미지 파일 이름
+	 * @param isProfile true : 프로필사진 false : 배경사진
+	 * @return 이미지아이콘이 추가된 JLabel 객체
+	 */
 	private  JLabel getImageLabel(String url, boolean isProfile) {
 		JLabel jl = null;
-		//클래스파일의 기본 경로를 가져온다.
- 		ClassLoader loader = this.getClass().getClassLoader();
- 		
- 		//위에서 얻은 경로를 시작지점으로 하여  상대경로 얻기.
- 		String location = (isProfile == true) ? "messenger\\server\\images\\profile\\" : "messenger\\server\\images\\background\\";
- 		
-		URL buildpath = loader.getResource(location);
-		
+		String type = (isProfile == true) ? "profile/" : "background/";
+		ImageIcon icon = null;
 		try {
-			URI uri = new URI(buildpath.toString());
-			StringBuilder imgpath = new StringBuilder(uri.getPath());
-			if(url != null)
-				imgpath.append(url);
-			File file = new File(imgpath.toString());
-			if(file.exists() && file.isFile()) {
-				System.out.println(imgpath.toString());
-				ImageIcon icon = new ImageIcon(imgpath.toString());
-				jl = new JLabel(icon);
-			}
-			
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
+			icon = new ImageIcon(MemberDAO.class.getResource("/messenger/server/images/"+type+url));
+			if(icon.getIconWidth() == -1)
+				throw new NullPointerException();
+		} catch(NullPointerException e) {
+			if(isProfile == true)
+				icon = new ImageIcon(MemberDAO.class.getResource("/messenger/server/images/profile/profile_0.png"));
+			else
+				icon = new ImageIcon(MemberDAO.class.getResource("/messenger/server/images/background/background_0.jpg"));
 		}
+		jl = new JLabel(icon);
 		return jl;
-
 	}
 
 

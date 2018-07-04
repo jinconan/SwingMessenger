@@ -81,29 +81,6 @@ public class ClientFriendList extends Thread {
 	//전달 받은 정보를 UI에 띄우기(run메소드에서 호출)
 	public void setFriendList(List<MemberVO> res) {
 		frame.refreshFriendTable((ArrayList<MemberVO>) res);
-		//System.out.println(res);//테스트용 출력문
-		
-		//List에 담긴 MemberVO의 데이터를 dtm에 담기
-//		vec = new Vector<MemberVO>();;
-		for(int i=0;i<res.size();i++) {
-			System.out.println(res.get(i).getMem_id());
-		/*	//굳이 이렇게 찢어서 벡터에 나눠담을 필요가 없음..
-			//왜냐하면, 이미 서버로부터 하나의 정보씩 나눠담겨져서 왔기때문
-			vec.add(res.get(i).getMem_id());
-			vec.add(res.get(i).getMem_name());
-			vec.add(res.get(i).getMem_nick());
-			vec.add(res.get(i).getMem_hp());
-			vec.add(res.get(i).getMem_profile());
-			vec.add(res.get(i).getMem_background());*/
-			
-//			vec.add(res.get(i));
-			//System.out.println(vec.get(i).getMem_id());//테스트용 출력문
-			
-			//Insert Here - 친구리스트 패널UI에 자료담기(UI협의 후 완성할 예정)
-			//dtm.addRow(vec);
-		
-		}//////////end of for
-		
 	}//////////////end of setFriendList
 		
 }//////////////////end of class

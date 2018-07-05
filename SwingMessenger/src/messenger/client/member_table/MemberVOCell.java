@@ -24,8 +24,6 @@ public class MemberVOCell extends AbstractCellEditor implements TableCellRendere
 	private JLabel jl_nick = new JLabel();
 	
 	public MemberVOCell() {
-		jl_id.setOpaque(true);
-		jl_id.setBackground(Color.yellow);
 		jp_mem.setLayout(new GridLayout(1,3));
 		jp_mem.add(jl_prof);
 		jp_mem.add(jl_id);

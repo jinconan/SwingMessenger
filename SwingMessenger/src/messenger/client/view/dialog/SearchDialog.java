@@ -42,7 +42,7 @@ public class SearchDialog extends JDialog implements ActionListener, KeyListener
 		this.setLayout(null);
 		this.setSize(300, 240);
 		jtf_shfri.addKeyListener(this);
-		
+		jbtn_chu.addActionListener(this);
 		Font f = new Font("±¼¸²", Font.CENTER_BASELINE, 10);
 		jtf_shfri.setBounds(5,165, 210, 30);
 		jbtn_gum.setFont(f);
@@ -87,6 +87,7 @@ public class SearchDialog extends JDialog implements ActionListener, KeyListener
 				MemberVO mvo = mvoModel.getValueAt(row,  0);
 				ClientFriendAdd cfa = new ClientFriendAdd(clientFrame.getClientData().getMyData().getMem_id(), mvo.getMem_id(),clientFrame);
 				cfa.getFriendAdd();
+				System.out.println(mvo.getMem_id());
 				this.dispose();
 			}
 		}
@@ -99,9 +100,16 @@ public class SearchDialog extends JDialog implements ActionListener, KeyListener
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		if(Character.isLetterOrDigit(e.getKeyChar()) == false) {
+		if(e.getKeyChar() == '\n') {
+			String id = jtf_shfri.getText();
+			ClientFriendSearch cfs = new ClientFriendSearch(id, clientFrame, this);
+			cfs.getFriendSearch();
+		}
+		else if(jtf_shfri.getText().length()>=20) {
 			e.consume();
-			return;
+		}
+		else if(Character.isLetterOrDigit(e.getKeyChar()) == false) {
+			e.consume();
 		}
 	}
 	

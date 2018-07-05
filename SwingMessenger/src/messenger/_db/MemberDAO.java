@@ -293,7 +293,7 @@ public class MemberDAO {
 		ArrayList<MemberVO> list = new ArrayList<MemberVO>();
 		StringBuilder sql = new StringBuilder("SELECT ");
 		
-		sql.append("mem_id, mem_name, mem_nick FROM member ");
+		sql.append("mem_id, mem_nick, mem_profile FROM member ");
 		sql.append("WHERE mem_id = ?");
 		try (
 			Connection con = dbCon.getConnection();

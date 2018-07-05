@@ -14,6 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -75,7 +76,7 @@ public class UpdateDialog extends JDialog implements ActionListener{
 		jl_uhp.setBounds(30, 210, 80, 20);
 		jtf_uid.setBounds(120, 10, 180, 20);
 		jtf_unick.setBounds(120, 50, 180, 20);
-		jtf_upw.setBounds(120, 80, 180, 20);
+		jtf_upw.setBounds(120, 90, 180, 20);
 		jtf_uname.setBounds(120, 130, 180, 20);
 		jtf_ugender.setBounds(120, 170, 180, 20);
 		jtf_uhp.setBounds(120, 210, 180, 20);
@@ -124,6 +125,8 @@ public class UpdateDialog extends JDialog implements ActionListener{
 			oos.writeObject(message);
 			System.out.println("업데이트 트라이");
 			System.out.println(jtf_unick.getText());
+			JOptionPane.showMessageDialog(this, "수정되었습니다.","수정성공",JOptionPane.INFORMATION_MESSAGE);
+			this.dispose();
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("업데이트 캐치");

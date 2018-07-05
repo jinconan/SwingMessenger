@@ -44,9 +44,9 @@ public class ChatDialog extends JDialog implements ActionListener, KeyListener{
 	JButton				jbtn_jun   = new JButton("전송");
 	JScrollPane 		jsp_North  = new JScrollPane(jtb_North);
 	JScrollPane 		jsp_Center = new JScrollPane(jtp_Center,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
-															   ,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+															   ,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	JScrollPane 		jsp_South  = new JScrollPane(jtf_South,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
-															  ,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+															  ,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	
 	//이모티콘 창
 	JDialog				jd_emoticon = new JDialog(this, false);

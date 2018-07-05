@@ -306,9 +306,10 @@ public class MemberDAO {
 			) {
 				while (rs.next()) {
 					String mem_id = rs.getString("mem_id");
-					String mem_name = rs.getString("mem_name");
 					String mem_nick = rs.getString("mem_nick");
-					MemberVO memVO = new MemberVO(0, mem_id, mem_name, mem_nick, null, null, null, null, null);
+					String mem_profile_url = rs.getString("mem_profile");
+					JLabel mem_profile = getImageLabel(mem_profile_url, true);
+					MemberVO memVO = new MemberVO(0, mem_id, null, mem_nick, null, null, null, mem_profile, null);
 					list.add(memVO);// 친구 번호, 친구아이디, 친구이름, 친구닉네임만 담음.
 				}
 			} catch (Exception e) {

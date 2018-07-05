@@ -76,21 +76,7 @@ public class ClientFriendSearch{
 	}
 
 	public void setFriendSearch(List<MemberVO> res) {
-		System.out.println(res);//테스트용 출력문
-		String[][]	datas	= new String[res.size()][3];
-		//List에 담긴 MemberVO의 데이터를 dtm에 담기
-		//vec = new Vector<MemberVO>();
-		for(int i=0;i<res.size();i++) {
-			//골라진 List자료는 회원1명에 대한 로우(row)자료가 순서대로 담겨져있음. 그러므로 벡터에 바로 담음
-			//vec.add(res.get(i));
-			datas[i][0]=res.get(i).getMem_id(); 
-			datas[i][1]=res.get(i).getMem_name(); 
-			datas[i][2]=res.get(i).getMem_nick(); 
-			
-			System.out.println(datas[i][0]);
-		}
-		//Insert Here-친구찾기 UI에 자료담기
-		searchDialog.setDialog(datas);
+		searchDialog.setDialog(res);
 	}
 
 	

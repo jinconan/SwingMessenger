@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultListSelectionModel;
@@ -15,20 +17,22 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import messenger._db.vo.MemberVO;
 import messenger.client.friend.ClientFriendAdd;
 import messenger.client.friend.ClientFriendSearch;
+import messenger.client.member_table.MemberVOTable;
+import messenger.client.member_table.MemberVOTableModel;
 import messenger.client.view.ClientFrame;
-import oracle.net.aso.e;
 
 public class SearchDialog extends JDialog implements ActionListener, KeyListener{
-	ClientFrame clientFrame;
-	JTextField  jtf_shfri = new JTextField();
-	String[]	cols	=	{"아이디", "이름", "상태메세지"};
-	DefaultTableModel dtm = new DefaultTableModel(cols, 0);
-	JTable		jtb_result = new JTable(dtm);
-	JScrollPane	jsp_result = new JScrollPane(jtb_result);
-	JButton 	jbtn_gum = new JButton("검색");
-	JButton 	jbtn_chu = new JButton("추가");
+	ClientFrame 		clientFrame;
+	JTextField  		jtf_shfri = new JTextField();
+	JButton 			jbtn_gum = new JButton("검색");
+	JButton 			jbtn_chu = new JButton("추가");
+	
+	MemberVOTableModel	mvoModel = new MemberVOTableModel("검색결과");
+	MemberVOTable		mvoTable = new MemberVOTable(mvoModel);
+	JScrollPane			jsp_result = new JScrollPane(mvoTable);
 	
 	public SearchDialog(ClientFrame clientFrame) {
 		super(clientFrame, "친구 찾기", true);
@@ -36,17 +40,16 @@ public class SearchDialog extends JDialog implements ActionListener, KeyListener
 		this.clientFrame = clientFrame;
 		jbtn_gum.addActionListener(this);
 		this.setLayout(null);
-		this.setSize(300, 210);
+		this.setSize(300, 240);
 		jtf_shfri.addKeyListener(this);
 		
-		jtb_result.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
 		Font f = new Font("굴림", Font.CENTER_BASELINE, 10);
-		jtf_shfri.setBounds(5,135, 210, 30);
+		jtf_shfri.setBounds(5,165, 210, 30);
 		jbtn_gum.setFont(f);
-		jbtn_gum.setBounds(220, 135, 60, 30);
+		jbtn_gum.setBounds(220, 165, 60, 30);
 		jbtn_chu.setFont(f);
 		jbtn_chu.setBounds(5,5,275,30);
-		jsp_result.setBounds(5,40,275,90);
+		jsp_result.setBounds(5,40,275,120);
 		
 		this.add(jtf_shfri);
 		this.add(jsp_result);
@@ -55,55 +58,34 @@ public class SearchDialog extends JDialog implements ActionListener, KeyListener
 		this.setVisible(true);
 	}
 
-	public void setDialog(String[][] datas) {
-		dtm.setRowCount(0);
-//		dtm.addRow(datas);
+	public void setDialog(List<MemberVO> mvoList) {
+		//테이블 모델의 값을 전부 지운다.
+		while(mvoModel.getRowCount() > 0)
+			mvoModel.removeRow(0);
 		
-		for(int i=0;i<datas.length;i++) {
-			Vector<String> v = new Vector();
-			v.add(datas[i][0]);
-			v.add(datas[i][1]);
-			v.add(datas[i][2]);
-			dtm.addRow(v);
+		//테이블 모델에 결과를 출력한다.
+		Iterator<MemberVO> iter = mvoList.iterator();
+		while(iter.hasNext()) {
+			MemberVO mvo = iter.next();
+			mvoModel.addRow(mvo);
 		}
+		
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		int answer = 0;
 		
 		if(e.getActionCommand().equals("검색")) {
 			String id = jtf_shfri.getText();
 			ClientFriendSearch cfs = new ClientFriendSearch(id, clientFrame, this);
 			cfs.getFriendSearch();
-//			try {
-//				// 검색 요청 클라이언트
-//				// 성공하면
-//				answer = JOptionPane.showConfirmDialog(this, jtf_shfri.getText() + "님을 추가하시겠습니까?", "친구추가",
-//						JOptionPane.YES_NO_OPTION);
-//				if (answer == JOptionPane.YES_OPTION) {
-//					try {
-//						// 친구 추가 클라이언트
-//						// 추가하면
-//						JOptionPane.showMessageDialog(this, jtf_shfri.getText() + "님이 추가되었습니다. \n 목록을 갱신합니다.",
-//								"친구추가", JOptionPane.OK_OPTION);
-//					} catch (Exception fe2) {
-//						// TODO: handle exception
-//						JOptionPane.showMessageDialog(this, "친구추가에 실패하였습니다.", "Error", JOptionPane.ERROR_MESSAGE);
-//					}
-//				} else if (answer == JOptionPane.NO_OPTION) {
-//					this.dispose();
-//				}
-//			} catch (Exception fe) {
-//				JOptionPane.showMessageDialog(this, jtf_shfri.getText() + "님을 찾을 수 없습니다.", "검색실패",
-//						JOptionPane.ERROR_MESSAGE);
-//			}
 		}
+		
 		else if(e.getActionCommand().equals("추가")) {
-			int row = jtb_result.getSelectedRow();
+			int row = mvoTable.getSelectedRow();
 			if(row >= 0) {
-				String id = (String)jtb_result.getValueAt(row,  0);
-				ClientFriendAdd cfa = new ClientFriendAdd(clientFrame.getClientData().getMyData().getMem_id(), id,clientFrame);
+				MemberVO mvo = mvoModel.getValueAt(row,  0);
+				ClientFriendAdd cfa = new ClientFriendAdd(clientFrame.getClientData().getMyData().getMem_id(), mvo.getMem_id(),clientFrame);
 				cfa.getFriendAdd();
 				this.dispose();
 			}
@@ -115,11 +97,8 @@ public class SearchDialog extends JDialog implements ActionListener, KeyListener
 		new SearchDialog(null);
 	}
 
-
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 		if(Character.isLetterOrDigit(e.getKeyChar()) == false) {
 			e.consume();
 			return;

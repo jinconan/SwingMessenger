@@ -1,5 +1,6 @@
 package messenger.client.view.dialog;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,7 +29,7 @@ public class SearchDialog extends JDialog implements ActionListener, KeyListener
 	ClientFrame 		clientFrame;
 	JTextField  		jtf_shfri = new JTextField();
 	JButton 			jbtn_gum = new JButton("검색");
-	JButton 			jbtn_chu = new JButton("추가");
+	JButton 			jbtn_chu = new JButton("추가하기");
 	
 	MemberVOTableModel	mvoModel = new MemberVOTableModel("검색결과");
 	MemberVOTable		mvoTable = new MemberVOTable(mvoModel);
@@ -40,16 +41,20 @@ public class SearchDialog extends JDialog implements ActionListener, KeyListener
 		this.clientFrame = clientFrame;
 		jbtn_gum.addActionListener(this);
 		this.setLayout(null);
+		this.setTitle("친구 검색");
 		this.setSize(300, 240);
+		this.setBackground(new Color(126, 195, 237));
 		jtf_shfri.addKeyListener(this);
 		jbtn_chu.addActionListener(this);
 		Font f = new Font("굴림", Font.CENTER_BASELINE, 10);
 		jtf_shfri.setBounds(5,165, 210, 30);
 		jbtn_gum.setFont(f);
 		jbtn_gum.setBounds(220, 165, 60, 30);
+		jbtn_gum.setBackground(new Color(126, 195, 237));
 		jbtn_chu.setFont(f);
 		jbtn_chu.setBounds(5,5,275,30);
-		jsp_result.setBounds(5,40,275,120);
+		jbtn_chu.setBackground(new Color(126, 195, 237));
+		jsp_result.setBounds(5,40,275,120);		
 		
 		this.add(jtf_shfri);
 		this.add(jsp_result);

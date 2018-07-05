@@ -1,5 +1,6 @@
 package messenger.client.view.dialog;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,13 +40,13 @@ public class CreateRoomDialog extends JDialog implements ActionListener{
 	private       JScrollPane          Jsc_friend_list     = new JScrollPane(friend_list);
 	private       JScrollPane          Jsc_Room_add_list   = new JScrollPane(Room_add_list);
 	
-	private       JLabel               lblNewLabel_1       = new JLabel("제목");
+	private       JLabel               lblNewLabel_1       = new JLabel("대화방 제목 :");
 
 	private       JPanel               buttonPane          = new JPanel();
-	private       JButton              jbt_add             = new JButton("Add");
-	private       JButton              jbt_del             = new JButton("Del");
-	private       JButton              jbt_ok              = new JButton("OK");
-	private       JButton              jbt_Cancel          = new JButton("Cancel");
+	private       JButton              jbt_add             = new JButton("추가");
+	private       JButton              jbt_del             = new JButton("삭제");
+	private       JButton              jbt_ok              = new JButton("만들기");
+	private       JButton              jbt_Cancel          = new JButton("취소");
 	
 	public CreateRoomDialog(ClientFrame clientFrame) {
 		super(clientFrame,true);
@@ -62,23 +63,25 @@ public class CreateRoomDialog extends JDialog implements ActionListener{
 	}
 	
 	public void init() {
+		this.setTitle("친구 초대하기");
 		model_friend_list =  (clientFrame != null) ? clientFrame.getFriendTableModel() : new MemberVOTableModel("친구리스트");
 		friend_list.setModel(model_friend_list);
 		event();
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setResizable(false);
-		setBounds(100, 100, 890, 475);
+		setBounds(100, 100, 740, 450);
 		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBackground(new Color(126, 195, 237));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		lblNewLabel_1    .setBounds(12, 33, 57, 15);
-		jtf_title        .setBounds(72, 30, 146, 21);
-		jbt_add          .setBounds(405, 88, 64, 23);
-		jbt_del          .setBounds(405, 182, 64, 23);
-		Jsc_friend_list  .setBounds(12, 73, 380, 320);
-		Jsc_Room_add_list.setBounds(482, 73, 380, 320);
+		lblNewLabel_1    .setBounds(30, 30, 120, 20);
+		jtf_title        .setBounds(125, 30, 285, 20);
+		jbt_add          .setBounds(340, 150, 60, 40);
+		jbt_del          .setBounds(340, 220, 60, 40);
+		Jsc_friend_list  .setBounds(30, 73, 300, 300);
+		Jsc_Room_add_list.setBounds(410, 73, 300, 300);
 		
 		jtf_title.setColumns(10);
 		contentPanel.add(lblNewLabel_1);
@@ -89,12 +92,17 @@ public class CreateRoomDialog extends JDialog implements ActionListener{
 		contentPanel.add(Jsc_Room_add_list);
 		
 		buttonPane.add(jbt_Cancel);
+		buttonPane.setBackground(new Color(126, 195, 237));
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		buttonPane.add(jbt_ok);
 		
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 		getRootPane()   .setDefaultButton(jbt_ok);
 		
+		jbt_ok	  .setBackground(new Color(126, 195, 237));
+		jbt_Cancel.setBackground(new Color(126, 195, 237));
+		jbt_add	  .setBackground(new Color(126, 195, 237));
+		jbt_del   .setBackground(new Color(126, 195, 237));
 		jbt_ok    .setActionCommand("OK");
 		jbt_Cancel.setActionCommand("Cancel");
 		this.setVisible(true);

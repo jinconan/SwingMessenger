@@ -1,11 +1,15 @@
 package messenger.client.friend;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import messenger._db.vo.MemberVO;
 import messenger._protocol.Message;
+import messenger._protocol.Port;
+import messenger._protocol.Server;
 import messenger.client.view.ClientFrame;
 
 /**********************************************************************
@@ -45,10 +49,7 @@ public class ClientFriendList extends Thread {
 	Message<MemberVO> mms = null;//Client-Server간 주고받을 메세지와
 	List<MemberVO> mli = null;	 //메시지에 담길 자료구조 List
 	MemberVO mvo = null;		 //List에 담겨질 클래스자료 MemberVO
-	ClientFriend cf = null;		 //친구관련 작업을 수행할 Thread가 위치한 클래스
 	
-	Vector<MemberVO> vec = null; //서버로부터 받은 메시지를 순서대로 담을 변수
-
 	//int타입 생성자가 있어서 만들어준 디펄트 생성자
 	public ClientFriendList() {}
 	
@@ -75,7 +76,25 @@ public class ClientFriendList extends Thread {
 		mli.add(mvo);
 		mms.setRequest(mli);//보낼 데이터를 메시지로 묶음
 		mms.setType(Message.FRIEND_ALL);//타입설정 -18.06.27 이진 디버깅
-		cf = new ClientFriend(mms, this);//메시지를 넘겨서 start()호출
+//		cf = new ClientFriend(mms, this);//메시지를 넘겨서 start()호출
+		
+		try(
+			Socket socket = new Socket(Server.IP, Port.MEMBER);
+			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());	
+		) {
+			oos.writeObject(mms);
+			try(
+				ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			) {
+				mms = (Message<MemberVO>)ois.readObject();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		List<MemberVO> res = mms.getResponse();
+		setFriendList(res);
 	}
 	
 	//전달 받은 정보를 UI에 띄우기(run메소드에서 호출)

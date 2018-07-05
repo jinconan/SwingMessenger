@@ -54,7 +54,6 @@ public class ClientData {
 	
 	//actionPerformed에서 친구전체조회를 실행하도록 호출할 메소드
 	public void actionFriendList() {
-//		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
 		ClientFriendList cfl = new ClientFriendList(myData.getMem_no(),clientFrame);
 		cfl.getFriendList();
 	}
@@ -63,7 +62,6 @@ public class ClientData {
 	 * @param 검색하고자하는 친구아이디
 	 ******************************************/
 	public void actionFriendSearch(String FriendId) {
-//		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
 		ClientFriendSearch cfc = new ClientFriendSearch(FriendId,clientFrame, SearchDialog);
 		cfc.getFriendSearch();
 	}
@@ -72,7 +70,6 @@ public class ClientData {
 	 * @param 추가하고자하는 친구아이디
 	 ******************************************/
 	public void actionAddFriend(String FriendId) {
-//		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
 		ClientFriendAdd cfa = new ClientFriendAdd(myData.getMem_id(),FriendId,clientFrame);
 		cfa.getFriendAdd();
 	}
@@ -81,7 +78,6 @@ public class ClientData {
 	 * @param 삭제하고자하는 친구아이디를 넘겨받아와야함
 	 ******************************************/
 	public void actionDeleteFriend(String FriendId) {
-//		f_Panel = new FriendPanel(this);//private와 값보내기는 상관없음
 		ClientFriendDelete cfd = new ClientFriendDelete(myData.getMem_id(),FriendId,clientFrame);
 		cfd.getFriendDelete();
 	}

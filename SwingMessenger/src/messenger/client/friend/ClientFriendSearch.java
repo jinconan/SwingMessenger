@@ -1,11 +1,16 @@
 package messenger.client.friend;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 import messenger._db.vo.MemberVO;
 import messenger._protocol.Message;
+import messenger._protocol.Port;
+import messenger._protocol.Server;
 import messenger.client.view.ClientFrame;
 import messenger.client.view.dialog.SearchDialog;
 
@@ -36,9 +41,6 @@ public class ClientFriendSearch{
 	Message<MemberVO> mms = null;//Client-Server간 주고받을 메세지와
 	List<MemberVO> mli_f = null; //메시지에 담길 자료구조 List
 	MemberVO mvo_f = null;		 //List에 담겨질 클래스자료 MemberVO
-	ClientFriend cf = null;		 //친구관련 작업을 수행할 Thread가 위치한 클래스
-	
-	Vector<MemberVO> vec = null; //서버로부터 받은 메시지를 순서대료 담을 변수
 	
 	/*생성자*/
 	//디펄트 생성자
@@ -71,8 +73,32 @@ public class ClientFriendSearch{
 		mms.setRequest(mli_f);//담기완료
 		mms.setType(Message.FRIEND_SEARCH);//이 메시지의 프로토콜 지정
 		
-		//Thread클래스로 보내서 실행
-		cf = new ClientFriend(mms, this);
+//		//Thread클래스로 보내서 실행
+//		cf = new ClientFriend(mms, this);
+		
+		//소켓을 생성하고, 소켓을 통한 듣기와 말하기 창구 생성
+		//말하기
+		try(
+			Socket socket = new Socket(Server.IP, Port.MEMBER);
+			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+		) {
+			oos.writeObject(mms);
+			//듣기
+			try (
+				ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			){
+				//들은 내용을 확인하고 메시지프로토콜로 담아냄
+				mms = (Message<MemberVO>)ois.readObject();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		//메시지프로토콜에 들어있는 데이터부분을 골라냄 (List타입)
+		List<MemberVO> res = mms.getResponse();
+		setFriendSearch(res);
 	}
 
 	public void setFriendSearch(List<MemberVO> res) {

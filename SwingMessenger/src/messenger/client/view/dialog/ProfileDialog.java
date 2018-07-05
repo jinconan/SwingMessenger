@@ -64,8 +64,7 @@ public class ProfileDialog extends JDialog {
 		jlb_id.setBounds(0, 260, 334, 45);
 		panel.add(jlb_id);
 		
-		jlb_background = new JLabel();
-		jlb_background.setIcon(new ImageIcon(ProfileDialog.class.getResource("/messenger/server/images/background/background_0.jpg")));
+		jlb_background = memVO.getMem_background();
 		jlb_background.setForeground(Color.PINK);
 		jlb_background.setBackground(Color.RED);
 		jlb_background.setBounds(0, 0, 334, 260);

@@ -54,15 +54,17 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 		int			answer		= 0;
 		
 		//로그인 패널
-		CardLayout 	card		= new CardLayout();
-		JPanel 		jp_card		= new JPanel();
-		JPanel 		jp_login 	= new JPanel();
-		JLabel		jp_img 		= new JLabel();
-		JTextField 	jtf_id   	= new JTextField(20);
-		JPasswordField jtf_pw	= new JPasswordField(20);
-		JButton 	jbtn_log 	= new JButton("로그인");
-		JMenuItem	jmi_gaip	= new JMenuItem("회원가입");
-		JMenuItem	jmi_system	= new JMenuItem("나가기");
+		CardLayout 		card		= new CardLayout();
+		JPanel 			jp_card		= new JPanel();
+		JPanel 			jp_login 	= new JPanel();
+		JLabel			jp_img 		= new JLabel();
+		JLabel			Rweback		= new JLabel();
+		JLabel			Lweback		= new JLabel();
+		JTextField 		jtf_id   	= new JTextField(20);
+		JPasswordField  jtf_pw		= new JPasswordField(20);
+		JButton 		jbtn_log 	= new JButton("로그인");
+		JMenuItem		jmi_gaip	= new JMenuItem("회원가입");
+		JMenuItem		jmi_system	= new JMenuItem("나가기");
 		
 		//가입창 패널
 		JPanel 				jp_gaip		= new JPanel();
@@ -173,9 +175,12 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			this.setVisible(true);
 			this.add(jp_card, BorderLayout.CENTER);
 			char c = '*';
+			
 		//로그인창패널
 			//로그인창
 			jp_login.add(jp_img);
+			jp_login.add(Rweback);
+			jp_login.add(Lweback);
 			jp_login.add(jtf_id);
 			jp_login.add(jtf_pw);
 			jp_login.add(jbtn_log);
@@ -185,6 +190,10 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			jp_login.setBackground(new Color(126, 195, 237));
 			jp_img.setBounds(70, 10, 250, 260);
 			jp_img.setIcon(new ImageIcon(ClientFrame.class.getResource(noname+"bonobono2.jpg")));
+			//Rweback.setBounds(0,0,380,550);
+			//Lweback.setBounds(50,0,10,10);
+			//Rweback.setIcon(new ImageIcon(ClientFrame.class.getResource(noname+"훈태(우).png")));
+			//Lweback.setIcon(new ImageIcon(ClientFrame.class.getResource(noname+"Lweback.jpg")));
 			jtf_id.setBounds(60, 260, 250, 30);
 			jtf_id.setText("");
 			jtf_pw.setBounds(60, 290, 250, 30);
@@ -198,6 +207,7 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			jmi_system.setBounds(210, 460, 100, 20);
 			jmi_system.setHorizontalTextPosition(0);
 			jmi_system.setBackground(new Color(126, 195, 237));
+			
 			
 		//가입창 패널
 			jp_gaip.setLayout(null);
@@ -259,6 +269,19 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 						ChatDialog dialog = clientData.getChatDialog(room_no);
 						if(dialog != null) 
 							dialog.setVisible(true);
+					}
+				}
+			});
+			//자기 프로필 보기
+			myTable.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if(e.getClickCount() == 2) {
+						System.out.println("내 프로필 보기");
+						int row = myTable.getSelectedRow();
+						MemberVO memVO = myTableModel.getValueAt(row, 0);
+						new ProfileDialog(memVO);
+						
 					}
 				}
 			});

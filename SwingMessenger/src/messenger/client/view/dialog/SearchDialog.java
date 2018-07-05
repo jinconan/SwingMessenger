@@ -86,7 +86,7 @@ public class SearchDialog extends JDialog implements ActionListener, KeyListener
 			cfs.getFriendSearch();
 		}
 		
-		else if(e.getActionCommand().equals("추가")) {
+		else if(e.getActionCommand().equals("추가하기")) {
 			int row = mvoTable.getSelectedRow();
 			if(row >= 0) {
 				MemberVO mvo = mvoModel.getValueAt(row,  0);

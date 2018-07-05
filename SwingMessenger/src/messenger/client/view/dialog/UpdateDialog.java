@@ -61,6 +61,7 @@ public class UpdateDialog extends JDialog implements ActionListener{
 		super(clientFrame, "회원정보수정", true);
 		this.clientFrame = clientFrame;
 		jbtn_upd.addActionListener(this);
+		jbtn_back.addActionListener(this);
 		mv = clientFrame.getClientData().getMyData();
 		jtf_uid.setText(mv.getMem_id());
 		this.setLayout(null);

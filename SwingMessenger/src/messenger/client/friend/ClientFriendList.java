@@ -99,6 +99,7 @@ public class ClientFriendList extends Thread {
 	
 	//전달 받은 정보를 UI에 띄우기(run메소드에서 호출)
 	public void setFriendList(List<MemberVO> res) {
+		frame.refreshMyTable(frame.getClientData().getMyData());
 		frame.refreshFriendTable((ArrayList<MemberVO>) res);
 	}//////////////end of setFriendList
 		

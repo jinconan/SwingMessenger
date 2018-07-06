@@ -1,5 +1,5 @@
 package messenger._protocol;
 
 public class Server {
-	public static final String IP ="192.168.0.235";
+	public static final String IP ="localhost";
 }

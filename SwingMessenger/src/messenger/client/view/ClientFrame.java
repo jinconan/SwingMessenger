@@ -492,11 +492,14 @@ public class ClientFrame extends JFrame implements ActionListener, FocusListener
 			else if(e.getActionCommand().equals("통화하기")) {
 				JOptionPane.showMessageDialog(null, "그냥... 카톡쓰세요 왜 이걸써요...", "Easter Egg", 1);
 				System.out.println("그냥.. 카톡쓰세요...");
+				JOptionPane.showMessageDialog(null, "힝!! 속았지!!? 전화 연결중 입니다.", "Easter Egg", 2);
+				JOptionPane.showMessageDialog(null, "는~ 또속았지렁~ 이거 쓰지말고 카톡써요^_^", "Easter Egg", 3);
 				
 			}
 			else if(e.getActionCommand().equals("파일첨부")) {
-				JOptionPane.showMessageDialog(null, "그냥... 카톡쓰세요 왜 이걸써요...", "Easter Egg", 1);
+				JOptionPane.showInputDialog(null, "파일경로를 입력해주세요!!", "Easter Egg", 1);
 				System.out.println("그냥.. 카톡쓰세요...");
+				JOptionPane.showMessageDialog(null, "그냥... 카톡쓰세요 왜 이걸써요...", "Easter Egg", 1);
 				
 			}
 		}

@@ -46,6 +46,7 @@ import messenger.client.view.dialog.UpdateDialog;
 /*2018-07-03 수정자 김재현 
  *1. 패스워드 1 2 3 4 글자 그대로 보이는거 수정 
  *2. 특수 문자 입력 제한
+ *테스트 추가
  */
 public class ClientFrame extends JFrame implements ActionListener, FocusListener, KeyListener{
 	//선언부
